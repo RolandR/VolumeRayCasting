@@ -1,0 +1,13 @@
+#slice{
+	display: none;
+}
+
+#canvas{
+	background-color: #000088;
+}
+
+#cut{
+	height: 248px;
+	width: 248px;
+	background-color: #000088;
+}
