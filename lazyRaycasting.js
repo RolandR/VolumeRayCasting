@@ -33,35 +33,21 @@ function render(){
 
 	var cutImageData = cutContext.getImageData(0, 0, cutCanvas.width, cutCanvas.height);
 
-	var angle = 1;
+	var startAngle = 0;
+	var startTime = Date.now();
+	var turnsPerSecond = 0.1;
+	
 	var rayLength = img.width * Math.sqrt(2);
 	var samplingRate = 0.5;
 	var sampleCount = samplingRate*rayLength;
 	var sampleDistance = rayLength/sampleCount;
 
-	var samplesPerFrame = Math.round(zSize*rayLength*sampleCount);
-	document.getElementById("samplesPerFrame").innerHTML = samplesPerFrame.toLocaleString();
-
-	var frameCount = 0;
-	var lastFPS = Date.now();
-	setTimeout(updateFPS, 1000);
-
-	function updateFPS(){
-
-		var timeDifference = Date.now()-lastFPS;
-		lastFPS = Date.now();
-		var fps = frameCount/(timeDifference/1000);
-		frameCount = 0;
-		document.getElementById("framesPerSecond").innerHTML = Math.round(fps);
-		document.getElementById("samplesPerSecond").innerHTML = Math.round(samplesPerFrame*fps).toLocaleString();
-		setTimeout(updateFPS, 1000);
-		
-	}
-
 	draw();
 
 
 	function draw(){
+
+		var angle = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
 		
 		var increment = [Math.sin(angle)*sampleDistance, Math.cos(angle)*sampleDistance];
 		var baseX = Math.sin(angle)*rayLength/2 + img.width/2;
@@ -115,11 +101,30 @@ function render(){
 		cutContext.putImageData(cutImageData, 0, 0);
 
 		frameCount++;
-
-		angle += 0.05;
-		setTimeout(draw, 16);
+		
+		requestAnimationFrame(draw);
 
 	}
+
+	var samplesPerFrame = Math.round(zSize*rayLength*sampleCount);
+	document.getElementById("samplesPerFrame").innerHTML = samplesPerFrame.toLocaleString();
+
+	var frameCount = 0;
+	var lastFPS = Date.now();
+	setTimeout(updateFPS, 1000);
+
+	function updateFPS(){
+
+		var timeDifference = Date.now()-lastFPS;
+		lastFPS = Date.now();
+		var fps = frameCount/(timeDifference/1000);
+		frameCount = 0;
+		document.getElementById("framesPerSecond").innerHTML = Math.round(fps);
+		document.getElementById("samplesPerSecond").innerHTML = Math.round(samplesPerFrame*fps).toLocaleString();
+		setTimeout(updateFPS, 1000);
+		
+	}
+	
 }
 
 
