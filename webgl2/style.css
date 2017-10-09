@@ -10,13 +10,22 @@ html, body{
 }
 
 body{
-	text-align: center;
 	background-color: #000000;
 	overflow-y: hidden;
+	display: flex;
+	font-family: sans-serif;
+	color: #FFFFFF;
 }
 
-#slice{
-	display: none;
+#controls{
+	background-color: #222222;
+	width: 20%;
+	padding: 10px;
+}
+
+#container{
+	text-align: center;
+	flex-grow: 1;
 }
 
 #canvas{
@@ -30,11 +39,36 @@ body{
 	-ms-interpolation-mode: nearest-neighbor;   /* IE                            */
 }
 
-#stats{
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	color: #00FF00;
-	font-family: monospace;
-	text-align: left;
+#slice{
+	display: none;
+}
+
+#texture{
+	display: none;
+}
+
+#opacityControls{
+	background-color: #1A1A1A;
+	border: 1px #444444 solid;
+}
+
+a{
+	color: #FFAA00;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+h1{
+	margin-bottom: 10px;
+	text-shadow: 1px 1px 0px #000000;
+	font-weight: 300;
+}
+
+h2{
+	font-weight: 300;
+	margin-bottom: 10px;
+	font-size: 21px;
 }

@@ -1,27 +1,38 @@
 
 var img = document.getElementById("slice");
+var colorMap = document.createElement("img");
 
 img.onload = render;
-img.src = "./water.png";
+colorMap.src = "./colorMappings/colors1.png";
+img.src = "./sagittal.png";
 
 function render(){
 
+	var imageColumns = 2;
+	var imageWidth = img.width/imageColumns;
+	var slices = 176;
+	var imageHeight = img.height/(slices/imageColumns);
+
 	var textureCanvas = document.createElement("canvas");
 	var textureContext = textureCanvas.getContext("2d");
-	textureCanvas.width = img.width;
-	textureCanvas.height = img.height;
-	textureContext.drawImage(img, 0, 0);
-	var imageData = textureContext.getImageData(0, 0, textureCanvas.width, textureCanvas.height).data;
 
-	var texSize = img.width;
-	var textureData = new Uint8Array(texSize * texSize * texSize);
-	for(var i = 0; i < textureData.length; i++){
-		textureData[i] = imageData[i*4];
+	var textureData = new Uint8Array(imageWidth * imageHeight * slices);
+
+	for(var c = 0; c < imageColumns; c++){
+		textureCanvas.width = imageWidth;
+		textureCanvas.height = img.height;
+		textureContext.drawImage(img, -c*imageWidth, 0);
+		var imageData = textureContext.getImageData(0, 0, textureCanvas.width, textureCanvas.height).data;
+		
+		for(var i = 0; i < textureData.length/imageColumns; i++){
+			textureData[i+c*textureData.length/imageColumns] = imageData[i*4];
+		}
 	}
 
 	var canvas = document.getElementById("canvas");
-	canvas.width = img.width*3;
-	canvas.height = img.width*3;
+	var container = document.getElementById("container");
+	canvas.width = container.clientHeight;
+	canvas.height = container.clientHeight;
 	
 	var gl = canvas.getContext("webgl2");
 
@@ -115,11 +126,10 @@ function render(){
 
 		// Create a texture.
 		var texture = gl.createTexture();
-		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_3D, texture);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -128,9 +138,9 @@ function render(){
 			gl.TEXTURE_3D,  // target
 			0,              // level
 			gl.LUMINANCE,        // internalformat
-			texSize,           // width
-			texSize,           // height
-			texSize,           // depth
+			imageWidth,           // width
+			imageHeight,           // height
+			slices,           // depth
 			0,              // border
 			gl.LUMINANCE,         // format
 			gl.UNSIGNED_BYTE,       // type
@@ -138,6 +148,32 @@ function render(){
 			);
 		gl.generateMipmap(gl.TEXTURE_3D);
 
+		var colorTexture = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, colorMap);
+
+		 // lookup the sampler locations.
+		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
+		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
+
+		gl.uniform1i(u_image0Location, 0);  // texture unit 0
+		gl.uniform1i(u_image1Location, 1);  // texture unit 1
+		
+		gl.activeTexture(gl.TEXTURE0);
+		gl.bindTexture(gl.TEXTURE_3D, texture);
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
+
+		var depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
+		gl.uniform1i(depthSampleCountRef, 512);
+		
+		var opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
+		
+		
 		var transform = gl.getUniformLocation(shaderProgram, "transform");
 
 		var startAngle = 0;
@@ -149,7 +185,10 @@ function render(){
 		function draw(){
 
 			var angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
-			var angleY = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond*0.7);
+			//var angleY = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond*0.7);
+
+			//var angleX = Math.PI;
+			var angleY = 0;
 
 			var c = Math.cos(angleX);
 			var s = Math.sin(angleX);
@@ -182,6 +221,7 @@ function render(){
 			
 			
 			gl.uniformMatrix4fv(transform, false, rotationMatrix);
+			gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
 			
 
 			gl.drawArrays(gl.TRIANGLES, 0, size);

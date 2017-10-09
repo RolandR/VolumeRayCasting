@@ -12,18 +12,23 @@
 		
 	</head>
 	<body>
-		<!--div id="stats">
-			<p><span id="samplesPerFrame">?</span> samples per frame</p>
-			<p><span id="framesPerSecond">?</span> frames per second</p>
-			<p><span id="samplesPerSecond">?</span> samples per second</p>
-		</div-->
+		<div id="controls">
+			<a href=".">
+				<h1>Volume Ray Tracing</h1>
+			</a>
+			<h2>Opacity</h2>
+			<canvas id="opacityControls"></canvas>
+		</div>
 		<canvas id="texture"></canvas>
-		<canvas id="canvas"></canvas>
+		<div id="container">
+			<canvas id="canvas"></canvas>
+		</div>
 		<img id="slice">
 
 		<script src="./matrix.js" type="text/javascript"></script>
 		<script src="./vertexShader.js" type="text/javascript"></script>
 		<script src="./fragmentShader.js" type="text/javascript"></script>
+		<script src="./controls.js" type="text/javascript"></script>
 		<script src="./raycasting.js" type="text/javascript"></script>
 	</body>
 </html>
