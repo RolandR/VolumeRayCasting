@@ -39,7 +39,24 @@ function render(){
 	var sampleCount = samplingRate*rayLength;
 	var sampleDistance = rayLength/sampleCount;
 
-	console.log("Rendering "+(Math.round(zSize*rayLength*sampleCount))+" samples per frame.");
+	var samplesPerFrame = Math.round(zSize*rayLength*sampleCount);
+	document.getElementById("samplesPerFrame").innerHTML = samplesPerFrame.toLocaleString();
+
+	var frameCount = 0;
+	var lastFPS = Date.now();
+	setTimeout(updateFPS, 1000);
+
+	function updateFPS(){
+
+		var timeDifference = Date.now()-lastFPS;
+		lastFPS = Date.now();
+		var fps = frameCount/(timeDifference/1000);
+		frameCount = 0;
+		document.getElementById("framesPerSecond").innerHTML = Math.round(fps);
+		document.getElementById("samplesPerSecond").innerHTML = Math.round(samplesPerFrame*fps).toLocaleString();
+		setTimeout(updateFPS, 1000);
+		
+	}
 
 	draw();
 
@@ -96,6 +113,8 @@ function render(){
 
 		
 		cutContext.putImageData(cutImageData, 0, 0);
+
+		frameCount++;
 
 		angle += 0.05;
 		setTimeout(draw, 16);

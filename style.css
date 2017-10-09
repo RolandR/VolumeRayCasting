@@ -35,3 +35,12 @@ body{
 	image-rendering: pixelated;                 /* Awesome future-browsers       */
 	-ms-interpolation-mode: nearest-neighbor;   /* IE                            */
 }
+
+#stats{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	color: #00FF00;
+	font-family: monospace;
+	text-align: left;
+}
