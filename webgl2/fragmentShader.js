@@ -24,7 +24,7 @@ void main()
 	vec3 value = vec3(0.0, 0.0, 0.0);
 	float s = 0.0;
 	float px = 0.0;
-	vec4 pxColor = vec4(0.0, 0.0, 0.0, 0.0);
+	vec3 pxColor = vec3(0.0, 0.0, 0.0);
 
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
 	
@@ -53,7 +53,9 @@ void main()
 			px = 0.0;
 		} else {
 			px = texture(tex, texCo).r;
-			pxColor = texture(colorMap, vec2(px, 0.0));
+			pxColor = texture(colorMap, vec2(px, 0.0)).rgb;
+
+			px = px*px;
 			
 			if(px < opacitySettings.z){
 				px = opacitySettings.x;
@@ -63,7 +65,7 @@ void main()
 				px = mix(opacitySettings.x, opacitySettings.y, (px-opacitySettings.z)/(opacitySettings.w-opacitySettings.z));
 			}
 		}
-		value = mix(value, pxColor.rgb, px);
+		value = mix(value, pxColor, px);
 		
 	}
 	color = vec4(value, 1.0);

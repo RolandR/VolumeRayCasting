@@ -2,7 +2,7 @@
 var img = document.getElementById("slice");
 var colorMap = document.createElement("img");
 colorMap.onload = updateLoadedImages;
-colorMap.src = "./colorMappings/colors1.png";
+colorMap.src = "./colorMappings/incandescent.png";
 
 img.onload = updateLoadedImages;
 img.src = "./sagittal.png";
@@ -173,7 +173,12 @@ function render(){
 		var colorContext = colorCanvas.getContext("2d");
 		colorContext.drawImage(colorMap, 0, 0);
 		var colorData = colorContext.getImageData(0, 0, colorMap.width, colorMap.height).data;
-		console.log(colorData);
+		var colorRGB = new Uint8Array(3*colorData.length/4);
+		for(var i = 0; i < colorRGB.length/3; i++){
+			colorRGB[i*3  ] = colorData[i*4  ];
+			colorRGB[i*3+1] = colorData[i*4+1];
+			colorRGB[i*3+2] = colorData[i*4+2];
+		}
 
 		var colorTexture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE1);
@@ -182,7 +187,7 @@ function render(){
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, colorMap.width, colorMap.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, colorData, 0);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, colorMap.width, colorMap.height, 0, gl.RGB, gl.UNSIGNED_BYTE, colorRGB, 0);
 		
 		
 		/*gl.bindTexture(gl.TEXTURE_3D, texture);
@@ -190,7 +195,7 @@ function render(){
 		gl.bindTexture(gl.TEXTURE_2D, colorTexture);*/
 
 		var depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
-		gl.uniform1i(depthSampleCountRef, 1024);
+		gl.uniform1i(depthSampleCountRef, 512);
 		
 		var opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
 		
