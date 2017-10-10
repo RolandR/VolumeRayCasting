@@ -169,14 +169,15 @@ function render(){
 		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
 
 		var depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
-		gl.uniform1i(depthSampleCountRef, 512);
+		gl.uniform1i(depthSampleCountRef, 1024);
 		
 		var opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
 		
 		
-		var transform = gl.getUniformLocation(shaderProgram, "transform");
+		var transformRef = gl.getUniformLocation(shaderProgram, "transform");
 
 		var startAngle = 0;
+		var angleX = startAngle;
 		var startTime = Date.now();
 		var turnsPerSecond = 0.1;
 
@@ -184,7 +185,9 @@ function render(){
 
 		function draw(){
 
-			var angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
+			/*if(autorotate){
+				angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
+			}
 			//var angleY = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond*0.7);
 
 			//var angleX = Math.PI;
@@ -212,15 +215,11 @@ function render(){
 
 			rotationMatrix = matrix4Multiply(rotationMatrix, yRotationMatrix);
 
-			/*var rotationMatrix = [
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1
-			];*/
+			*/
+
 			
 			
-			gl.uniformMatrix4fv(transform, false, rotationMatrix);
+			gl.uniformMatrix4fv(transformRef, false, transform);
 			gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
 			
 

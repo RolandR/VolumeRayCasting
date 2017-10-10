@@ -17,6 +17,35 @@ body{
 	color: #FFFFFF;
 }
 
+a{
+	color: #FFAA00;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+h1{
+	text-shadow: 1px 1px 0px #000000;
+	font-weight: 300;
+}
+
+h1:hover{
+	text-decoration: none;
+}
+
+h2{
+	font-weight: 300;
+	margin-bottom: 10px;
+	font-size: 21px;
+}
+
+hr{
+	border-color: #665544;
+	margin: 5px 0px;
+}
+
 #controls{
 	background-color: #222222;
 	width: 20%;
@@ -52,23 +81,35 @@ body{
 	border: 1px #444444 solid;
 }
 
-a{
-	color: #FFAA00;
-	text-decoration: none;
+input[type="checkbox"]{
+	margin-right: 7px;
 }
 
-a:hover{
-	text-decoration: underline;
-}
 
-h1{
-	margin-bottom: 10px;
-	text-shadow: 1px 1px 0px #000000;
-	font-weight: 300;
-}
 
-h2{
-	font-weight: 300;
-	margin-bottom: 10px;
-	font-size: 21px;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
