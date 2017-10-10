@@ -134,9 +134,17 @@ function render(){
 		// Enable the attribute
 		gl.enableVertexAttribArray(coord);
 
+		// lookup the sampler locations.
+		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
+		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
+
+		gl.uniform1i(u_image0Location, 0);  // texture unit 0
+		gl.uniform1i(u_image1Location, 1);  // texture unit 1
+
 
 		// Create a texture.
 		var texture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_3D, texture);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
 		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
@@ -168,24 +176,18 @@ function render(){
 		console.log(colorData);
 
 		var colorTexture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, colorMap.width, colorMap.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, colorData, 0);
-
-		 // lookup the sampler locations.
-		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
-		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
-
-		gl.uniform1i(u_image0Location, 0);  // texture unit 0
-		gl.uniform1i(u_image1Location, 1);  // texture unit 1
 		
-		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_3D, texture);
-		gl.activeTexture(gl.TEXTURE1);
-		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
+		
+		/*gl.bindTexture(gl.TEXTURE_3D, texture);
+		
+		gl.bindTexture(gl.TEXTURE_2D, colorTexture);*/
 
 		var depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
 		gl.uniform1i(depthSampleCountRef, 1024);

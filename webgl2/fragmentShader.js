@@ -48,14 +48,13 @@ void main()
 		s = float(count)/float(depthSampleCount);
 
 		texCo = mix(start, end, s);
-
-		//pxColor = vec4(0.0, 0.0, 0.0, 0.0);
 		
 		if(texCo.x > 1.0 || texCo.y > 1.0 || texCo.z > 1.0 || texCo.x < 0.0 || texCo.y < 0.0 || texCo.z < 0.0){
 			px = 0.0;
 		} else {
 			px = texture(tex, texCo).r;
 			pxColor = texture(colorMap, vec2(px, 0.0));
+			
 			if(px < opacitySettings.z){
 				px = opacitySettings.x;
 			} else if(px > opacitySettings.w){
@@ -64,7 +63,7 @@ void main()
 				px = mix(opacitySettings.x, opacitySettings.y, (px-opacitySettings.z)/(opacitySettings.w-opacitySettings.z));
 			}
 		}
-		value.rgb = mix(value.rgb, pxColor.rgb, px);
+		value = mix(value, pxColor.rgb, px);
 		
 	}
 	color = vec4(value, 1.0);
