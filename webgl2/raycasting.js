@@ -1,10 +1,21 @@
 
 var img = document.getElementById("slice");
 var colorMap = document.createElement("img");
-
-img.onload = render;
+colorMap.onload = updateLoadedImages;
 colorMap.src = "./colorMappings/colors1.png";
+
+img.onload = updateLoadedImages;
 img.src = "./sagittal.png";
+
+var imagesLoaded = 0;
+var imagesToLoad = 2;
+
+function updateLoadedImages(){
+	imagesLoaded++;
+	if(imagesLoaded == imagesToLoad){
+		render();
+	}
+}
 
 function render(){
 
@@ -148,13 +159,21 @@ function render(){
 			);
 		gl.generateMipmap(gl.TEXTURE_3D);
 
+		var colorCanvas = document.createElement("canvas");
+		colorCanvas.height = colorMap.height;
+		colorCanvas.width = colorMap.width;
+		var colorContext = colorCanvas.getContext("2d");
+		colorContext.drawImage(colorMap, 0, 0);
+		var colorData = colorContext.getImageData(0, 0, colorMap.width, colorMap.height).data;
+		console.log(colorData);
+
 		var colorTexture = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, colorMap);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, colorMap.width, colorMap.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, colorData, 0);
 
 		 // lookup the sampler locations.
 		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
@@ -176,48 +195,9 @@ function render(){
 		
 		var transformRef = gl.getUniformLocation(shaderProgram, "transform");
 
-		var startAngle = 0;
-		var angleX = startAngle;
-		var startTime = Date.now();
-		var turnsPerSecond = 0.1;
-
 		draw();
 
-		function draw(){
-
-			/*if(autorotate){
-				angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
-			}
-			//var angleY = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond*0.7);
-
-			//var angleX = Math.PI;
-			var angleY = 0;
-
-			var c = Math.cos(angleX);
-			var s = Math.sin(angleX);
-			
-			rotationMatrix = [
-				c, 0, s, 0,
-				0, 1, 0, 0,
-				-s, 0, c, 0,
-				0,  0, 0, 1
-			];
-			
-			var c = Math.cos(angleY);
-			var s = Math.sin(angleY);
-			
-			var yRotationMatrix = [
-				1, 0,  0, 0,
-				0, c, -s, 0,
-				0, s,  c, 0,
-				0, 0,  0, 1,
-			];
-
-			rotationMatrix = matrix4Multiply(rotationMatrix, yRotationMatrix);
-
-			*/
-
-			
+		function draw(){			
 			
 			gl.uniformMatrix4fv(transformRef, false, transform);
 			gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);

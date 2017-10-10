@@ -22,9 +22,13 @@ function initControls(){
 
 	var controlsContainer = document.getElementById("controls");
 
-	var zoom = 1;
+	var zoom = 1/2;
 
-	var angleX = 0;
+	var startAngle = 0;
+	var startTime = Date.now();
+	var turnsPerSecond = 0.1;
+
+	var angleX = startAngle;
 	var angleY = 0;
 
 	var translateX = 0;
@@ -42,12 +46,15 @@ function initControls(){
 	var panX = 0;
 	var panY = 0;
 
+	updateTransformation();
+
 	function updateTransformation(){
 		var rotationMatrix;
-		
-		/*if(autorotate && panX == 0 && panY == 0){
-			angleX += 0.008;
+
+		/*if(autorotate){
+			angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
 		}*/
+		
 		angleX += panX*0.0025;
 		panX = 0;
 		var c = Math.cos(angleX);
@@ -60,7 +67,7 @@ function initControls(){
 			0,  0, 0, 1
 		];
 
-		angleY += panY*0.0025;
+		angleY -= panY*0.0025;
 		panY = 0;
 		var c = Math.cos(angleY);
 		var s = Math.sin(angleY);
@@ -112,7 +119,6 @@ function initControls(){
 			moving = true;
 		} else if(e.buttons == 2){
 			panning = true;
-			console.log(e);
 			e.preventDefault();
 		}
 		moveStartX = e.screenX;
@@ -240,9 +246,9 @@ function initControls(){
 
 	}
 
-	document.getElementById("autorotate").addEventListener("change", function(e){
+	/*document.getElementById("autorotate").addEventListener("change", function(e){
 		autorotate = this.checked;
-	});
+	});*/
 
 }
 

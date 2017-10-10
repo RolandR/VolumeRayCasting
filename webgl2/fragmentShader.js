@@ -1,8 +1,8 @@
 var fragmentShader = `#version 300 es
 
-precision highp float;
-precision highp int;
-precision highp sampler3D;
+precision mediump float;
+precision mediump int;
+precision mediump sampler3D;
 
 uniform sampler3D tex;
 uniform sampler2D colorMap;
@@ -31,7 +31,7 @@ void main()
 	vec4 startCoord = vec4(texCoord, -1.0, 1.0);
 	startCoord = transform * startCoord;
 	startCoord = startCoord / startCoord.w;
-	startCoord = startCoord/1.4 + 0.5;
+	startCoord = startCoord + 0.5;
 	startCoord.z = startCoord.z*1.4-0.25;
 
 	vec3 start = startCoord.xyz;
@@ -39,7 +39,7 @@ void main()
 	vec4 endCoord = vec4(texCoord, 1.0, 1.0);
 	endCoord = transform * endCoord;
 	endCoord = endCoord / endCoord.w;
-	endCoord = endCoord/1.4 + 0.5;
+	endCoord = endCoord + 0.5;
 	endCoord.z = endCoord.z*1.4-0.25;
 
 	vec3 end = endCoord.xyz;
@@ -49,6 +49,7 @@ void main()
 
 		texCo = mix(start, end, s);
 
+		//pxColor = vec4(0.0, 0.0, 0.0, 0.0);
 		
 		if(texCo.x > 1.0 || texCo.y > 1.0 || texCo.z > 1.0 || texCo.x < 0.0 || texCo.y < 0.0 || texCo.z < 0.0){
 			px = 0.0;
@@ -63,7 +64,7 @@ void main()
 				px = mix(opacitySettings.x, opacitySettings.y, (px-opacitySettings.z)/(opacitySettings.w-opacitySettings.z));
 			}
 		}
-		value = mix(value, pxColor.rgb, px);
+		value.rgb = mix(value.rgb, pxColor.rgb, px);
 		
 	}
 	color = vec4(value, 1.0);
