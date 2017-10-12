@@ -130,6 +130,10 @@ input[type="checkbox"]{
 	background-image: url(./colorMappings/rainbow.png);
 }
 
+#colorSelect > li[value="rainbow-inverted"]{
+	background-image: url(./colorMappings/rainbow-inverted.png);
+}
+
 #colorSelect > li[value="blackwhite"]{
 	background-image: url(./colorMappings/blackwhite.png);
 }
@@ -154,7 +158,13 @@ input[type="checkbox"]{
 	background-image: url(./colorMappings/skyline.png);
 }
 
+#colorSelect > li[value="white"]{
+	background-image: url(./colorMappings/white.png);
+}
 
+#colorSelect > li[value="blue"]{
+	background-image: url(./colorMappings/blue.png);
+}
 
 
 

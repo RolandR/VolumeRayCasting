@@ -14,6 +14,7 @@ var Renderer = function(){
 	var gl = canvas.getContext("webgl2");
 
 	var colorTexture;
+	var depthSampleCountRef
 
 	img.onload = updateLoadedImages;
 	img.src = "./sagittal.png";
@@ -225,7 +226,7 @@ var Renderer = function(){
 			
 			gl.bindTexture(gl.TEXTURE_2D, colorTexture);*/
 
-			var depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
+			depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
 			gl.uniform1i(depthSampleCountRef, 512);
 			
 			var opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
@@ -254,8 +255,13 @@ var Renderer = function(){
 
 	}
 
+	function changeSampleCount(count){
+		gl.uniform1i(depthSampleCountRef, count);
+	}
+
 	return {
-		changeColorTexture: changeColorTexture
+		 changeColorTexture: changeColorTexture
+		,changeSampleCount: changeSampleCount
 	};
 
 }

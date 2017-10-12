@@ -151,6 +151,11 @@ function initControls(){
 		return false;
 	});
 
+	document.getElementById("sampleCount").addEventListener("change", function(e){
+		renderer.changeSampleCount(this.value);
+	});
+	
+
 	initOpacityControls();
 	initColorSelect();
 
