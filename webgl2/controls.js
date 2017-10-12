@@ -13,6 +13,8 @@ var transform = [
 	0, 0, 0, 1
 ];
 
+var renderer = new Renderer();
+
 initControls();
 
 function initControls(){
@@ -150,6 +152,7 @@ function initControls(){
 	});
 
 	initOpacityControls();
+	initColorSelect();
 
 	function initOpacityControls(){
 		
@@ -158,7 +161,7 @@ function initControls(){
 
 		var height = 50;
 		var padding = 5;
-		opCanvas.width = controlsContainer.clientWidth - 20;
+		opCanvas.width = controlsContainer.clientWidth - 22;
 		opCanvas.height = height+padding*2;
 
 		var width = opCanvas.width-2*padding;
@@ -244,6 +247,27 @@ function initControls(){
 		});
 		
 
+	}
+
+	function initColorSelect(){
+		var opened = false;
+		var selectContainer = document.getElementById("colorSelect");
+
+		selectContainer.addEventListener("click", function(e){
+			opened = !opened;
+			if(opened){
+				selectContainer.className += " opened";
+			} else {
+				selectContainer.className = "homebrewSelect";
+				for(var i in selectContainer.children){
+					selectContainer.children[i].className = "";
+				}
+				e.target.className = "active";
+				console.log(e.target.id);
+				renderer.changeColorTexture("./colorMappings/"+e.target.id+".png");
+			}
+		});
+		
 	}
 
 	/*document.getElementById("autorotate").addEventListener("change", function(e){

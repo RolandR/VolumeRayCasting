@@ -85,12 +85,74 @@ input[type="checkbox"]{
 	margin-right: 7px;
 }
 
+.homebrewSelect{
+	width: 100%;
+	height: 30px;
+	position: relative;
+	z-index: 10000;
+}
 
+.homebrewSelect > li{
+	display: none;
+	background-size: 100% 100%;
+	background-origin: content-box;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 30px;
+	background-color: #1A1A1A;
+	border: 1px #444444 solid;
+	margin-bottom: -1px;
+	padding: 3px;
+	cursor: pointer;
+}
 
+.homebrewSelect > li:hover{
+	background-color: #333333;
+}
 
+.homebrewSelect.opened > li{
+	display: block;
+}
 
+.homebrewSelect > .active{
+	display: block;
+}
 
+#colorSelect > li[value="incandescent"]{
+	background-image: url(./colorMappings/incandescent.png);
+}
 
+#colorSelect > li[value="colors1"]{
+	background-image: url(./colorMappings/colors1.png);
+}
+
+#colorSelect > li[value="rainbow"]{
+	background-image: url(./colorMappings/rainbow.png);
+}
+
+#colorSelect > li[value="blackwhite"]{
+	background-image: url(./colorMappings/blackwhite.png);
+}
+
+#colorSelect > li[value="whiteblack"]{
+	background-image: url(./colorMappings/whiteblack.png);
+}
+
+#colorSelect > li[value="blackwhite-compact"]{
+	background-image: url(./colorMappings/blackwhite-compact.png);
+}
+
+#colorSelect > li[value="rainbows"]{
+	background-image: url(./colorMappings/rainbows.png);
+}
+
+#colorSelect > li[value="horizon"]{
+	background-image: url(./colorMappings/horizon.png);
+}
+
+#colorSelect > li[value="skyline"]{
+	background-image: url(./colorMappings/skyline.png);
+}
 
 
 
