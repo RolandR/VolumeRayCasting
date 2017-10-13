@@ -166,6 +166,9 @@ input[type="checkbox"]{
 	background-image: url(./colorMappings/blue.png);
 }
 
+#colorSelect > li[value="natural"]{
+	background-image: url(./colorMappings/natural.png);
+}
 
 
 
