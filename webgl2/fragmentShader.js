@@ -1,8 +1,8 @@
 var fragmentShader = `#version 300 es
 
-precision mediump float;
-precision mediump int;
-precision mediump sampler3D;
+precision lowp float;
+precision lowp int;
+precision lowp sampler3D;
 
 uniform sampler3D tex;
 uniform sampler2D colorMap;
@@ -19,12 +19,21 @@ uniform vec4 opacitySettings;
 in vec2 texCoord;
 out vec4 color;
 
-void main()
-{
-	vec3 value = vec3(0.0, 0.0, 0.0);
+float getPx(float px){
+	if(px <= opacitySettings.z){
+		return opacitySettings.x;
+	} else if(px > opacitySettings.w){
+		return opacitySettings.y;
+	} else {
+		return mix(opacitySettings.x, opacitySettings.y, (px-opacitySettings.z)/(opacitySettings.w-opacitySettings.z));
+	}
+}
+
+void main(){
+	vec4 value = vec4(0.0, 0.0, 0.0, 0.0);
 	float s = 0.0;
 	float px = 0.0;
-	vec3 pxColor = vec3(0.0, 0.0, 0.0);
+	vec4 pxColor = vec4(0.0, 0.0, 0.0, 0.0);
 
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
 	
@@ -32,7 +41,7 @@ void main()
 	startCoord = transform * startCoord;
 	startCoord = startCoord / startCoord.w;
 	startCoord = startCoord + 0.5;
-	startCoord.z = startCoord.z*1.4;
+	startCoord.z = startCoord.z*1.4 - 0.25;
 
 	vec3 start = startCoord.xyz;
 
@@ -40,35 +49,48 @@ void main()
 	endCoord = transform * endCoord;
 	endCoord = endCoord / endCoord.w;
 	endCoord = endCoord + 0.5;
-	endCoord.z = endCoord.z*1.4;
+	endCoord.z = endCoord.z*1.4 - 0.25;
 
 	vec3 end = endCoord.xyz;
 	
 	for(int count = 0; count < depthSampleCount; count++){
+		
 		s = float(count)/float(depthSampleCount);
 
 		texCo = mix(start, end, s);
+		pxColor = vec4(0.0, 0.0, 0.0, 0.0);
 		
 		if(texCo.x > 1.0 || texCo.y > 1.0 || texCo.z > 1.0 || texCo.x < 0.0 || texCo.y < 0.0 || texCo.z < 0.0){
-			px = 0.0;
+			//pxColor.a = 0.0;
 		} else {
 			px = texture(tex, texCo).r;
-			pxColor = texture(colorMap, vec2(px, 0.0)).rgb;
-
+			pxColor = texture(colorMap, vec2(px, 0.0));
 			px = px*px;
 			
-			if(px < opacitySettings.z){
-				px = opacitySettings.x;
-			} else if(px > opacitySettings.w){
-				px = opacitySettings.y;
-			} else {
-				px = mix(opacitySettings.x, opacitySettings.y, (px-opacitySettings.z)/(opacitySettings.w-opacitySettings.z));
-			}
+			px = getPx(px);
+			
+			pxColor.a = px;
 		}
-		value = mix(value, pxColor, px);
+		//value = mix(value, pxColor, px);
+		pxColor.rgb *= pxColor.a;
+		value = (1.0-value.a)*pxColor + value;
 		
+		if(value.a >= 1.0){
+			break;
+		}
 	}
-	color = vec4(value, 1.0);
+	color = vec4(value.rgb, 1.0);
 }
 
 `;
+
+
+
+
+
+
+
+
+
+
+

@@ -180,7 +180,7 @@ var Renderer = function(){
 			gl.bindTexture(gl.TEXTURE_3D, texture);
 			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
 			//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
-			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -197,7 +197,7 @@ var Renderer = function(){
 				gl.UNSIGNED_BYTE,       // type
 				textureData            // pixel
 				);
-			gl.generateMipmap(gl.TEXTURE_3D);
+			//gl.generateMipmap(gl.TEXTURE_3D);
 
 			var colorCanvas = document.createElement("canvas");
 			colorCanvas.height = colorMap.height;
