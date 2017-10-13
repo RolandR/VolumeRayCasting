@@ -5,10 +5,13 @@ precision lowp int;
 precision lowp sampler3D;
 
 uniform sampler3D tex;
+uniform sampler3D normals;
 uniform sampler2D colorMap;
 
 uniform mat4 transform;
 uniform int depthSampleCount;
+
+uniform vec3 lightPosition;
 
 uniform vec4 opacitySettings;
 // x: minLevel
@@ -18,6 +21,9 @@ uniform vec4 opacitySettings;
 
 in vec2 texCoord;
 out vec4 color;
+
+vec3 ambientLight = vec3(0.34, 0.32, 0.32);
+vec3 directionalLight = vec3(0.5, 0.5, 0.5);
 
 float getPx(float px){
 	if(px <= opacitySettings.z){
@@ -37,6 +43,8 @@ void main(){
 
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
 	
+	vec3 normal = vec3(0.0, 0.0, 0.0);
+	
 	vec4 startCoord = vec4(texCoord, -1.0, 1.0);
 	startCoord = transform * startCoord;
 	startCoord = startCoord / startCoord.w;
@@ -52,6 +60,8 @@ void main(){
 	endCoord.z = endCoord.z*1.4 - 0.25;
 
 	vec3 end = endCoord.xyz;
+
+	vec3 directionalVector = normalize(lightPosition);
 	
 	for(int count = 0; count < depthSampleCount; count++){
 		
@@ -65,6 +75,15 @@ void main(){
 		} else {
 			px = texture(tex, texCo).r;
 			pxColor = texture(colorMap, vec2(px, 0.0));
+			
+			normal = texture(normals, texCo).xyz - 0.5;
+			float directional = clamp(dot(normalize(normal), directionalVector), 0.0, 1.0);
+
+			pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;
+			
+			//r=d−2(d⋅n)n
+
+			
 			px = px*px;
 			
 			px = getPx(px);
@@ -75,11 +94,11 @@ void main(){
 		pxColor.rgb *= pxColor.a;
 		value = (1.0-value.a)*pxColor + value;
 		
-		if(value.a >= 1.0){
+		if(value.a >= 0.95){
 			break;
 		}
 	}
-	color = vec4(value.rgb, 1.0);
+	color = value;
 }
 
 `;

@@ -1,8 +1,13 @@
 
-var minLevel = 0;
+/*var minLevel = 0;
 var maxLevel = 0.36;
 var lowNode = 0.42;
-var highNode = 0.76;
+var highNode = 0.76;*/
+
+var minLevel = 0;
+var maxLevel = 1;
+var lowNode = 1/256;
+var highNode = 3/256;
 
 var autorotate = true;
 
@@ -24,14 +29,14 @@ function initControls(){
 
 	var controlsContainer = document.getElementById("controls");
 
-	var zoom = 1/2;
+	var zoom = 1/1.9;
 
-	var startAngle = 0;
+	/*var startAngle = 0;
 	var startTime = Date.now();
-	var turnsPerSecond = 0.1;
+	var turnsPerSecond = 0.1;*/
 
-	var angleX = startAngle;
-	var angleY = 0;
+	var angleX = -0.9;
+	var angleY = 0.25;
 
 	var translateX = 0;
 	var translateY = 0;

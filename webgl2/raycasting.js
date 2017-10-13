@@ -4,7 +4,7 @@ var Renderer = function(){
 	var img = document.getElementById("slice");
 	var colorMap = document.createElement("img");
 	colorMap.onload = updateLoadedImages;
-	colorMap.src = "./colorMappings/incandescent.png";
+	colorMap.src = "./colorMappings/natural.png";
 
 	var canvas = document.getElementById("canvas");
 	var container = document.getElementById("container");
@@ -77,6 +77,16 @@ var Renderer = function(){
 			for(var i = 0; i < textureData.length/imageColumns; i++){
 				textureData[i+c*textureData.length/imageColumns] = imageData[i*4];
 			}
+		}
+
+		var normals = new Uint8Array(textureData.length*3);
+
+		for(var i = 0; i < textureData.length; i++){
+
+			normals[i*3  ] = textureData[i-1] - textureData[i+1] + 128;
+			normals[i*3+1] = textureData[i-imageWidth] - textureData[i+imageWidth] + 128;
+			normals[i*3+2] = textureData[i-imageWidth*imageHeight] - textureData[i+imageWidth*imageHeight] + 128;
+			
 		}
 
 		var shaderProgram;
@@ -169,12 +179,14 @@ var Renderer = function(){
 			// lookup the sampler locations.
 			var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
 			var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
+			var u_image2Location = gl.getUniformLocation(shaderProgram, "normals");
 
 			gl.uniform1i(u_image0Location, 0);  // texture unit 0
 			gl.uniform1i(u_image1Location, 1);  // texture unit 1
+			gl.uniform1i(u_image2Location, 2);  // texture unit 2
 
 
-			// Create a texture.
+			// Volumetric data
 			var texture = gl.createTexture();
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_3D, texture);
@@ -198,6 +210,30 @@ var Renderer = function(){
 				textureData            // pixel
 				);
 			//gl.generateMipmap(gl.TEXTURE_3D);
+
+			// Normals
+			var normalsTexture = gl.createTexture();
+			gl.activeTexture(gl.TEXTURE2);
+			gl.bindTexture(gl.TEXTURE_3D, normalsTexture);
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
+			//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+			gl.texImage3D(
+				gl.TEXTURE_3D,  // target
+				0,              // level
+				gl.RGB,        // internalformat
+				imageWidth,           // width
+				imageHeight,           // height
+				slices,           // depth
+				0,              // border
+				gl.RGB,         // format
+				gl.UNSIGNED_BYTE,       // type
+				normals            // pixel
+				);
 
 			var colorCanvas = document.createElement("canvas");
 			colorCanvas.height = colorMap.height;
@@ -230,6 +266,7 @@ var Renderer = function(){
 			gl.uniform1i(depthSampleCountRef, 512);
 			
 			var opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
+			var lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
 			
 			
 			var transformRef = gl.getUniformLocation(shaderProgram, "transform");
@@ -240,6 +277,10 @@ var Renderer = function(){
 				
 				gl.uniformMatrix4fv(transformRef, false, transform);
 				gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
+
+				var now = Date.now()/1000;
+				
+				gl.uniform3f(lightPositionRef, Math.sin(now), Math.cos(now), Math.sin(now*0.783));
 				
 
 				gl.drawArrays(gl.TRIANGLES, 0, size);

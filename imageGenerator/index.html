@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Volume Ray Casting</title>
+		<style>
+			body{
+				font-family: sans-serif;
+			}
+			h1{
+				font-size: 25px;
+				font-weight: 300;
+			}
+			a{
+				display: block;
+			}
+		</style>
+	</head>
+	<body>	
+		<canvas id="canvas"></canvas>
+
+		<script type="text/javascript">
+			var height = 128;
+			var width = 128;
+			var depth = 128;
+
+			var canvas = document.getElementById("canvas");
+
+			canvas.width = width;
+			canvas.height = height*depth;
+
+			var context = canvas.getContext("2d");
+
+			var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+			cube(0.4);
+
+			function circle(r){
+				var data = imageData.data;
+				for(var x = 0; x < width; x++){
+					for(var y = 0; y < height; y++){
+						for(var z = 0; z < depth; z++){
+
+							var i = (z*width*height + y*width + x)*4;
+							
+							if(Math.sqrt(Math.pow(x/width-0.5, 2) + Math.pow(y/height-0.5, 2) + Math.pow(z/depth-0.5, 2)) <= r){
+								data[i  ] = 255;
+								data[i+1] = 255;
+								data[i+2] = 255;
+								data[i+3] = 255;
+							} else {
+								data[i  ] = 0;
+								data[i+1] = 0;
+								data[i+2] = 0;
+								data[i+3] = 255;
+							}
+							
+						}	
+					}					
+				}
+				context.putImageData(imageData, 0, 0);
+			}
+
+			function fuzzyCircle(r){
+				var data = imageData.data;
+				for(var x = 0; x < width; x++){
+					for(var y = 0; y < height; y++){
+						for(var z = 0; z < depth; z++){
+
+							var i = (z*width*height + y*width + x)*4;
+
+							var dist = Math.sqrt(Math.pow(x/width-0.5, 2) + Math.pow(y/height-0.5, 2) + Math.pow(z/depth-0.5, 2));
+							
+							if(dist <= r){
+								data[i  ] = 255*(r-dist)/r;
+								data[i+1] = 255*(r-dist)/r;
+								data[i+2] = 255*(r-dist)/r;
+								data[i+3] = 255;
+							} else {
+								data[i  ] = 0;
+								data[i+1] = 0;
+								data[i+2] = 0;
+								data[i+3] = 255;
+							}
+							
+						}	
+					}					
+				}
+				context.putImageData(imageData, 0, 0);
+			}
+
+			function hollowCircle(r){
+				var thickness = 0.5;
+				var data = imageData.data;
+				for(var x = 0; x < width; x++){
+					for(var y = 0; y < height; y++){
+						for(var z = 0; z < depth; z++){
+
+							var i = (z*width*height + y*width + x)*4;
+
+							var dist = Math.sqrt(Math.pow(x/width-0.5, 2) + Math.pow(y/height-0.5, 2) + Math.pow(z/depth-0.5, 2));
+							
+							if(Math.abs(r-dist) < thickness/width){
+								data[i  ] = 255;
+								data[i+1] = 255;
+								data[i+2] = 255;
+								data[i+3] = 255;
+							} else {
+								data[i  ] = 0;
+								data[i+1] = 0;
+								data[i+2] = 0;
+								data[i+3] = 255;
+							}
+							
+						}	
+					}					
+				}
+				context.putImageData(imageData, 0, 0);
+			}
+
+			function cube(s){
+				var data = imageData.data;
+				for(var x = 0; x < width; x++){
+					for(var y = 0; y < height; y++){
+						for(var z = 0; z < depth; z++){
+
+							var i = (z*width*height + y*width + x)*4;
+							
+							if(Math.abs(x-width/2)/width < s && Math.abs(y-height/2)/height < s && Math.abs(z-depth/2)/depth < s){
+								data[i  ] = 255;
+								data[i+1] = 255;
+								data[i+2] = 255;
+								data[i+3] = 255;
+							} else {
+								data[i  ] = 0;
+								data[i+1] = 0;
+								data[i+2] = 0;
+								data[i+3] = 255;
+							}
+							
+						}	
+					}					
+				}
+				context.putImageData(imageData, 0, 0);
+			}
+
+			
+		</script>
+	</body>
+</html>
