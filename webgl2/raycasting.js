@@ -79,15 +79,17 @@ var Renderer = function(){
 			}
 		}
 
-		var normals = new Uint8Array(textureData.length*3);
+		var normals = new Uint8ClampedArray(textureData.length*3);
 
 		for(var i = 0; i < textureData.length; i++){
 
 			normals[i*3  ] = textureData[i-1] - textureData[i+1] + 128;
 			normals[i*3+1] = textureData[i-imageWidth] - textureData[i+imageWidth] + 128;
-			normals[i*3+2] = textureData[i-imageWidth*imageHeight] - textureData[i+imageWidth*imageHeight] + 128;
+			normals[i*3+2] = textureData[i-(imageWidth*imageHeight)] - textureData[i+(imageWidth*imageHeight)] + 128;
 			
 		}
+
+		normals = new Uint8Array(normals);
 
 		var shaderProgram;
 		var size;

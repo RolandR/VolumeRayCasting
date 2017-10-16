@@ -83,6 +83,8 @@ void main(){
 			
 			//r=d−2(d⋅n)n
 
+			//pxColor = texture(normals, texCo).xxxx;
+
 			
 			px = px*px;
 			
