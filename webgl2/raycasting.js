@@ -270,7 +270,6 @@ var Renderer = function(){
 			var opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
 			var lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
 			
-			
 			var transformRef = gl.getUniformLocation(shaderProgram, "transform");
 
 			draw();
@@ -281,9 +280,7 @@ var Renderer = function(){
 				gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
 
 				var now = Date.now()/1000;
-				
 				gl.uniform3f(lightPositionRef, Math.sin(now), Math.cos(now), Math.sin(now*0.783));
-				
 
 				gl.drawArrays(gl.TRIANGLES, 0, size);
 

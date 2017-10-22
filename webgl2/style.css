@@ -10,7 +10,7 @@ html, body{
 }
 
 body{
-	background-color: #9F9999;
+	background-color: #000000;
 	overflow-y: hidden;
 	display: flex;
 	font-family: sans-serif;
@@ -50,6 +50,16 @@ hr{
 	background-color: #222222;
 	width: 20%;
 	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+#spacer{
+	flex-grow: 1;
+}
+
+footer{
+	text-align: right;
 }
 
 #container{
