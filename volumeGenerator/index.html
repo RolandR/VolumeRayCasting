@@ -27,21 +27,57 @@
 							<td><input type="number" id="depth" value="256"></td>
 						</tr>
 					</table>
+					
+					<table>
+						<tr>
+							<td><label for="columns">Columns</label></td>
+							<td><input type="number" id="columns" value="16"></td>
+						</tr>
+						<tr rowspan="2" class="colspan">
+							<td colspan="2">
+								Resulting size:<br>
+								<span id="imageWidth">?</span>x<span id="imageHeight">?</span>
+								<div id="sizeWarning">!<span id="warningTooltip">Warningwarningwarning</span></div>
+							</td>
+						</tr>
+					</table>
+					
 				</div>
 				<div id="codeContainer">
 					<code>f(x, y, z){</code>
 					<code class="code-indented">var out = 0;</code>
-					<textarea id="codeInput">out = 1;</textarea>
+					<textarea id="codeInput">
+/*
+    The parameters x, y and z are floating point numbers between -1 and 1.
+    Use the variable out to set the result as a float between 0 and 1.
+*/
+
+var radius = 0.8;
+
+if(Math.sqrt(x*x + y*y + z*z) &lt;= radius){
+    out = 1;
+}</textarea>
 					<code class="code-indented">return out;</code>
 					<code>}</code>
 				</div>
 				<div id="afterCode">
-					<button id="run" value="Run">
+					<button id="run">
+						<span>Generate Image</span>
+					</button>
 				</div>
 			</div>
 			<div id="side">
 				<canvas width="256" height="256"></canvas>
 			</div>
 		</div>
+
+		<div id="imageOverlay">
+			<div id="overlayHeader"><button id="closeOverlayButton">Close</button></div>
+			<div id="overlayContent">
+				<canvas id="imageCanvas"></canvas>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="./volumeGenerator.js"></script>
 	</body>
 </html>

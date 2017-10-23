@@ -16,6 +16,11 @@ body{
 	font-family: sans-serif;
 }
 
+h1{
+	font-weight: 300;
+	text-shadow: 1px 1px 0px #000000;
+}
+
 #container{
 	display: flex;
 	flex-direction: row;
@@ -38,12 +43,69 @@ body{
 	padding: 7px;
 }
 
+#settings{
+	display: flex;
+	flex-direction: row;
+}
+
+#settings>table{
+	margin-right: 10px;
+}
+
+#settings>table tr.colspan td{
+	text-align: center;
+	padding-top: 5px;
+}
+
 #settings>table label{
 	margin-right: 10px;
 }
 
 #settings>table input{
 	height: 25px;
+	background-color: #292929;
+	color: #FFFFFF;
+	padding: 0px 5px;
+	text-align: right;
+	width: 70px;
+	border: 1px #111111 solid;
+
+	-moz-appearance:textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+#sizeWarning{
+	display: none;
+	height: 16px;
+	width: 16px;
+	border-radius: 8px;
+	background-color: #FF8800;
+	color: #FFFFFF;
+	text-align: center;
+	font-weight: bold;
+	font-size: 14px;
+	text-shadow: 1px 1px 0px #000000;
+	line-height: 14px;
+}
+
+#warningTooltip{
+	display: none;
+	position: absolute;
+	background-color: #444444;
+	border: 1px #000000 solid;
+	padding: 8px;
+	margin-top: -8px;
+	margin-left: 8px;
+	font-weight: normal;
+	font-size: 16px;
+}
+
+#sizeWarning:hover #warningTooltip{
+	display: block;
 }
 
 #codeContainer{
@@ -52,7 +114,7 @@ body{
 	flex-grow: 1;
 	background-color: #222222;
 	padding: 10px;
-	margin: 5px;
+	margin: 10px 0px;
 }
 
 #codeContainer code{
@@ -73,8 +135,67 @@ code.code-indented{
 	padding-left: 25px;
 }
 
+button#run{
+	/*width: 100px;*/
+	height: 40px;
+	background-image: linear-gradient(to bottom, #338833, #226622);
+	font-size: 21px;
+	font-weight: 300;
+	line-height: 0px;
+	color: #FFFFFF;
+	text-shadow: 1px 1px 0px #000000;
+	padding: 7px 10px;
+	cursor: pointer;
+	float: right;
+}
+
+button#run:hover{
+	background-image: linear-gradient(to bottom, #55CC55, #448844);
+}
+
+#imageOverlay{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 10000;
+	background-color: #DDDDDD;
+	text-align: center;
+	display: none;
+}
+
+#overlayHeader{
+	width: 100%;
+	height: 40px;
+	background-color: #EEEEEE;
+}
+
+#overlayContent{
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	padding: 20px;
+	overflow: auto;
+}
+
+#closeOverlayButton{
+	height: 30px;
+	width: 100px;
+	margin: 5px;
+	float: right;
+	background-image: linear-gradient(to bottom, #EEEEEE, #DDDDDD);
+	border: 1px #AAAAAA outset;
+	color: #000000;
+	cursor: pointer;
+	padding: 3px;
+	line-height: 0px;
+}
+
 canvas{
-	background-color: #00FF00;
+	background-color: #000000;
 }
 
 
