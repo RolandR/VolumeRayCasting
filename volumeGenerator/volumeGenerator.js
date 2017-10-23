@@ -77,14 +77,32 @@ function generate(){
 	var imageWidth = width*columns;
 	var rows = Math.ceil(depth/columns);
 
-	console.log(rows);
+	var aa = document.getElementById("oversampling").value;
 
 	var data = imageData.data;
 	for(var x = 0; x < width; x++){
 		for(var y = 0; y < height; y++){
 			for(var z = 0; z < depth; z++){
 
-				var value = func(x/width*2-1, y/height*2-1, z/depth*2-1);
+				var ix = x;
+				var iy = y;
+				var iz = z;
+
+				var value = 0;
+
+				for(var ax = 0; ax < aa; ax++){
+					for(var ay = 0; ay < aa; ay++){
+						for(var az = 0; az < aa; az++){
+							ix = x + az/aa - 0.5;
+							iy = y + ay/aa - 0.5;
+							iz = z + az/aa - 0.5;
+
+							value += func(ix/width*2-1, iy/height*2-1, iz/depth*2-1);
+						}
+					}
+				}
+
+				value = value / Math.pow(document.getElementById("oversampling").value, 3);
 				value = Math.floor(value*256);
 
 				var column = Math.floor(z/rows);
@@ -119,7 +137,9 @@ document.getElementById("depth").addEventListener("input", updateSize);
 document.getElementById("columns").addEventListener("input", updateSize);
 
 
-
+document.getElementById("oversampling").addEventListener("input", function(e){
+	document.getElementById("samplesPerPixel").innerHTML = Math.pow(document.getElementById("oversampling").value, 3);
+});
 
 
 

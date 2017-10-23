@@ -21,6 +21,12 @@ h1{
 	text-shadow: 1px 1px 0px #000000;
 }
 
+div.vr{
+	width: 1px;
+	background-color: #444444;
+	margin: 0px 8px;
+}
+
 #container{
 	display: flex;
 	flex-direction: row;
@@ -49,7 +55,7 @@ h1{
 }
 
 #settings>table{
-	margin-right: 10px;
+	
 }
 
 #settings>table tr.colspan td{

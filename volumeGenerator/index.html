@@ -16,28 +16,41 @@
 					<table>
 						<tr>
 							<td><label for="height">Height</label></td>
-							<td><input type="number" id="height" value="256"></td>
+							<td><input type="number" id="height" value="256" step="1" min="1"></td>
 						</tr>
 						<tr>
 							<td><label for="width">Width</label></td>
-							<td><input type="number" id="width" value="256"></td>
+							<td><input type="number" id="width" value="256" step="1" min="1"></td>
 						</tr>
 						<tr>
 							<td><label for="depth">Depth</label></td>
-							<td><input type="number" id="depth" value="256"></td>
+							<td><input type="number" id="depth" value="256" step="1" min="1"></td>
 						</tr>
 					</table>
-					
+					<div class="vr"></div>
 					<table>
 						<tr>
 							<td><label for="columns">Columns</label></td>
-							<td><input type="number" id="columns" value="16"></td>
+							<td><input type="number" id="columns" value="16" step="1" min="1"></td>
 						</tr>
 						<tr rowspan="2" class="colspan">
 							<td colspan="2">
 								Resulting size:<br>
 								<span id="imageWidth">?</span>x<span id="imageHeight">?</span>
 								<div id="sizeWarning">!<span id="warningTooltip">Warningwarningwarning</span></div>
+							</td>
+						</tr>
+					</table>
+					<div class="vr"></div>
+					<table>
+						<tr>
+							<td><label for="oversampling">Anti-aliasing</label></td>
+							<td><input type="number" id="oversampling" value="1" step="1" min="1"></td>
+						</tr>
+						<tr rowspan="2" class="colspan">
+							<td colspan="2">
+								This will result in <span id="samplesPerPixel">1</span> samples<br>
+								per output pixel.
 							</td>
 						</tr>
 					</table>

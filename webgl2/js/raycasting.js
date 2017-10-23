@@ -17,7 +17,7 @@ var Renderer = function(){
 	var depthSampleCountRef
 
 	img.onload = updateLoadedImages;
-	img.src = "./images/fuzzy_sphere.png";
+	img.src = "./images/antialiased_sphere.png";
 
 	var imagesLoaded = 0;
 	var imagesToLoad = 2;
@@ -58,7 +58,7 @@ var Renderer = function(){
 
 	function render(){
 
-		var imageColumns = 1;
+		var imageColumns = 4;
 		var imageWidth = img.width/imageColumns;
 		var slices = 128;
 		var imageHeight = img.height/(slices/imageColumns);
