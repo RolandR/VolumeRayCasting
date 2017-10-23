@@ -119,13 +119,58 @@ function generate(){
 	}
 	context.putImageData(imageData, 0, 0);
 
-	document.getElementById("imageOverlay").style.display = "block";
+	var preview = new Preview(canvas, height, width, depth, columns);
+
+	document.getElementById("openImageButton").disabled = false;
+	document.getElementById("run").disabled = false;
+	document.getElementById("run").innerHTML = "Generate Image";
+	
+}
+
+function Preview(canvas, height, width, depth, columns){
+
+	var rows = Math.ceil(depth/columns);
+
+	var previewCanvas = document.getElementById("previewCanvas");
+	previewCanvas.width = width;
+	previewCanvas.height = height;
+	var context = previewCanvas.getContext("2d");
+
+	var previewSlider = document.getElementById("previewSliceSlider");
+	previewSlider.disabled = false;
+	previewSlider.min = 0;
+	previewSlider.max = depth-1;
+	previewSlider.value = Math.floor(depth/2);
+	displaySlice(previewSlider.value);
+
+	function displaySlice(slice){
+		document.getElementById("sliceNumber").innerHTML = slice;
+		
+		var column = Math.floor(slice/rows);
+
+		var sx = column*width;
+		var sy = (slice%rows)*height;
+		context.drawImage(canvas, sx, sy, width, height, 0, 0, width, height);
+	}
+
+	previewSlider.oninput = function(e){
+		displaySlice(this.value);
+	};
 	
 }
 
 
 
-document.getElementById("run").addEventListener("click", generate);
+document.getElementById("run").addEventListener("click", function(e){
+
+	document.getElementById("openImageButton").disabled = true;
+	document.getElementById("previewSliceSlider").disabled = false;
+	this.disabled = true;
+	this.innerHTML = "Generating...";
+
+	setTimeout(generate, 20);
+
+});
 
 document.getElementById("closeOverlayButton").addEventListener("click", function(e){
 	document.getElementById("imageOverlay").style.display = "none";
@@ -141,6 +186,9 @@ document.getElementById("oversampling").addEventListener("input", function(e){
 	document.getElementById("samplesPerPixel").innerHTML = Math.pow(document.getElementById("oversampling").value, 3);
 });
 
+document.getElementById("openImageButton").addEventListener("click", function(e){
+	document.getElementById("imageOverlay").style.display = "block";
+});
 
 
 

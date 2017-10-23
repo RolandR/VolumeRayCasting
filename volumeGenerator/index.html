@@ -6,6 +6,7 @@
 		<title>
 			Volume Generator
 		</title>
+		<link rel="stylesheet" type="text/css" media="all" href="./boilerplate.css">
 		<link rel="stylesheet" type="text/css" media="all" href="./style.css">
 	</head>
 	<body>
@@ -80,7 +81,14 @@ if(Math.sqrt(x*x + y*y + z*z) &lt;= radius){
 				</div>
 			</div>
 			<div id="side">
-				<canvas width="256" height="256"></canvas>
+				<div id="sliceContainer">
+					<canvas width="256" height="256" id="previewCanvas"></canvas>
+				</div>
+				<div id="zSlider">
+					<input type="range" min="0" max="256" value="128" id="previewSliceSlider" disabled>
+					<span>z=<span id="sliceNumber">128</span></span>
+				</div>
+				<button id="openImageButton" disabled>Open Full Image</button>
 			</div>
 		</div>
 

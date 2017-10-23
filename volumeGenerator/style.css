@@ -42,13 +42,6 @@ div.vr{
 	padding: 7px;
 }
 
-#side{
-	background-color: #333333;
-	margin: 7px;
-	margin-left: 0px;
-	padding: 7px;
-}
-
 #settings{
 	display: flex;
 	flex-direction: row;
@@ -144,7 +137,7 @@ code.code-indented{
 button#run{
 	/*width: 100px;*/
 	height: 40px;
-	background-image: linear-gradient(to bottom, #338833, #226622);
+	background: linear-gradient(to bottom, #338833, #226622);
 	font-size: 21px;
 	font-weight: 300;
 	line-height: 0px;
@@ -155,8 +148,69 @@ button#run{
 	float: right;
 }
 
+button#run:disabled{
+	background: #555555;
+}
+
+button#run:disabled:hover{
+	background: #555555;
+}
+
 button#run:hover{
-	background-image: linear-gradient(to bottom, #55CC55, #448844);
+	background: linear-gradient(to bottom, #55CC55, #448844);
+}
+
+#side{
+	background-color: #333333;
+	margin: 7px;
+	margin-left: 0px;
+	padding: 7px;
+	display: flex;
+	flex-direction: column;
+}
+
+#sliceContainer{
+	text-align: center;
+}
+
+#zSlider{
+	display: flex;
+	flex-direction: row;
+}
+
+#zSlider>span{
+	padding: 8px 5px;
+	width: 47px;
+	color: #AAAAAA;
+	font-size: 13px;
+}
+
+#previewSliceSlider{
+	flex-grow: 1;
+	margin: 12px 0px;
+}
+
+#openImageButton{
+	height: 30px;
+	margin: 5px 0px;
+	background: linear-gradient(to bottom, #777777, #555555);
+	border: 1px #000000 outset;
+	color: #FFFFFF;
+	text-shadow: 1px 1px 0px #000000;
+	cursor: pointer;
+	padding: 3px;
+	line-height: 0px;
+}
+
+#openImageButton:hover{
+	background: linear-gradient(to bottom, #888888, #666666);
+}
+
+#openImageButton:disabled{
+	cursor: default;
+	background: #555555;
+	color: #999999;
+	text-shadow: none;
 }
 
 #imageOverlay{
