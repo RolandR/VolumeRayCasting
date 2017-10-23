@@ -1,0 +1,47 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8"> 
+		<title>
+			Volume Generator
+		</title>
+		<link rel="stylesheet" type="text/css" media="all" href="./style.css">
+	</head>
+	<body>
+		<div id="container">
+			<div id="main">
+				<h1>Volume Generator</h1>
+				<div id="settings">
+					<table>
+						<tr>
+							<td><label for="height">Height</label></td>
+							<td><input type="number" id="height" value="256"></td>
+						</tr>
+						<tr>
+							<td><label for="width">Width</label></td>
+							<td><input type="number" id="width" value="256"></td>
+						</tr>
+						<tr>
+							<td><label for="depth">Depth</label></td>
+							<td><input type="number" id="depth" value="256"></td>
+						</tr>
+					</table>
+				</div>
+				<div id="codeContainer">
+					<code>f(x, y, z){</code>
+					<code class="code-indented">var out = 0;</code>
+					<textarea id="codeInput">out = 1;</textarea>
+					<code class="code-indented">return out;</code>
+					<code>}</code>
+				</div>
+				<div id="afterCode">
+					<button id="run" value="Run">
+				</div>
+			</div>
+			<div id="side">
+				<canvas width="256" height="256"></canvas>
+			</div>
+		</div>
+	</body>
+</html>
