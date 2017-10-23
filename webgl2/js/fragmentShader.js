@@ -49,7 +49,7 @@ void main(){
 	startCoord = transform * startCoord;
 	startCoord = startCoord / startCoord.w;
 	startCoord = startCoord + 0.5;
-	startCoord.z = startCoord.z*1.4 - 0.25;
+	//startCoord.z = startCoord.z*1.4 - 0.25;
 
 	vec3 start = startCoord.xyz;
 
@@ -57,7 +57,7 @@ void main(){
 	endCoord = transform * endCoord;
 	endCoord = endCoord / endCoord.w;
 	endCoord = endCoord + 0.5;
-	endCoord.z = endCoord.z*1.4 - 0.25;
+	//endCoord.z = endCoord.z*1.4 - 0.25;
 
 	vec3 end = endCoord.xyz;
 

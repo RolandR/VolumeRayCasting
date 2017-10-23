@@ -20,9 +20,9 @@
 		<canvas id="canvas"></canvas>
 
 		<script type="text/javascript">
-			var height = 128;
-			var width = 128;
-			var depth = 128;
+			var height = 512;
+			var width = 512;
+			var depth = 512;
 
 			var canvas = document.getElementById("canvas");
 
@@ -33,7 +33,7 @@
 
 			var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-			cube(0.4);
+			fuzzyCircle(0.4);
 
 			function circle(r){
 				var data = imageData.data;
