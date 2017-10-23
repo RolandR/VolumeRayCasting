@@ -17,7 +17,7 @@ var Renderer = function(){
 	var depthSampleCountRef
 
 	img.onload = updateLoadedImages;
-	img.src = "./sagittal.png";
+	img.src = "./images/sagittal.png";
 
 	var imagesLoaded = 0;
 	var imagesToLoad = 2;

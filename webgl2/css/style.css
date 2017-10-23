@@ -129,55 +129,55 @@ input[type="checkbox"]{
 }
 
 #colorSelect > li[value="incandescent"]{
-	background-image: url(./colorMappings/incandescent.png);
+	background-image: url(../colorMappings/incandescent.png);
 }
 
 #colorSelect > li[value="colors1"]{
-	background-image: url(./colorMappings/colors1.png);
+	background-image: url(../colorMappings/colors1.png);
 }
 
 #colorSelect > li[value="rainbow"]{
-	background-image: url(./colorMappings/rainbow.png);
+	background-image: url(../colorMappings/rainbow.png);
 }
 
 #colorSelect > li[value="rainbow-inverted"]{
-	background-image: url(./colorMappings/rainbow-inverted.png);
+	background-image: url(../colorMappings/rainbow-inverted.png);
 }
 
 #colorSelect > li[value="blackwhite"]{
-	background-image: url(./colorMappings/blackwhite.png);
+	background-image: url(../colorMappings/blackwhite.png);
 }
 
 #colorSelect > li[value="whiteblack"]{
-	background-image: url(./colorMappings/whiteblack.png);
+	background-image: url(../colorMappings/whiteblack.png);
 }
 
 #colorSelect > li[value="blackwhite-compact"]{
-	background-image: url(./colorMappings/blackwhite-compact.png);
+	background-image: url(../colorMappings/blackwhite-compact.png);
 }
 
 #colorSelect > li[value="rainbows"]{
-	background-image: url(./colorMappings/rainbows.png);
+	background-image: url(../colorMappings/rainbows.png);
 }
 
 #colorSelect > li[value="horizon"]{
-	background-image: url(./colorMappings/horizon.png);
+	background-image: url(../colorMappings/horizon.png);
 }
 
 #colorSelect > li[value="skyline"]{
-	background-image: url(./colorMappings/skyline.png);
+	background-image: url(../colorMappings/skyline.png);
 }
 
 #colorSelect > li[value="white"]{
-	background-image: url(./colorMappings/white.png);
+	background-image: url(../colorMappings/white.png);
 }
 
 #colorSelect > li[value="blue"]{
-	background-image: url(./colorMappings/blue.png);
+	background-image: url(../colorMappings/blue.png);
 }
 
 #colorSelect > li[value="natural"]{
-	background-image: url(./colorMappings/natural.png);
+	background-image: url(../colorMappings/natural.png);
 }
 
 
