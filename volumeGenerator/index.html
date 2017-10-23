@@ -55,9 +55,19 @@
 							</td>
 						</tr>
 					</table>
-					
 				</div>
+				
 				<div id="codeContainer">
+					<div id="exampleLoader">
+						<label for="examples">Load example: </label>
+						<select id="examples">
+							<option value="sphere">Sphere</option>
+							<option value="hollowSphere">Sphere (hollow)</option>
+							<option value="fuzzySphere">Sphere (fuzzy)</option>
+							<option value="cube">Cube</option>
+							<option value="hollowCube">Cube (hollow)</option>
+						</select>
+					</div>
 					<code>f(x, y, z){</code>
 					<code class="code-indented">var out = 0;</code>
 					<textarea id="codeInput">
@@ -74,6 +84,7 @@ if(Math.sqrt(x*x + y*y + z*z) &lt;= radius){
 					<code class="code-indented">return out;</code>
 					<code>}</code>
 				</div>
+				
 				<div id="afterCode">
 					<button id="run">
 						<span>Generate Image</span>
@@ -99,6 +110,7 @@ if(Math.sqrt(x*x + y*y + z*z) &lt;= radius){
 			</div>
 		</div>
 
+		<script type="text/javascript" src="./examples.js"></script>
 		<script type="text/javascript" src="./volumeGenerator.js"></script>
 	</body>
 </html>

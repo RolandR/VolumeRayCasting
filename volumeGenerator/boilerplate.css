@@ -1,5 +1,6 @@
 input[type=range]{
 	-webkit-appearance: none;
+	background: #444444;
 }
 
 input[type=range]:focus{
@@ -56,4 +57,25 @@ input[type=range]::-ms-thumb{
 
 input[type=range]::-ms-thumb:hover{
 	background-image: linear-gradient(to bottom, #777777, #555555);
+}
+
+
+/***********************/
+
+select{
+	background: linear-gradient(to bottom, #777777, #555555);
+	border: 1px #000000 outset;
+	color: #FFFFFF;
+	text-shadow: 1px 1px 0px #000000;
+	cursor: pointer;
+	padding: 3px;
+	line-height: 0px;
+}
+
+select:hover{
+	background: linear-gradient(to bottom, #888888, #666666);
+}
+
+option{
+	background: #333333;
 }

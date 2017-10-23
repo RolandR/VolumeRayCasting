@@ -190,6 +190,12 @@ document.getElementById("openImageButton").addEventListener("click", function(e)
 	document.getElementById("imageOverlay").style.display = "block";
 });
 
+document.getElementById("examples").addEventListener("change", function(e){
+	var selected = this.options[this.selectedIndex].value;
+
+	document.getElementById("codeInput").value = examples[selected];
+	
+});
 
 
 
