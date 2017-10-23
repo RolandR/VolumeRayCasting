@@ -13,17 +13,32 @@
 			}
 			a{
 				display: block;
+				text-decoration: none;
+			}
+			a:hover{
+				text-decoration: underline;
+			}
+			#larger{
+				font-size: 20px;
+			}
+			#image{
+				height: 400px;
 			}
 		</style>
 	</head>
 	<body>	
 		<h1>Adventures in Volume Ray Casting</h1>
 
+		<img id="image" src="preview.png" alt="Volume Rendering">
+		<br>
+		<br>
 		<a href="./singleRayDemo">Single Ray</a>
 		<a href="./planeDemo">2D Plane</h2>
 		<a href="./cpu">3D Volume Rendering on CPU</a>
 		<a href="./maxValue">Same, but with maximum intensity projection</a>
-		<a href="./webgl2">3D Volume Ray Tracing in WebGL 2.0</a>
+		<a href="./volumeGenerator">Tool for generating 3D volumes</a>
+		<br>
+		<a id="larger" href="./webgl2">3D Volume Ray Tracing in WebGL 2.0</a>
 		<br>
 		<a href="https://github.com/RolandR/VolumeRayCasting">Code on GitHub</a>
 	</body>
