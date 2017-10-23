@@ -29,9 +29,20 @@ body{
 h1{
 	font-weight: 300;
 	text-shadow: 1px 1px 0px #000000;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
+	line-height: 30px;
 	font-size: 30px;
 	color: #FFAA00;
+}
+
+h2{
+	font-weight: 300;
+	text-shadow: 1px 1px 0px #000000;
+	font-size: 20px;
+	color: #FFAA00;
+	line-height: 10px;
+	margin-top: 10px;
+	
 }
 
 div.vr{
@@ -132,6 +143,21 @@ input[type="number"]::-webkit-inner-spin-button {
 	border: 1px #000000 solid;
 }
 
+#codeHeader{
+	background: #353535;
+	margin: -10px;
+	margin-bottom: 10px;
+	height: 40px;
+	display: flex;
+	flex-direction: columns;
+}
+
+#codeHeader>h2{
+	margin-left: 10px;
+	margin-top: 13px;
+	flex-grow: 1;
+}
+
 #codeContainer code{
 	color: #999999;
 }
@@ -151,13 +177,8 @@ code.code-indented{
 }
 
 #exampleLoader{
-	margin-top: -10px;
-	background: linear-gradient(to bottom, #444444, #333333);
-	width: 280px;
-	text-align: center;
-	padding: 5px 0px;
+	padding: 5px 5px;
 	margin-bottom: 0px;
-	align-self: flex-end;
 }
 
 button#run{
