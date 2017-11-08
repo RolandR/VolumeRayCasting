@@ -8,9 +8,9 @@ uniform sampler3D tex;
 uniform sampler3D normals;
 uniform sampler2D colorMap;
 
-//uniform mat4 transform;
+uniform mat4 transform;
 uniform int depthSampleCount;
-//uniform float zScale;
+uniform float zScale;
 
 uniform vec3 lightPosition;
 
@@ -20,15 +20,16 @@ uniform vec3 lightPosition;
 // z: lowNode
 // w: highNode
 
-//in vec2 texCoord;
+in vec2 texCoord;
 
-in vec4 origin;
-in vec4 direction;
+//in vec4 origin;
+//in vec4 direction;
 
 out vec4 color;
 
 vec3 ambientLight = vec3(0.34, 0.32, 0.32);
 vec3 directionalLight = vec3(0.5, 0.5, 0.5);
+vec3 lightVector = normalize(vec3(-1.0, -1.0, 1.0));
 
 vec3 aabb[2] = vec3[2](
 	vec3(0.0, 0.0, 0.0),
@@ -78,7 +79,14 @@ void intersect(
 void main(){
 	
 	
-	//direction = normalize(direction);
+	vec4 origin = vec4(texCoord, 0.0, 1.0);
+	origin = transform * origin;
+	origin = origin / origin.w;
+	origin.z = origin.z / zScale;
+	origin = origin + 0.5;
+
+	vec4 direction = vec4(0.0, 0.0, 1.0, 0.0);
+	direction = transform * direction;
 
 	Ray ray = makeRay(origin.xyz, direction.xyz);
 	float tmin = 0.0;
@@ -100,9 +108,6 @@ void main(){
 	//vec3 increment = (end-start)/float(sampleCount);
 	//vec3 originOffset = mod((start-origin.xyz), increment);
 
-	//vec3 directionalVector = normalize(lightPosition);
-
-
 	float s = 0.0;
 	float px = 0.0;
 	vec4 pxColor = vec4(0.0, 0.0, 0.0, 0.0);
@@ -123,10 +128,16 @@ void main(){
 		
 		pxColor = texture(colorMap, vec2(px, 0.0));
 		
-		/*normal = texture(normals, texCo).xyz - 0.5;
-		float directional = clamp(dot(normalize(normal), directionalVector), 0.0, 1.0);
+		normal = normalize(texture(normals, texCo).xyz - 0.5);
+		float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
 
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;*/
+		//vec3 R = -reflect(lightDirection, surfaceNormal);
+		//return pow(max(0.0, dot(viewDirection, R)), shininess);
+
+		float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
+		specular = pow(specular, 3.0);
+
+		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*vec3(3.0, 3.0, 3.0);
 			
 		
 		//value = mix(value, pxColor, px);

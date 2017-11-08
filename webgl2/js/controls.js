@@ -1,12 +1,12 @@
 
 /*var minLevel = 0;
-var maxLevel = 0.36;
-var lowNode = 0.42;
-var highNode = 0.76;*/
+var maxLevel = 1;
+var lowNode = 1/256;
+var highNode = 3/256;*/
 
 var minLevel = 0;
-var maxLevel = 0.6;
-var lowNode = 0.15;
+var maxLevel = 1;
+var lowNode = 0.3;
 var highNode = 1;
 
 var autorotate = true;

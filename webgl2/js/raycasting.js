@@ -429,6 +429,8 @@ var Renderer = function(){
 		draw();
 	});
 
+	//render();
+
 	return {
 		 changeColorTexture: changeColorTexture
 		,changeSampleCount: changeSampleCount
