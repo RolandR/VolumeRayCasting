@@ -83,16 +83,8 @@ var Renderer = function(){
 				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*256;
 			}
 		}
-
-		//console.log(opacities);
-
-		opacityTexture = gl.createTexture();
+		
 		gl.activeTexture(gl.TEXTURE3);
-		gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, opacities.length, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, opacities, 0);
 
 		draw();
@@ -115,13 +107,7 @@ var Renderer = function(){
 				colorRGB[i*3+2] = colorData[i*4+2];
 			}
 			
-			colorTexture = gl.createTexture();
 			gl.activeTexture(gl.TEXTURE1);
-			gl.bindTexture(gl.TEXTURE_2D, colorTexture);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, colorMap.width, colorMap.height, 0, gl.RGB, gl.UNSIGNED_BYTE, colorRGB, 0);
 
 			draw();
@@ -216,6 +202,69 @@ var Renderer = function(){
 		gl.uniform1i(u_image2Location, 2);  // texture unit 2
 		gl.uniform1i(u_image3Location, 3);  // texture unit 3
 
+		var texture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE0);
+		gl.bindTexture(gl.TEXTURE_3D, texture);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+		gl.texImage3D(
+			gl.TEXTURE_3D,  // target
+			0,              // level
+			gl.LUMINANCE,        // internalformat
+			1,           // width
+			1,           // height
+			1,           // depth
+			0,              // border
+			gl.LUMINANCE,         // format
+			gl.UNSIGNED_BYTE,       // type
+			Uint8Array.from([0])            // pixel
+		);
+
+		colorTexture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0]), 0);
+
+		var normalsTexture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE2);
+		gl.bindTexture(gl.TEXTURE_3D, normalsTexture);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
+		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+		gl.texImage3D(
+			gl.TEXTURE_3D,  // target
+			0,              // level
+			gl.RGB,        // internalformat
+			1,           // width
+			1,           // height
+			1,           // depth
+			0,              // border
+			gl.RGB,         // format
+			gl.UNSIGNED_BYTE,       // type
+			Uint8Array.from([0, 0, 0])            // pixel
+		);
+
+		opacityTexture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE3);
+		gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 1, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0]), 0);
+
 		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
 		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
 		gl.uniform1f(aspectRef, aspect);
@@ -280,16 +329,7 @@ var Renderer = function(){
 
 	function updateVolumeTexture(textureData, width, height, slices){
 		// Volumetric data
-		var texture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_3D, texture);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
-		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
 		gl.texImage3D(
 			gl.TEXTURE_3D,  // target
 			0,              // level
@@ -301,22 +341,13 @@ var Renderer = function(){
 			gl.LUMINANCE,         // format
 			gl.UNSIGNED_BYTE,       // type
 			textureData            // pixel
-			);
+		);
 		//gl.generateMipmap(gl.TEXTURE_3D);
 	}
 
 	function updateNormalsTexture(normals, width, height, slices){
 		// Normals
-		var normalsTexture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE2);
-		gl.bindTexture(gl.TEXTURE_3D, normalsTexture);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
-		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
 		gl.texImage3D(
 			gl.TEXTURE_3D,  // target
 			0,              // level
