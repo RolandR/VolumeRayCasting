@@ -30,6 +30,7 @@ out vec4 color;
 vec3 ambientLight = vec3(0.34, 0.32, 0.32);
 vec3 directionalLight = vec3(0.5, 0.5, 0.5);
 vec3 lightVector = normalize(vec3(-1.0, -1.0, 1.0));
+vec3 specularColor = vec3(0.5, 0.5, 0.5);
 
 vec3 aabb[2] = vec3[2](
 	vec3(0.0, 0.0, 0.0),
@@ -78,15 +79,22 @@ void intersect(
 
 void main(){
 	
+	//transform = inverse(transform);
 	
-	vec4 origin = vec4(texCoord, 0.0, 1.0);
+	vec4 origin = vec4(0.0, 0.0, 2.0, 1.0);
 	origin = transform * origin;
 	origin = origin / origin.w;
 	origin.z = origin.z / zScale;
 	origin = origin + 0.5;
 
-	vec4 direction = vec4(0.0, 0.0, 1.0, 0.0);
-	direction = transform * direction;
+	vec4 image = vec4(texCoord, 4.0, 1.0);
+	image = transform * image;
+	//image = image / image.w;
+	image.z = image.z / zScale;
+	image = image + 0.5;
+	//vec4 direction = vec4(0.0, 0.0, 1.0, 0.0);
+	vec4 direction = normalize(origin-image);
+	//direction = transform * direction;
 
 	Ray ray = makeRay(origin.xyz, direction.xyz);
 	float tmin = 0.0;
@@ -137,7 +145,7 @@ void main(){
 		float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
 		specular = pow(specular, 3.0);
 
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*vec3(3.0, 3.0, 3.0);
+		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
 			
 		
 		//value = mix(value, pxColor, px);

@@ -35,8 +35,8 @@ function initControls(){
 	var startTime = Date.now();
 	var turnsPerSecond = 0.05;
 
-	var angleX = -0.9;
-	var angleY = 0.25;
+	var angleX = 0.9;
+	var angleY = -0.25;
 
 	var translateX = 0;
 	var translateY = 0;
@@ -62,7 +62,7 @@ function initControls(){
 			//angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
 		//}
 		
-		angleX -= panX*0.0025;
+		angleX += panX*0.0025;
 		panX = 0;
 		var c = Math.cos(angleX);
 		var s = Math.sin(angleX);
@@ -74,7 +74,7 @@ function initControls(){
 			0,  0, 0, 1
 		];
 
-		angleY += panY*0.0025;
+		angleY -= panY*0.0025;
 		panY = 0;
 		var c = Math.cos(angleY);
 		var s = Math.sin(angleY);
