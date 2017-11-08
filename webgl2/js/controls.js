@@ -5,9 +5,9 @@ var lowNode = 0.42;
 var highNode = 0.76;*/
 
 var minLevel = 0;
-var maxLevel = 1;
-var lowNode = 1/256;
-var highNode = 3/256;
+var maxLevel = 0.6;
+var lowNode = 0.15;
+var highNode = 1;
 
 var autorotate = true;
 
@@ -19,6 +19,7 @@ var transform = [
 ];
 
 var renderer = new Renderer();
+requestAnimationFrame(renderer.draw);
 
 initControls();
 
@@ -96,6 +97,8 @@ function initControls(){
 		var transformMatrix =  matrix4Multiply(translationMatrix, rotationMatrix);
 		transformMatrix =  matrix4Multiply(transformMatrix, scaleMatrix);
 		transform = transformMatrix;
+
+		requestAnimationFrame(renderer.draw);
 	}
 
 	document.addEventListener('mousemove', function(e) {
@@ -247,8 +250,9 @@ function initControls(){
 				}
 				
 				render();
+				requestAnimationFrame(renderer.draw);
 
-				console.log(lowNode, highNode, minLevel, maxLevel);
+				//console.log(lowNode, highNode, minLevel, maxLevel);
 			}
 		});
 
@@ -273,9 +277,10 @@ function initControls(){
 					selectContainer.children[i].className = "";
 				}
 				e.target.className = "active";
-				console.log(e.target.id);
+				//console.log(e.target.id);
 				renderer.changeColorTexture("./colorMappings/"+e.target.id+".png");
 			}
+			requestAnimationFrame(renderer.draw);
 		});
 		
 	}
@@ -283,6 +288,11 @@ function initControls(){
 	/*document.getElementById("autorotate").addEventListener("change", function(e){
 		autorotate = this.checked;
 	});*/
+
+	document.getElementById("volumeSelect").addEventListener("change", function(e){
+		var selectedValue = this.options[this.options.selectedIndex].value;
+		renderer.changeVolume(volumes[selectedValue]);
+	});
 
 }
 

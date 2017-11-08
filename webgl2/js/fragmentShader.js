@@ -10,6 +10,7 @@ uniform sampler2D colorMap;
 
 uniform mat4 transform;
 uniform int depthSampleCount;
+uniform float zScale;
 
 uniform vec3 lightPosition;
 
@@ -48,16 +49,18 @@ void main(){
 	vec4 startCoord = vec4(texCoord, -1.0, 1.0);
 	startCoord = transform * startCoord;
 	startCoord = startCoord / startCoord.w;
+	startCoord.z = startCoord.z / zScale;
 	startCoord = startCoord + 0.5;
-	//startCoord.z = startCoord.z*1.4 - 0.25;
+	//startCoord.z = startCoord.z*1.8 - 0.4;
 
 	vec3 start = startCoord.xyz;
 
 	vec4 endCoord = vec4(texCoord, 1.0, 1.0);
 	endCoord = transform * endCoord;
 	endCoord = endCoord / endCoord.w;
+	endCoord.z = endCoord.z / zScale;
 	endCoord = endCoord + 0.5;
-	//endCoord.z = endCoord.z*1.4 - 0.25;
+	//endCoord.z = endCoord.z*1.8 - 0.4;
 
 	vec3 end = endCoord.xyz;
 
@@ -74,12 +77,14 @@ void main(){
 			//pxColor.a = 0.0;
 		} else {
 			px = texture(tex, texCo).r;
+			//px = length(texture(normals, texCo).xyz - 0.5);
+			//px = px * 1.5;
 			pxColor = texture(colorMap, vec2(px, 0.0));
 			
-			normal = texture(normals, texCo).xyz - 0.5;
+			/*normal = texture(normals, texCo).xyz - 0.5;
 			float directional = clamp(dot(normalize(normal), directionalVector), 0.0, 1.0);
 
-			pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;
+			pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;*/
 			
 			//r=d−2(d⋅n)n
 
