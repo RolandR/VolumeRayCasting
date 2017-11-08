@@ -95,7 +95,7 @@ void main(){
 	vec3 start = origin.xyz + tmin*direction.xyz;
 	vec3 end = origin.xyz + tmax*direction.xyz;
 	
-	float length = length(end-start);
+	float length = distance(end, start);
 	int sampleCount = int(float(depthSampleCount)*length);
 	//vec3 increment = (end-start)/float(sampleCount);
 	//vec3 originOffset = mod((start-origin.xyz), increment);

@@ -20,7 +20,7 @@ void main() {
 	origin.z = origin.z / zScale;
 	origin = origin + 0.5;
 
-	direction = vec4(0.0, 0.0, 1.0, 1.0);
+	direction = vec4(0.0, 0.0, 1.0, 0.0);
 	direction = transform * direction;
 
 	gl_Position = vec4(coordinates, 1.0, 1.0);
