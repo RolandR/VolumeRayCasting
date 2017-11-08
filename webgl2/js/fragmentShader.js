@@ -7,7 +7,6 @@ precision lowp sampler3D;
 uniform sampler3D tex;
 uniform sampler3D normals;
 uniform sampler2D colorMap;
-uniform sampler2D opacities;
 
 uniform mat4 transform;
 uniform int depthSampleCount;
@@ -82,10 +81,7 @@ void main(){
 
 	vec4 direction = vec4(0.0, 0.0, 1.0, 1.0);
 	direction = transform * direction;
-	/*direction = direction / direction.w;
-	direction.z = direction.z / zScale;
-	direction = direction + 0.5;*/
-	direction = normalize(direction);
+	//direction = normalize(direction);
 
 	Ray ray = makeRay(origin.xyz, direction.xyz);
 	float tmin = 0.0;
@@ -104,10 +100,10 @@ void main(){
 	
 	float length = length(end-start);
 	int sampleCount = int(float(depthSampleCount)*length);
-	vec3 increment = (end-start)/float(sampleCount);
+	//vec3 increment = (end-start)/float(sampleCount);
 	//vec3 originOffset = mod((start-origin.xyz), increment);
 
-	vec3 directionalVector = normalize(lightPosition);
+	//vec3 directionalVector = normalize(lightPosition);
 
 
 	float s = 0.0;
@@ -115,46 +111,32 @@ void main(){
 	vec4 pxColor = vec4(0.0, 0.0, 0.0, 0.0);
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
 	vec3 normal = vec3(0.0, 0.0, 0.0);
+	vec4 zero = vec4(0.0);
 	
 	for(int count = 0; count < sampleCount; count++){
-		
-		//s = float(count+1)/float(sampleCount+1);
 
-		//texCo = mix(start, end, s) - originOffset;
+		texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
 
-		texCo = start + increment*float(count);
+		//texCo = start + increment*float(count);
 		px = texture(tex, texCo).r;
 
 		
 		//px = length(texture(normals, texCo).xyz - 0.5);
 		//px = px * 1.5;
-
 		
 		pxColor = texture(colorMap, vec2(px, 0.0));
-
-		// Apparently, we need to do gamma correction
-		pxColor = pxColor*pxColor;
 		
 		/*normal = texture(normals, texCo).xyz - 0.5;
 		float directional = clamp(dot(normalize(normal), directionalVector), 0.0, 1.0);
 
 		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;*/
-		
-		//r=d−2(d⋅n)n
-
-		//pxColor = texture(normals, texCo).xxxx;
-
-		
-		//px = ;
-		
-		//px = ;
-		
-		pxColor.a = texture(opacities, vec2(px*px, 0.0)).a;
 			
 		
 		//value = mix(value, pxColor, px);
-		pxColor.rgb *= pxColor.a;
-		value = (1.0-value.a)*pxColor + value;
+		//value = (1.0-value.a)*pxColor + value;
+		//value = mix(pxColor, zero, value.a) + value;
+		
+		value = value + pxColor - pxColor*value.a;
 		
 		if(value.a >= 0.95){
 			break;

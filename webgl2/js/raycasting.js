@@ -48,6 +48,9 @@ var Renderer = function(){
 	var transformRef;
 	var zScaleRef;
 
+	var opacities = new Uint8Array(256);
+	var colorTransfer = new Uint8Array(3*256);
+
 	initGl();
 
 	changeColorTexture("./colorMappings/skyline.png");
@@ -69,10 +72,11 @@ var Renderer = function(){
 
 	function updateOpacity(){
 
-		var opacities = new Uint8Array(256);
+		//var opacities = new Uint8Array(256);
 
 		for(var i = 0; i < opacities.length; i++){
 			var px = i/opacities.length;
+			px = px*px;
 			
 			if(px <= lowNode){
 				opacities[i] = minLevel*256;
@@ -83,13 +87,36 @@ var Renderer = function(){
 				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*256;
 			}
 		}
-		
-		gl.activeTexture(gl.TEXTURE3);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, opacities.length, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, opacities, 0);
 
-		draw();
+		updateTransferTexture();
+	}
+
+	function updateTransferTexture(){
 		
-		//Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode
+		var transferData = new Uint8Array(4*256);
+		
+		for(var i = 0; i < 256; i++){
+
+			var r = colorTransfer[i*3+0]/256;
+			var g = colorTransfer[i*3+1]/256;
+			var b = colorTransfer[i*3+2]/256;
+			var a = opacities[i]/256;
+
+			r = r*r*a;
+			g = g*g*a;
+			b = b*b*a;
+			
+			transferData[i*4+0] = r*256;
+			transferData[i*4+1] = g*256;
+			transferData[i*4+2] = b*256;
+			
+			transferData[i*4+3] = a*256;
+		}
+		
+		gl.activeTexture(gl.TEXTURE1);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 256, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, transferData, 0);
+		
+		draw();
 	}
 
 	function changeColorTexture(src){
@@ -100,17 +127,14 @@ var Renderer = function(){
 			var colorContext = colorCanvas.getContext("2d");
 			colorContext.drawImage(colorMap, 0, 0);
 			var colorData = colorContext.getImageData(0, 0, colorMap.width, colorMap.height).data;
-			var colorRGB = new Uint8Array(3*colorData.length/4);
-			for(var i = 0; i < colorRGB.length/3; i++){
-				colorRGB[i*3  ] = colorData[i*4  ];
-				colorRGB[i*3+1] = colorData[i*4+1];
-				colorRGB[i*3+2] = colorData[i*4+2];
+			
+			for(var i = 0; i < 256; i++){
+				colorTransfer[i*3  ] = colorData[i*4  ];
+				colorTransfer[i*3+1] = colorData[i*4+1];
+				colorTransfer[i*3+2] = colorData[i*4+2];
 			}
 			
-			gl.activeTexture(gl.TEXTURE1);
-			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, colorMap.width, colorMap.height, 0, gl.RGB, gl.UNSIGNED_BYTE, colorRGB, 0);
-
-			draw();
+			updateTransferTexture();
 		};
 		colorMap.src = src;
 	}
@@ -195,12 +219,12 @@ var Renderer = function(){
 		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
 		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
 		var u_image2Location = gl.getUniformLocation(shaderProgram, "normals");
-		var u_image3Location = gl.getUniformLocation(shaderProgram, "opacities");
+		//var u_image3Location = gl.getUniformLocation(shaderProgram, "opacities");
 
 		gl.uniform1i(u_image0Location, 0);  // texture unit 0
 		gl.uniform1i(u_image1Location, 1);  // texture unit 1
 		gl.uniform1i(u_image2Location, 2);  // texture unit 2
-		gl.uniform1i(u_image3Location, 3);  // texture unit 3
+		//gl.uniform1i(u_image3Location, 3);  // texture unit 3
 
 		var texture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE0);
@@ -231,7 +255,7 @@ var Renderer = function(){
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 
 		var normalsTexture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE2);
@@ -256,14 +280,14 @@ var Renderer = function(){
 			Uint8Array.from([0, 0, 0])            // pixel
 		);
 
-		opacityTexture = gl.createTexture();
+		/*opacityTexture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE3);
 		gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 1, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 1, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0]), 0);*/
 
 		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
 		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
