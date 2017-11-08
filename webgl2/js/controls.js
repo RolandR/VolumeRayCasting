@@ -19,7 +19,6 @@ var transform = [
 ];
 
 var renderer = new Renderer();
-requestAnimationFrame(renderer.draw);
 
 initControls();
 
@@ -32,9 +31,9 @@ function initControls(){
 
 	var zoom = 1/1.9;
 
-	/*var startAngle = 0;
+	var startAngle = 0;
 	var startTime = Date.now();
-	var turnsPerSecond = 0.1;*/
+	var turnsPerSecond = 0.05;
 
 	var angleX = -0.9;
 	var angleY = 0.25;
@@ -59,9 +58,9 @@ function initControls(){
 	function updateTransformation(){
 		var rotationMatrix;
 
-		/*if(autorotate){
-			angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
-		}*/
+		//if(autorotate){
+			//angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
+		//}
 		
 		angleX -= panX*0.0025;
 		panX = 0;
@@ -98,7 +97,8 @@ function initControls(){
 		transformMatrix =  matrix4Multiply(transformMatrix, scaleMatrix);
 		transform = transformMatrix;
 
-		requestAnimationFrame(renderer.draw);
+		renderer.draw();
+		//requestAnimationFrame(updateTransformation);
 	}
 
 	document.addEventListener('mousemove', function(e) {
@@ -161,6 +161,7 @@ function initControls(){
 
 	document.getElementById("sampleCount").addEventListener("change", function(e){
 		renderer.changeSampleCount(this.value);
+		renderer.draw();
 	});
 	
 
@@ -187,6 +188,9 @@ function initControls(){
 		render();
 
 		function render(){
+
+			renderer.updateOpacity();
+			
 			opContext.clearRect(0, 0, opCanvas.width, opCanvas.height);
 			
 			opContext.strokeStyle = "#AAAAAA";
@@ -215,7 +219,7 @@ function initControls(){
 		var startPos = [0, 0];
 
 		opCanvas.addEventListener("mousedown", function(e){
-			console.log(e);
+			//console.log(e);
 			if(Math.sqrt(Math.pow(e.offsetX-lowNodeX, 2)+Math.pow(e.offsetY-minLevelY, 2)) <= 5){
 				dragging = true;
 				nodeDragged = 0;
@@ -250,7 +254,7 @@ function initControls(){
 				}
 				
 				render();
-				requestAnimationFrame(renderer.draw);
+				//requestAnimationFrame(renderer.draw);
 
 				//console.log(lowNode, highNode, minLevel, maxLevel);
 			}

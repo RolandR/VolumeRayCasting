@@ -33,8 +33,9 @@ var Renderer = function(){
 
 	var canvas = document.getElementById("canvas");
 	var container = document.getElementById("container");
-	canvas.width = container.clientHeight;
+	canvas.width = container.clientWidth;
 	canvas.height = container.clientHeight;
+	var aspect = canvas.width / canvas.height;
 	
 	var gl = canvas.getContext("webgl2");
 	var shaderProgram;
@@ -50,6 +51,7 @@ var Renderer = function(){
 	initGl();
 
 	changeColorTexture("./colorMappings/skyline.png");
+	updateOpacity();
 	changeVolume(volumes.sagittal);
 
 	/*img.onload = processVolume;
@@ -64,6 +66,39 @@ var Renderer = function(){
 			render();
 		}
 	}*/
+
+	function updateOpacity(){
+
+		var opacities = new Uint8Array(256);
+
+		for(var i = 0; i < opacities.length; i++){
+			var px = i/opacities.length;
+			
+			if(px <= lowNode){
+				opacities[i] = minLevel*256;
+			} else if(px > highNode){
+				opacities[i] = maxLevel*256;
+			} else {
+				var ratio = (px-lowNode)/(highNode-lowNode);
+				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*256;
+			}
+		}
+
+		//console.log(opacities);
+
+		opacityTexture = gl.createTexture();
+		gl.activeTexture(gl.TEXTURE3);
+		gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, opacities.length, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, opacities, 0);
+
+		draw();
+		
+		//Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode
+	}
 
 	function changeColorTexture(src){
 		colorMap.onload = function(){
@@ -174,12 +209,16 @@ var Renderer = function(){
 		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
 		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
 		var u_image2Location = gl.getUniformLocation(shaderProgram, "normals");
+		var u_image3Location = gl.getUniformLocation(shaderProgram, "opacities");
 
 		gl.uniform1i(u_image0Location, 0);  // texture unit 0
 		gl.uniform1i(u_image1Location, 1);  // texture unit 1
 		gl.uniform1i(u_image2Location, 2);  // texture unit 2
+		gl.uniform1i(u_image3Location, 3);  // texture unit 3
 
 		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
+		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
+		gl.uniform1f(aspectRef, aspect);
 		
 		depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
 		gl.uniform1i(depthSampleCountRef, 512);
@@ -297,7 +336,7 @@ var Renderer = function(){
 		if(shaderProgram){
 			
 			gl.uniformMatrix4fv(transformRef, false, transform);
-			gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
+			//gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
 
 			//var now = Date.now()/1000;
 			//gl.uniform3f(lightPositionRef, Math.sin(now), Math.cos(now), Math.sin(now*0.783));
@@ -310,10 +349,20 @@ var Renderer = function(){
 		gl.uniform1i(depthSampleCountRef, count);
 	}
 
+	window.addEventListener("resize", function(event){
+		canvas.width = container.clientWidth;
+		canvas.height = container.clientHeight;
+		aspect = canvas.width / canvas.height;
+		gl.uniform1f(aspectRef, aspect);
+		gl.viewport(0, 0, canvas.width, canvas.height);
+		draw();
+	});
+
 	return {
 		 changeColorTexture: changeColorTexture
 		,changeSampleCount: changeSampleCount
 		,changeVolume: changeVolume
+		,updateOpacity: updateOpacity
 		,draw: draw
 	};
 
