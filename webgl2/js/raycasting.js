@@ -4,20 +4,30 @@
 var volumes = {
 	sagittal: {
 		 src: "./images/sagittal.png"
+		,name: "Water"
 		,columns: 2
 		,slices: 176
 		,zScale: 0.7
 	}
 	,vessels: {
 		 src: "./images/vessels.png"
+		,name: "Vessels"
 		,columns: 1
 		,slices: 160
-		,zScale: 0.7
+		,zScale: 0.65
 	}
 	,sphereAntialiased: {
 		 src: "./images/sphere_antialiased.png"
+		,name: "Sphere (Anti-aliased)"
 		,columns: 16
 		,slices: 256
+		,zScale: 1
+	}
+	,broccoli: {
+		 src: "./images/broccoli.png"
+		,name: "Broccoli"
+		,columns: 1
+		,slices: 50
 		,zScale: 1
 	}
 };
@@ -79,12 +89,12 @@ var Renderer = function(){
 			px = px*px;
 			
 			if(px <= lowNode){
-				opacities[i] = minLevel*256;
+				opacities[i] = minLevel*255;
 			} else if(px > highNode){
-				opacities[i] = maxLevel*256;
+				opacities[i] = maxLevel*255;
 			} else {
 				var ratio = (px-lowNode)/(highNode-lowNode);
-				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*256;
+				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*255;
 			}
 		}
 
@@ -386,9 +396,13 @@ var Renderer = function(){
 		);
 	}
 
+	/*function draw(){
+		//requestAnimationFrame(render);
+	}*/
+
 	function draw(){
 
-		if(shaderProgram){
+		//if(shaderProgram){
 			
 			gl.uniformMatrix4fv(transformRef, false, transform);
 			//gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
@@ -397,7 +411,9 @@ var Renderer = function(){
 			//gl.uniform3f(lightPositionRef, Math.sin(now), Math.cos(now), Math.sin(now*0.783));
 
 			gl.drawArrays(gl.TRIANGLES, 0, size);
-		}
+		//}
+
+		//requestAnimationFrame(render);
 	}
 
 	function changeSampleCount(count){

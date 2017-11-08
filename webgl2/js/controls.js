@@ -165,8 +165,26 @@ function initControls(){
 	});
 	
 
+	initVolumeSelect();
 	initOpacityControls();
 	initColorSelect();
+
+	function initVolumeSelect(){
+		var volumeSelect = document.getElementById("volumeSelect");
+
+		for(var i in volumes){
+			var option = document.createElement("option");
+			option.value = i;
+			option.innerHTML = volumes[i].name;
+			volumeSelect.appendChild(option);
+		}
+
+		
+		volumeSelect.addEventListener("change", function(e){
+			var selectedValue = this.options[this.options.selectedIndex].value;
+			renderer.changeVolume(volumes[selectedValue]);
+		});
+	}
 
 	function initOpacityControls(){
 		
@@ -292,11 +310,6 @@ function initControls(){
 	/*document.getElementById("autorotate").addEventListener("change", function(e){
 		autorotate = this.checked;
 	});*/
-
-	document.getElementById("volumeSelect").addEventListener("change", function(e){
-		var selectedValue = this.options[this.options.selectedIndex].value;
-		renderer.changeVolume(volumes[selectedValue]);
-	});
 
 }
 

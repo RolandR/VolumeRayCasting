@@ -8,9 +8,9 @@ uniform sampler3D tex;
 uniform sampler3D normals;
 uniform sampler2D colorMap;
 
-uniform mat4 transform;
+//uniform mat4 transform;
 uniform int depthSampleCount;
-uniform float zScale;
+//uniform float zScale;
 
 uniform vec3 lightPosition;
 
@@ -20,7 +20,11 @@ uniform vec3 lightPosition;
 // z: lowNode
 // w: highNode
 
-in vec2 texCoord;
+//in vec2 texCoord;
+
+in vec4 origin;
+in vec4 direction;
+
 out vec4 color;
 
 vec3 ambientLight = vec3(0.34, 0.32, 0.32);
@@ -73,14 +77,7 @@ void intersect(
 
 void main(){
 	
-	vec4 origin = vec4(texCoord, 0.0, 1.0);
-	origin = transform * origin;
-	origin = origin / origin.w;
-	origin.z = origin.z / zScale;
-	origin = origin + 0.5;
-
-	vec4 direction = vec4(0.0, 0.0, 1.0, 1.0);
-	direction = transform * direction;
+	
 	//direction = normalize(direction);
 
 	Ray ray = makeRay(origin.xyz, direction.xyz);
