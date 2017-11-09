@@ -28,6 +28,13 @@ var volumes = {
 		,name: "Broccoli"
 		,columns: 1
 		,slices: 50
+		,zScale: 0.7
+	}
+	,cube: {
+		 src: "./images/cuuube.png"
+		,name: "Cube"
+		,columns: 16
+		,slices: 128
 		,zScale: 1
 	}
 };
@@ -65,7 +72,8 @@ var Renderer = function(){
 
 	changeColorTexture("./colorMappings/skyline.png");
 	updateOpacity();
-	changeVolume(volumes.sagittal);
+	changeVolume(volumes.vessels);
+	loadSkybox();
 
 	/*img.onload = processVolume;
 	img.src = "./images/sagittal.png";*/
@@ -149,6 +157,67 @@ var Renderer = function(){
 		colorMap.src = src;
 	}
 
+	function loadSkybox(){
+
+		var up = document.createElement("img");
+		up.onload = function(){
+			gl.activeTexture(gl.TEXTURE3);
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//console.log(this);
+		};
+		up.src = "./images/skybox/bleak-outlook_up.png";
+
+		var dn = document.createElement("img");
+		dn.onload = function(){
+			gl.activeTexture(gl.TEXTURE3);
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//console.log(this);
+		};
+		dn.src = "./images/skybox/bleak-outlook_dn.png";
+
+		var lf = document.createElement("img");
+		lf.onload = function(){
+			gl.activeTexture(gl.TEXTURE3);
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//console.log(this);
+		};
+		lf.src = "./images/skybox/bleak-outlook_lf.png";
+
+		var rt = document.createElement("img");
+		rt.onload = function(){
+			gl.activeTexture(gl.TEXTURE3);
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//console.log(this);
+		};
+		rt.src = "./images/skybox/bleak-outlook_rt.png";
+
+		var ft = document.createElement("img");
+		ft.onload = function(){
+			gl.activeTexture(gl.TEXTURE3);
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//console.log(this);
+		};
+		ft.src = "./images/skybox/bleak-outlook_ft.png";
+
+		var bk = document.createElement("img");
+		bk.onload = function(){
+			gl.activeTexture(gl.TEXTURE3);
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//console.log(this);
+		};
+		bk.src = "./images/skybox/bleak-outlook_bk.png";
+
+		//console.log(up);
+
+		/*gl.activeTexture(gl.TEXTURE3);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);*/
+	}
+
 	function initGl(){
 		// Create a vertex shader object
 		var vertShader = gl.createShader(gl.VERTEX_SHADER);
@@ -229,12 +298,12 @@ var Renderer = function(){
 		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
 		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
 		var u_image2Location = gl.getUniformLocation(shaderProgram, "normals");
-		//var u_image3Location = gl.getUniformLocation(shaderProgram, "opacities");
+		var u_image3Location = gl.getUniformLocation(shaderProgram, "skybox");
 
 		gl.uniform1i(u_image0Location, 0);  // texture unit 0
 		gl.uniform1i(u_image1Location, 1);  // texture unit 1
 		gl.uniform1i(u_image2Location, 2);  // texture unit 2
-		//gl.uniform1i(u_image3Location, 3);  // texture unit 3
+		gl.uniform1i(u_image3Location, 3);  // texture unit 3
 
 		var texture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE0);
@@ -290,14 +359,19 @@ var Renderer = function(){
 			Uint8Array.from([0, 0, 0])            // pixel
 		);
 
-		/*opacityTexture = gl.createTexture();
+		skyboxTexture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE3);
-		gl.bindTexture(gl.TEXTURE_2D, opacityTexture);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 1, 1, 0, gl.ALPHA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0]), 0);*/
+		gl.bindTexture(gl.TEXTURE_CUBE_MAP, skyboxTexture);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 
 		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
 		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
@@ -399,6 +473,8 @@ var Renderer = function(){
 	/*function draw(){
 		//requestAnimationFrame(render);
 	}*/
+
+	//render();
 
 	function draw(){
 

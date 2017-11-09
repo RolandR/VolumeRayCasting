@@ -7,6 +7,7 @@ precision lowp sampler3D;
 uniform sampler3D tex;
 uniform sampler3D normals;
 uniform sampler2D colorMap;
+uniform samplerCube skybox;
 
 uniform mat4 transform;
 uniform int depthSampleCount;
@@ -130,13 +131,21 @@ void main(){
 		//texCo = start + increment*float(count);
 		px = texture(tex, texCo).r;
 
+		if(px < 0.1){
+			continue;
+		}
+
 		
 		//px = length(texture(normals, texCo).xyz - 0.5);
 		//px = px * 1.5;
 		
 		pxColor = texture(colorMap, vec2(px, 0.0));
+
+		if(pxColor.a < 0.1){
+			continue;
+		}
 		
-		normal = normalize(texture(normals, texCo).xyz - 0.5);
+		/*normal = normalize(texture(normals, texCo).xyz - 0.5);
 		float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
 
 		//vec3 R = -reflect(lightDirection, surfaceNormal);
@@ -145,7 +154,11 @@ void main(){
 		float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
 		specular = pow(specular, 3.0);
 
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
+		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;*/
+
+		normal = normalize(texture(normals, texCo).xyz - 0.5);
+		vec3 reflect = texture(skybox, -normalize(reflect(direction.xyz, normal))).rgb;
+		pxColor.rgb = reflect*pxColor.a;
 			
 		
 		//value = mix(value, pxColor, px);
