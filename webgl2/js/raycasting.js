@@ -159,69 +159,44 @@ var Renderer = function(){
 
 	function loadSkybox(){
 
-		var up = document.createElement("img");
-		up.onload = function(){
+		var skyboxImg = document.createElement("img");
+		skyboxImg.onload = function(){
+			
+			var img = this;
+			var c = document.createElement("canvas");
+			c.width = img.width;
+			c.height = img.height;
+			var ctx = c.getContext("2d");
+			ctx.drawImage(this, 0, 0);
+			var imageData = Uint8Array.from(ctx.getImageData(0, 0, c.width, c.height).data);
+
+			var width = img.width;
+			var height = width;
+
+			var length = width*height*4;
+			var offset = 0;
+			
 			gl.activeTexture(gl.TEXTURE3);
-			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+			
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.slice(offset*length, offset*length+length));
+			offset++;
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.slice(offset*length, offset*length+length));
+			offset++;
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.slice(offset*length, offset*length+length));
+			offset++;
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.slice(offset*length, offset*length+length));
+			offset++;
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.slice(offset*length, offset*length+length));
+			offset++;
+			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.slice(offset*length, offset*length+length));
+
+			gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+			gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+
+			draw();
 			//console.log(this);
 		};
-		up.src = "./images/skybox/bleak-outlook_up.png";
-
-		var dn = document.createElement("img");
-		dn.onload = function(){
-			gl.activeTexture(gl.TEXTURE3);
-			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-			//console.log(this);
-		};
-		dn.src = "./images/skybox/bleak-outlook_dn.png";
-
-		var lf = document.createElement("img");
-		lf.onload = function(){
-			gl.activeTexture(gl.TEXTURE3);
-			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-			//console.log(this);
-		};
-		lf.src = "./images/skybox/bleak-outlook_lf.png";
-
-		var rt = document.createElement("img");
-		rt.onload = function(){
-			gl.activeTexture(gl.TEXTURE3);
-			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-			//console.log(this);
-		};
-		rt.src = "./images/skybox/bleak-outlook_rt.png";
-
-		var ft = document.createElement("img");
-		ft.onload = function(){
-			gl.activeTexture(gl.TEXTURE3);
-			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-			//console.log(this);
-		};
-		ft.src = "./images/skybox/bleak-outlook_ft.png";
-
-		var bk = document.createElement("img");
-		bk.onload = function(){
-			gl.activeTexture(gl.TEXTURE3);
-			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-			//console.log(this);
-		};
-		bk.src = "./images/skybox/bleak-outlook_bk.png";
-
-		//console.log(up);
-
-		/*gl.activeTexture(gl.TEXTURE3);
-		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
-		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
-		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
-		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
-		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
-		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);*/
+		skyboxImg.src = "./images/skybox/bleak-outlook.png";
 	}
 
 	function initGl(){

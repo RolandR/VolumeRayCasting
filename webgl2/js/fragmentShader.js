@@ -34,7 +34,10 @@ const vec3 directionalLight = vec3(0.5, 0.5, 0.5);
 const vec3 lightVector = normalize(vec3(-1.0, 0.0, 0.0));
 const vec3 specularColor = vec3(0.5, 0.5, 0.5);
 
-const float shinyness = 0.15;
+const float specularIntensity = 0.2;
+const float shinyness = 5.0;
+const float scatterFactor = 2.0;
+const float reflectScattering = 8.0;
 
 vec3 aabb[2] = vec3[2](
 	vec3(0.0, 0.0, 0.0),
@@ -107,11 +110,13 @@ void main(){
 
 	vec4 value = vec4(0.0, 0.0, 0.0, 0.0);
 
+	vec4 background = texture(skybox, -direction.xyz);
+
 	if(tmin > tmax){
 		/*color = value;
 		discard;*/
 
-		color = texture(skybox, -direction.xyz);
+		color = background;
 		return;
 	}
 
@@ -158,15 +163,21 @@ void main(){
 		//return pow(max(0.0, dot(viewDirection, R)), shininess);
 
 		float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
-		specular = pow(specular, 100.0);
+		specular = pow(specular, 100.0) * specularIntensity;
 
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
+		vec3 ambient = textureLod(skybox, -normal, 32.0).rgb;
+
+		pxColor.rgb = ambient*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
+		//pxColor.rgb = ambient;
 
 		//normal = normalize(texture(normals, texCo).xyz - 0.5);
 		vec3 reflect = -normalize(reflect(direction.xyz, normal));
-		vec3 reflectColor = texture(skybox, reflect).rgb*pxColor.a*shinyness;
-		float angle = dot(direction.xyz, reflect);
-		pxColor.rgb = pxColor.rgb + (1.0-angle)*reflectColor;
+		float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
+		vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;
+		
+		pxColor.rgb = pxColor.rgb + reflectColor;
+
+		//pxColor.rgb = reflectColor;
 			
 		
 		//value = mix(value, pxColor, px);
@@ -180,7 +191,7 @@ void main(){
 			break;
 		}
 	}
-	color = mix(textureLod(skybox, -direction.xyz, 5.0), value, value.a);
+	color = mix(background, value, value.a);
 	//color = value;
 }
 
