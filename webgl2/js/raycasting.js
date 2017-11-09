@@ -163,6 +163,7 @@ var Renderer = function(){
 		up.onload = function(){
 			gl.activeTexture(gl.TEXTURE3);
 			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			//console.log(this);
 		};
 		up.src = "./images/skybox/bleak-outlook_up.png";
@@ -171,6 +172,7 @@ var Renderer = function(){
 		dn.onload = function(){
 			gl.activeTexture(gl.TEXTURE3);
 			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			//console.log(this);
 		};
 		dn.src = "./images/skybox/bleak-outlook_dn.png";
@@ -179,6 +181,7 @@ var Renderer = function(){
 		lf.onload = function(){
 			gl.activeTexture(gl.TEXTURE3);
 			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			//console.log(this);
 		};
 		lf.src = "./images/skybox/bleak-outlook_lf.png";
@@ -187,6 +190,7 @@ var Renderer = function(){
 		rt.onload = function(){
 			gl.activeTexture(gl.TEXTURE3);
 			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			//console.log(this);
 		};
 		rt.src = "./images/skybox/bleak-outlook_rt.png";
@@ -195,6 +199,7 @@ var Renderer = function(){
 		ft.onload = function(){
 			gl.activeTexture(gl.TEXTURE3);
 			gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			//console.log(this);
 		};
 		ft.src = "./images/skybox/bleak-outlook_ft.png";
@@ -203,6 +208,7 @@ var Renderer = function(){
 		bk.onload = function(){
 			gl.activeTexture(gl.TEXTURE3);
 			gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+			//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			//console.log(this);
 		};
 		bk.src = "./images/skybox/bleak-outlook_bk.png";
@@ -362,16 +368,17 @@ var Renderer = function(){
 		skyboxTexture = gl.createTexture();
 		gl.activeTexture(gl.TEXTURE3);
 		gl.bindTexture(gl.TEXTURE_CUBE_MAP, skyboxTexture);
-		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
+		//gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
 		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
 		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
