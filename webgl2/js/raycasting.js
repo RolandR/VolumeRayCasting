@@ -394,11 +394,32 @@ var Renderer = function(){
 
 			var normals = new Uint8ClampedArray(textureData.length*3);
 
+			var xn = 0;
+			var yn = 0;
+			var zn = 0;
+
 			for(var i = 0; i < textureData.length; i++){
 
-				normals[i*3  ] = textureData[i-1] - textureData[i+1] + 128;
-				normals[i*3+1] = textureData[i-imageWidth] - textureData[i+imageWidth] + 128;
-				normals[i*3+2] = textureData[i-(imageWidth*imageHeight)] - textureData[i+(imageWidth*imageHeight)] + 128;
+				xn = textureData[i-1] - textureData[i+1];
+				if(!isNaN(xn)){
+					normals[i*3  ] = xn + 128;
+				} else {
+					normals[i*3  ] = 128;
+				}
+
+				yn = textureData[i-imageWidth] - textureData[i+imageWidth];
+				if(!isNaN(yn)){
+					normals[i*3+1] = yn + 128;
+				} else {
+					normals[i*3+1] = 128;
+				}
+
+				zn = textureData[i-(imageWidth*imageHeight)] - textureData[i+(imageWidth*imageHeight)];
+				if(!isNaN(zn)){
+					normals[i*3+2] = zn + 128;
+				} else {
+					normals[i*3+2] = 128;
+				}
 				
 			}
 

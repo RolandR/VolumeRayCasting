@@ -37,7 +37,7 @@ const vec3 specularColor = vec3(0.5, 0.5, 0.5);
 const float specularIntensity = 0.2;
 const float shinyness = 5.0;
 const float scatterFactor = 2.0;
-const float reflectScattering = 8.0;
+const float reflectScattering = 1.0;
 
 vec3 aabb[2] = vec3[2](
 	vec3(0.0, 0.0, 0.0),
@@ -123,9 +123,11 @@ void main(){
 	vec3 start = origin.xyz + tmin*direction.xyz;
 	vec3 end = origin.xyz + tmax*direction.xyz;
 	
-	float length = distance(end, start);
-	int sampleCount = int(float(depthSampleCount)*length);
-	//vec3 increment = (end-start)/float(sampleCount);
+	float len = distance(end, start);
+	int sampleCount = int(float(depthSampleCount)*len);
+	vec3 increment = (end-start)/float(sampleCount);
+	float incLength = length(increment);
+	vec3 pos = start;
 	//vec3 originOffset = mod((start-origin.xyz), increment);
 
 	float s = 0.0;
@@ -134,48 +136,70 @@ void main(){
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
 	vec3 normal = vec3(0.0, 0.0, 0.0);
 	vec4 zero = vec4(0.0);
+
+	float last = 0.0;
 	
 	for(int count = 0; count < sampleCount; count++){
 
-		texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
+		//texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
 
-		//texCo = start + increment*float(count);
-		px = texture(tex, texCo).r;
+		texCo = pos + increment;
 
-		if(px < 0.1){
-			continue;
+		if(texCo.x < aabb[0].x || texCo.x > aabb[1].x
+		 ||texCo.y < aabb[0].y || texCo.y > aabb[1].y
+		 ||texCo.z < aabb[0].z || texCo.z > aabb[1].z)
+		{
+			//value = vec4(0.0, 1.0, 0.0, 1.0);
+			break;
 		}
-
+		pos = texCo;
 		
+		px = texture(tex, texCo).r;
 		//px = length(texture(normals, texCo).xyz - 0.5);
-		//px = px * 1.5;
 		
 		pxColor = texture(colorMap, vec2(px, 0.0));
 
-		if(pxColor.a < 0.1){
-			continue;
-		}
+		//pxColor = length
 		
-		normal = normalize(texture(normals, texCo).xyz - 0.5);
-		float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
+
+		if(abs(last-px) > 0.0){
+			normal = (texture(normals, texCo).xyz);
+			normal = (transform*vec4(normal, 0.0)).xyz;
+
+			float foo = 1.0;
+			float eta = (10.0+last*foo)/(10.0+px*foo);
+
+			increment = incLength * normalize(refract(normalize(increment), normalize(normal - 0.5), eta));
+		}
+
+		last = px;
+
+		
+
+
+		
+		//float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
 
 		//vec3 R = -reflect(lightDirection, surfaceNormal);
 		//return pow(max(0.0, dot(viewDirection, R)), shininess);
 
-		float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
-		specular = pow(specular, 100.0) * specularIntensity;
+		//float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
+		//specular = pow(specular, 100.0) * specularIntensity;
 
-		vec3 ambient = textureLod(skybox, -normal, 32.0).rgb;
+		//vec3 ambient = textureLod(skybox, -normal, 32.0).rgb;
 
-		pxColor.rgb = ambient*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
+		//pxColor.rgb = ambient*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
 		//pxColor.rgb = ambient;
 
 		//normal = normalize(texture(normals, texCo).xyz - 0.5);
-		vec3 reflect = -normalize(reflect(direction.xyz, normal));
-		float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
-		vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;
-		
-		pxColor.rgb = pxColor.rgb + reflectColor;
+
+		/*if(pxColor.a > 0.1){
+			vec3 reflect = -normalize(reflect(direction.xyz, normal));
+			float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
+			vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;
+			
+			pxColor.rgb = pxColor.rgb + reflectColor;
+		}*/
 
 		//pxColor.rgb = reflectColor;
 			
@@ -191,6 +215,8 @@ void main(){
 			break;
 		}
 	}
+
+	background = texture(skybox, normalize(-increment));
 	color = mix(background, value, value.a);
 	//color = value;
 }
