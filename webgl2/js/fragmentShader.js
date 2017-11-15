@@ -1,8 +1,8 @@
 var fragmentShader = `#version 300 es
 
-precision lowp float;
-precision lowp int;
-precision lowp sampler3D;
+precision highp float;
+precision highp int;
+precision highp sampler3D;
 
 uniform sampler3D tex;
 uniform sampler3D normals;
@@ -143,7 +143,7 @@ void main(){
 
 		//texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
 
-		texCo = pos + increment;
+		texCo = pos + incLength*increment;
 
 		if(texCo.x < aabb[0].x || texCo.x > aabb[1].x
 		 ||texCo.y < aabb[0].y || texCo.y > aabb[1].y
@@ -162,15 +162,23 @@ void main(){
 		//pxColor = length
 		
 
-		if(abs(last-px) > 0.0){
-			normal = (texture(normals, texCo).xyz);
+		//if(abs(last-px) > 0.0){
+			normal = (texture(normals, texCo).xyz - 0.5);
 			normal = (transform*vec4(normal, 0.0)).xyz;
+			normal = normalize(normal);
 
 			float foo = 1.0;
-			float eta = (10.0+last*foo)/(10.0+px*foo);
+			//float eta = (1.0+last*foo)/(1.0+px*foo);
+			float eta = 1.0;
 
-			increment = incLength * normalize(refract(normalize(increment), normalize(normal - 0.5), eta));
-		}
+			if(dot(normal, increment) > 0.0){
+				normal = -normal;
+				eta = 1.0/eta;
+				increment = normalize(refract(increment, normal, eta));
+			} else if(dot(normal, increment) != 0.0){
+				increment = normalize(refract(increment, normal, eta));
+			}
+		//}
 
 		last = px;
 
@@ -193,7 +201,7 @@ void main(){
 
 		//normal = normalize(texture(normals, texCo).xyz - 0.5);
 
-		/*if(pxColor.a > 0.1){
+		/*if((last-px) > 0.1){
 			vec3 reflect = -normalize(reflect(direction.xyz, normal));
 			float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
 			vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;

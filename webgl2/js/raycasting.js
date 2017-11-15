@@ -37,6 +37,13 @@ var volumes = {
 		,slices: 128
 		,zScale: 1
 	}
+	,smallSphere: {
+		 src: "./images/smallsphere.png"
+		,name: "Small Sphere"
+		,columns: 16
+		,slices: 128
+		,zScale: 1
+	}
 };
 
 
