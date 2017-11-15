@@ -1,0 +1,95 @@
+input[type=range]{
+	-webkit-appearance: none;
+	background: #444444;
+}
+
+input[type=range]:focus{
+	outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track{
+	background: #444444;
+	height: 8px;
+}
+
+input[type=range]::-webkit-slider-thumb{
+	height: 26px;
+	margin-top: -9px;
+	width: 12px;
+	border: 1px #000000 solid;
+	background-image: linear-gradient(to bottom, #777777, #555555);
+	cursor: pointer;
+	-webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-thumb:hover{
+	background-image: linear-gradient(to bottom, #888888, #666666);
+}
+
+input[type=range]::-moz-range-track{
+	background: #222222;
+}
+
+input[type=range]::-moz-range-thumb{
+	height: 25px;
+	width: 15px;
+	border: 1px #000000 solid;
+	background-image: linear-gradient(to bottom, #666666, #444444);
+	cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb:hover{
+	background-image: linear-gradient(to bottom, #777777, #555555);
+}
+
+input[type=range]::-ms-track{
+  background: #222222;
+  color: transparent;
+}
+
+input[type=range]::-ms-thumb{
+	height: 25px;
+	width: 15px;
+	border: 1px #000000 solid;
+	background-image: linear-gradient(to bottom, #666666, #444444);
+	cursor: pointer;
+}
+
+input[type=range]::-ms-thumb:hover{
+	background-image: linear-gradient(to bottom, #777777, #555555);
+}
+
+label.slider{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+label.slider > span{
+	width: 50px;
+	padding: 0px 7px;
+}
+
+label.slider > input{
+	flex-grow: 1;
+}
+
+/***********************/
+
+select{
+	background: linear-gradient(to bottom, #555555, #444444);
+	border: 1px #000000 outset;
+	color: #FFFFFF;
+	text-shadow: 1px 1px 0px #000000;
+	cursor: pointer;
+	padding: 3px;
+	line-height: 0px;
+}
+
+select:hover{
+	background: linear-gradient(to bottom, #666666, #555555);
+}
+
+option{
+	background: #333333;
+}

@@ -198,7 +198,7 @@ function initControls(){
 		refractionFactorSlider.addEventListener("input", function(e){
 			var value = Math.pow(this.value, 2);
 			renderer.changeRefractionFactor(value);
-			refractionFactorOutput.innerHTML = Math.round(value*100)/100;
+			refractionFactorOutput.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 		});
 	}
 
