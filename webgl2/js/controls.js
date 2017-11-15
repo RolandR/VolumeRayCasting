@@ -18,6 +18,8 @@ var transform = [
 	0, 0, 0, 1
 ];
 
+var inverseTransform = matrix4Inverse(transform);
+
 var renderer = new Renderer();
 
 initControls();
@@ -97,6 +99,8 @@ function initControls(){
 		transformMatrix =  matrix4Multiply(transformMatrix, scaleMatrix);
 		transform = transformMatrix;
 
+		inverseTransform = matrix4Inverse(transform);
+
 		renderer.draw();
 		//requestAnimationFrame(updateTransformation);
 	}
@@ -166,6 +170,7 @@ function initControls(){
 	
 
 	initVolumeSelect();
+	initShaderControls();
 	initOpacityControls();
 	initColorSelect();
 
@@ -183,6 +188,17 @@ function initControls(){
 		volumeSelect.addEventListener("change", function(e){
 			var selectedValue = this.options[this.options.selectedIndex].value;
 			renderer.changeVolume(volumes[selectedValue]);
+		});
+	}
+
+	function initShaderControls(){
+		var refractionFactorSlider = document.getElementById("refractionFactor");
+		var refractionFactorOutput = document.getElementById("refractionFactorOutput");
+		
+		refractionFactorSlider.addEventListener("input", function(e){
+			var value = Math.pow(this.value, 2);
+			renderer.changeRefractionFactor(value);
+			refractionFactorOutput.innerHTML = Math.round(value*100)/100;
 		});
 	}
 

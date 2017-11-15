@@ -203,7 +203,7 @@ var Renderer = function(){
 			draw();
 			//console.log(this);
 		};
-		skyboxImg.src = "./images/skybox/bleak-outlook.png";
+		skyboxImg.src = "./images/skybox/debug.png";
 	}
 
 	function initGl(){
@@ -368,11 +368,15 @@ var Renderer = function(){
 		
 		depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
 		gl.uniform1i(depthSampleCountRef, 512);
+
+		refractionFactorRef = gl.getUniformLocation(shaderProgram, "refractionFactor");
+		gl.uniform1f(refractionFactorRef, 1);
 		
 		opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
 		lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
 		
 		transformRef = gl.getUniformLocation(shaderProgram, "transform");
+		inverseTransformRef = gl.getUniformLocation(shaderProgram, "inverseTransform");
 	}
 
 	function changeVolume(volume){
@@ -491,6 +495,7 @@ var Renderer = function(){
 		//if(shaderProgram){
 			
 			gl.uniformMatrix4fv(transformRef, false, transform);
+			gl.uniformMatrix4fv(inverseTransformRef, false, inverseTransform);
 			//gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
 
 			//var now = Date.now()/1000;
@@ -504,6 +509,12 @@ var Renderer = function(){
 
 	function changeSampleCount(count){
 		gl.uniform1i(depthSampleCountRef, count);
+		draw();
+	}
+
+	function changeRefractionFactor(factor){
+		gl.uniform1f(refractionFactorRef, factor);
+		draw();
 	}
 
 	window.addEventListener("resize", function(event){
@@ -520,6 +531,7 @@ var Renderer = function(){
 	return {
 		 changeColorTexture: changeColorTexture
 		,changeSampleCount: changeSampleCount
+		,changeRefractionFactor: changeRefractionFactor
 		,changeVolume: changeVolume
 		,updateOpacity: updateOpacity
 		,draw: draw

@@ -10,8 +10,11 @@ uniform sampler2D colorMap;
 uniform samplerCube skybox;
 
 uniform mat4 transform;
+uniform mat4 inverseTransform;
 uniform int depthSampleCount;
 uniform float zScale;
+
+uniform float refractionFactor;
 
 uniform vec3 lightPosition;
 
@@ -110,7 +113,7 @@ void main(){
 
 	vec4 value = vec4(0.0, 0.0, 0.0, 0.0);
 
-	vec4 background = texture(skybox, -direction.xyz);
+	vec4 background = texture(skybox, direction.xyz);
 
 	if(tmin > tmax){
 		/*color = value;
@@ -127,6 +130,7 @@ void main(){
 	int sampleCount = int(float(depthSampleCount)*len);
 	vec3 increment = (end-start)/float(sampleCount);
 	float incLength = length(increment);
+	increment = normalize(increment);
 	vec3 pos = start;
 	//vec3 originOffset = mod((start-origin.xyz), increment);
 
@@ -145,13 +149,13 @@ void main(){
 
 		texCo = pos + incLength*increment;
 
-		if(texCo.x < aabb[0].x || texCo.x > aabb[1].x
+		/*if(texCo.x < aabb[0].x || texCo.x > aabb[1].x
 		 ||texCo.y < aabb[0].y || texCo.y > aabb[1].y
 		 ||texCo.z < aabb[0].z || texCo.z > aabb[1].z)
 		{
 			//value = vec4(0.0, 1.0, 0.0, 1.0);
 			break;
-		}
+		}*/
 		pos = texCo;
 		
 		px = texture(tex, texCo).r;
@@ -163,20 +167,44 @@ void main(){
 		
 
 		//if(abs(last-px) > 0.0){
-			normal = (texture(normals, texCo).xyz - 0.5);
-			normal = (transform*vec4(normal, 0.0)).xyz;
+			normal = normalize(texture(normals, texCo).xyz - 0.5);
+			//normal = (vec4(normal, 0.0) * inverseTransform).xyz;
+
+			/*if(length(normal) < 0.01){
+				value = vec4(1.0, 0.0, 0.0, 1.0);
+				break;
+			}*/
+			
 			normal = normalize(normal);
 
-			float foo = 1.0;
-			//float eta = (1.0+last*foo)/(1.0+px*foo);
-			float eta = 1.0;
+
+			/*vec3 reflect = normalize(reflect(normalize(increment), normal));
+			vec3 reflectColor = texture(skybox, reflect).rgb*pxColor.a;
+			pxColor.rgb = reflectColor;*/
+			//break;
+			
+			float eta = (1.0+last*refractionFactor)/(1.0+px*refractionFactor);
+			
+			//eta = 1.0;
+
+			vec3 refractVector = vec3(0.0);
+
+			//refractVector = refract(increment, normal, eta);
 
 			if(dot(normal, increment) > 0.0){
 				normal = -normal;
 				eta = 1.0/eta;
-				increment = normalize(refract(increment, normal, eta));
-			} else if(dot(normal, increment) != 0.0){
-				increment = normalize(refract(increment, normal, eta));
+			}
+
+			//incLength = incLength * eta;
+
+			refractVector = normalize(refract(normalize(increment), normal, eta));
+
+			if(length(refractVector) > 0.5){
+				increment = refractVector;
+			} else {
+				pxColor = vec4(1.0, 0.5, 0.0, 0.1);
+				//increment = normalize(reflect(normalize(increment), normal));
 			}
 		//}
 
@@ -224,7 +252,7 @@ void main(){
 		}
 	}
 
-	background = texture(skybox, normalize(-increment));
+	background = texture(skybox, normalize(increment));
 	color = mix(background, value, value.a);
 	//color = value;
 }
