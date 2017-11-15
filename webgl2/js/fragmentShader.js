@@ -167,7 +167,10 @@ void main(){
 		
 
 		//if(abs(last-px) > 0.0){
-			normal = normalize(texture(normals, texCo).xyz - 0.5);
+			//normal = normalize(texture(normals, texCo).xyz - 0.5);
+
+			normal = normalize(texCo.xyz - 0.5);
+			
 			//normal = (vec4(normal, 0.0) * inverseTransform).xyz;
 
 			/*if(length(normal) < 0.01){
@@ -175,7 +178,7 @@ void main(){
 				break;
 			}*/
 			
-			normal = normalize(normal);
+			//normal = normalize(normal);
 
 
 			/*vec3 reflect = normalize(reflect(normalize(increment), normal));
@@ -187,18 +190,16 @@ void main(){
 			
 			//eta = 1.0;
 
-			vec3 refractVector = vec3(0.0);
-
 			//refractVector = refract(increment, normal, eta);
 
-			if(dot(normal, increment) > 0.0){
+			if(dot(normal, normalize(increment)) > 0.0){
 				normal = -normal;
 				eta = 1.0/eta;
 			}
 
-			//incLength = incLength * eta;
+			incLength = incLength * eta;
 
-			refractVector = normalize(refract(normalize(increment), normal, eta));
+			vec3 refractVector = normalize(refract(normalize(increment), normal, eta));
 
 			if(length(refractVector) > 0.5){
 				increment = refractVector;
