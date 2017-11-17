@@ -50,7 +50,7 @@ function render(){
 
 	var startAngle = 0;
 	var startTime = Date.now();
-	var turnsPerSecond = 0.15;
+	var turnsPerSecond = 0.1;
 	
 	var rayLength = img.width * Math.sqrt(2);
 	var samplingRate = 1;
@@ -86,21 +86,6 @@ function render(){
 		var tmin = Math.max(txmin, tymin);
 		var tmax = Math.min(txmax, tymax);
 
-		/*
-		txmin = (aabb[ray.sign[0]  ].x - ray.origin.x) * ray.inv_direction.x;
-		txmax = (aabb[1-ray.sign[0]].x - ray.origin.x) * ray.inv_direction.x;
-		tymin = (aabb[ray.sign[1]  ].y - ray.origin.y) * ray.inv_direction.y;
-		tymax = (aabb[1-ray.sign[1]].y - ray.origin.y) * ray.inv_direction.y;
-		tzmin = (aabb[ray.sign[2]  ].z - ray.origin.z) * ray.inv_direction.z;
-		tzmax = (aabb[1-ray.sign[2]].z - ray.origin.z) * ray.inv_direction.z;
-		tmin = max(max(txmin, tymin), tzmin);
-		tmax = min(min(txmax, tymax), tzmax);*/
-
-		//if(Math.random() < 0.001){
-			//console.log(tmin,tmax);
-			//console.log(Math.abs(tmax-tmin));
-		//}
-
 		var begin = [start[0] + direction[0]*tmin, start[1] + direction[1]*tmin];
 		var end   = [start[0] + direction[0]*tmax, start[1] + direction[1]*tmax];
 
@@ -108,8 +93,6 @@ function render(){
 		if(tmin < tmax){
 			count = tmax-tmin;
 		}
-
-		//console.log(count);
 
 		return [
 			begin,
@@ -173,10 +156,6 @@ function render(){
 					y = ~~(pos[1] + i*increment[1]);
 					value = zVolume[x + y*imageSize];
 
-					/*if(!(x<0 || x>=imageSize || y<0 || y>=imageSize)){
-						value = zVolume[x + y*imageSize];
-					}*/
-
 					if(value < 50){
 						continue;
 					}
@@ -203,7 +182,6 @@ function render(){
 			}
 
 		}
-
 		
 		cutContext.putImageData(cutImageData, 0, 0);
 

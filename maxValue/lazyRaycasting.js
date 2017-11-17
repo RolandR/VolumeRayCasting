@@ -3,7 +3,7 @@
 var img = document.getElementById("slice");
 
 img.onload = render;
-img.src = "../vessels.png";
+img.src = "./water.png";
 
 function render(){
 	var canvas = document.getElementById("canvas");
@@ -25,10 +25,25 @@ function render(){
 
 	var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-	var imageSize = imageData.width;
-	var volumeData = new Uint8Array(imageData.data.length/4);
-	for(var i = 0; i < volumeData.length; i++){
-		volumeData[i] = imageData.data[i*4];
+	var imageSize = img.width;
+
+	var volumes = [];
+	var volumeSize = (imageData.data.length/imageSize)/4;
+
+	for(var z = 0; z < imageSize; z++){
+		volumes[z] = new Uint8Array(volumeSize);
+		
+		/*for(var i = 0; i < volumeSize; i++){
+			volumes[z][i] = imageData.data[(i+z*volumeSize)*4];
+		}*/
+	}
+
+	for(var x = 0; x < imageSize; x++){
+		for(var y = 0; y < imageSize; y++){
+			for(var z = 0; z < imageSize; z++){
+				volumes[z][x+y*imageSize] = imageData.data[(x+z*imageSize+y*imageSize*imageSize)*4];
+			}
+		}
 	}
 
 	var cutImageData = cutContext.getImageData(0, 0, cutCanvas.width, cutCanvas.height);
@@ -38,63 +53,135 @@ function render(){
 	var turnsPerSecond = 0.1;
 	
 	var rayLength = img.width * Math.sqrt(2);
-	var samplingRate = 0.5;
+	var samplingRate = 0.7;
 	var sampleCount = samplingRate*rayLength;
 	var sampleDistance = rayLength/sampleCount;
 
+	var squared = new Float32Array(256);
+	var cubed = new Float32Array(256);
+
+	for(var i = 0; i < 256; i++){
+		squared[i] = Math.pow(i/256, 2);
+	}
+
+	for(var i = 0; i < 256; i++){
+		cubed[i] = Math.pow(i/256, 3);
+	}
+
 	draw();
+
+	function intersect(start, direction){
+		var aabb = [
+			[0, 0],
+			[imageSize, imageSize]
+		];
+		
+		var xSign = (1/direction[0] < 0.0) ? 1 : 0;
+		var ySign = (1/direction[1] < 0.0) ? 1 : 0;
+		
+		var txmin = (aabb[  xSign][0] - start[0]) * (1/direction[0]);
+		var txmax = (aabb[1-xSign][0] - start[0]) * (1/direction[0]);
+		var tymin = (aabb[  ySign][1] - start[1]) * (1/direction[1]);
+		var tymax = (aabb[1-ySign][1] - start[1]) * (1/direction[1]);
+		var tmin = Math.max(txmin, tymin);
+		var tmax = Math.min(txmax, tymax);
+
+		var begin = [start[0] + direction[0]*tmin, start[1] + direction[1]*tmin];
+		var end   = [start[0] + direction[0]*tmax, start[1] + direction[1]*tmax];
+
+		var count = 0;
+		if(tmin < tmax){
+			count = tmax-tmin;
+		}
+
+		return [
+			begin,
+			end,
+			~~count
+		];
+	}
 
 
 	function draw(){
 
-		var angle = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
+		var angle = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond)+startAngle;
 		
-		var increment = [Math.sin(angle)*sampleDistance, Math.cos(angle)*sampleDistance];
+		var increment = [Math.sin(angle)*sampleDistance, Math.cos(angle)*sampleDistance*1.4];
 		var baseX = Math.sin(angle)*rayLength/2 + img.width/2;
 		var baseY = Math.cos(angle)*rayLength/2 + img.width/2;
 		var cosAngle = Math.cos(angle);
 		var sinAngle = Math.sin(angle);
 
+		var startXPositions = new Float32Array(~~rayLength);
+		var startYPositions = new Float32Array(~~rayLength);
+		var sampleCounts = new Float32Array(~~rayLength);
+
+		for(var i = 0; i < ~~rayLength; i++){
+
+			var pos = [
+				 baseX + cosAngle*((i-rayLength/2)/rayLength)*rayLength,
+				(baseY - sinAngle*((i-rayLength/2)/rayLength)*rayLength)*1.4-imageSize/5
+			];
+
+			var intersection = intersect(pos, increment);
+			
+			startXPositions[i] = intersection[0][0];
+			startYPositions[i] = intersection[0][1];
+			sampleCounts[i] = intersection[2];
+		}
+
+		var zVolume;
+
 		for(var z = 0; z < zSize; z++){
 			var imageZPos = z*cutImageData.width*4;
-			for(var s = 0; s < rayLength; s++){
-
+			zVolume = volumes[z];
+			for(var s = 0; s < ~~rayLength; s++){
+				
 				var pos = [
-					baseX + cosAngle*((s-rayLength/2)/rayLength)*rayLength,
-					baseY - sinAngle*((s-rayLength/2)/rayLength)*rayLength
+					startXPositions[s],
+					startYPositions[s]
 				];
 
-				var output = 0;
-
-				var x = 0;
-				var y = 0;
+				var output = 0.0;
+				var saturation = 0.0;
+				var x = 0.0;
+				var y = 0.0;
 				var value = 0;
-				var v = 0;
+				var v = 0.0;
+				var a = 0.0;
+				var max = 0.0;
 				
-				for(var i = 0; i < sampleCount; i++){
+				for(var i = 1; i < sampleCounts[s]; i++){
 					
-					x = Math.floor(pos[0]);
-					y = Math.floor(pos[1]*1.3-25);
-					value = 0;
+					x = ~~(pos[0] + i*increment[0]);
+					y = ~~(pos[1] + i*increment[1]);
+					value = zVolume[x + y*imageSize];
 
-					if(!(x<0 || x>=imageSize || y<0 || y>=imageSize)){
-						value = volumeData[x + z*imageSize + y*imageSize*imageSize];
+					if(value < 50){
+						continue;
 					}
 					
 					output = Math.max(value, output);
-					pos[0] -= increment[0];
-					pos[1] -= increment[1];
+					//output = value > output ? value : output;
+					
+					if(output >= 250){
+						break;
+					}
+					
 				}
 
-				cutImageData.data[imageZPos + s*4+0] = output;
-				cutImageData.data[imageZPos + s*4+1] = output;
-				cutImageData.data[imageZPos + s*4+2] = output;
-				cutImageData.data[imageZPos + s*4+3] = 255;
+				var index = imageZPos + s*4;
+
+				a = squared[output];
+				
+				cutImageData.data[index+0] = ~~(a*256);
+				cutImageData.data[index+1] = ~~(a*256);
+				cutImageData.data[index+2] = ~~(a*256);
+				cutImageData.data[index+3] = 255;
 
 			}
 
 		}
-
 		
 		cutContext.putImageData(cutImageData, 0, 0);
 
@@ -104,7 +191,7 @@ function render(){
 
 	}
 
-	var samplesPerFrame = Math.round(zSize*rayLength*sampleCount);
+	var samplesPerFrame = Math.round((zSize*rayLength*sampleCount)/2);
 	document.getElementById("samplesPerFrame").innerHTML = samplesPerFrame.toLocaleString();
 
 	var frameCount = 0;

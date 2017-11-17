@@ -24,10 +24,15 @@ body{
 	display: none;
 }
 
+#container{
+	height: 100%;
+	width: 100%;
+	padding: 30px;
+}
+
 #cut{
 	background-color: #000088;
-	height: 80%;
-	margin-top: 3%;
+	height: 100%;
 	image-rendering: optimizeSpeed;             /* Older versions of FF          */
 	image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
 	image-rendering: -webkit-optimize-contrast; /* Safari                        */
