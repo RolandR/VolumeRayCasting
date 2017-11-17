@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="192.07mm" width="192.07mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 192.07217 192.07217">
+ <title>Volume Normals</title>
+ <defs>
+  <marker id="marker14331" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker12088" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker10513" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker10096" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker9784" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker9308" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker10513-5" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker9308-6" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3-1" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker12088-0" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker12088-0-6" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker12088-0-2" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker12088-0-6-1" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3-1-7" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker12088-2" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3-1-2" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3-1-2-9" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker14331-3" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3-1-2-93" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker14331-9" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="TriangleOutS-3-1-2-9-7" refY="0" refX="0" orient="auto" overflow="visible">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+  <marker id="marker14331-3-4" refY="0" refX="0" overflow="visible" orient="auto">
+   <path d="m5.77 0-8.65 5v-10z" fill-rule="evenodd" transform="scale(.2)" stroke="#ff0000" stroke-width="1pt" fill="#ff0000"/>
+  </marker>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Volume Normals</dc:title>
+    <dc:date>2017-11-16</dc:date>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Roland Rytz (draemmli)</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:rights>
+     <cc:Agent>
+      <dc:title>CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0 International)</dc:title>
+     </cc:Agent>
+    </dc:rights>
+    <dc:language/>
+    <dc:description>Normal vectors in a voxel grid</dc:description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(16.533 -32.209)">
+  <g transform="matrix(1.8148 0 0 1.8148 -59.981 -105.94)" stroke="#000000" stroke-linecap="square">
+   <g fill="#ffffff">
+    <rect height="11.727" width="11.727" y="82.132" x="29.951"/>
+    <rect height="11.727" width="11.727" y="82.132" x="41.677"/>
+    <rect height="11.727" width="11.727" y="82.132" x="53.404"/>
+    <rect height="11.727" width="11.727" y="82.132" x="65.131"/>
+    <rect height="11.727" width="11.727" y="82.132" x="76.858"/>
+    <rect height="11.727" width="11.727" y="82.132" x="88.584"/>
+    <rect height="11.727" width="11.727" y="82.132" x="100.31"/>
+    <rect height="11.727" width="11.727" y="82.132" x="112.04"/>
+    <rect height="11.727" width="11.727" y="93.859" x="29.951"/>
+    <rect height="11.727" width="11.727" y="93.859" x="41.677"/>
+    <rect height="11.727" width="11.727" y="93.859" x="53.404"/>
+   </g>
+   <rect height="11.727" width="11.727" y="93.859" x="65.131" fill="#d5d5d5"/>
+   <rect height="11.727" width="11.727" y="93.859" x="76.858" fill="#d5d5d5"/>
+   <g fill="#ffffff">
+    <rect height="11.727" width="11.727" y="93.859" x="88.584"/>
+    <rect height="11.727" width="11.727" y="93.859" x="100.31"/>
+    <rect height="11.727" width="11.727" y="93.859" x="112.04"/>
+    <rect height="11.727" width="11.727" y="105.59" x="29.951"/>
+    <rect height="11.727" width="11.727" y="105.59" x="41.677"/>
+   </g>
+   <rect height="11.727" width="11.727" y="105.59" x="53.404" fill="#afafaf"/>
+   <rect height="11.727" width="11.727" y="105.59" x="65.131" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="105.59" x="76.858" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="105.59" x="88.584" fill="#afafaf"/>
+   <g fill="#ffffff">
+    <rect height="11.727" width="11.727" y="105.59" x="100.31"/>
+    <rect height="11.727" width="11.727" y="105.59" x="112.04"/>
+    <rect height="11.727" width="11.727" y="117.31" x="29.951"/>
+   </g>
+   <rect height="11.727" width="11.727" y="117.31" x="41.677" fill="#d5d5d5"/>
+   <rect height="11.727" width="11.727" y="117.31" x="53.404" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="117.31" x="65.131" fill="#404040"/>
+   <rect height="11.727" width="11.727" y="117.31" x="76.858" fill="#404040"/>
+   <rect height="11.727" width="11.727" y="117.31" x="88.584" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="117.31" x="100.31" fill="#d5d5d5"/>
+   <rect height="11.727" width="11.727" y="117.31" x="112.04" fill="#ffffff"/>
+   <rect height="11.727" width="11.727" y="129.04" x="29.951" fill="#ffffff"/>
+   <rect height="11.727" width="11.727" y="129.04" x="41.677" fill="#d5d5d5"/>
+   <rect height="11.727" width="11.727" y="129.04" x="53.404" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="129.04" x="65.131" fill="#404040"/>
+   <rect height="11.727" width="11.727" y="129.04" x="76.858" fill="#404040"/>
+   <rect height="11.727" width="11.727" y="129.04" x="88.584" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="129.04" x="100.31" fill="#d5d5d5"/>
+   <g fill="#ffffff">
+    <rect height="11.727" width="11.727" y="129.04" x="112.04"/>
+    <rect height="11.727" width="11.727" y="140.77" x="29.951"/>
+    <rect height="11.727" width="11.727" y="140.77" x="41.677"/>
+   </g>
+   <rect height="11.727" width="11.727" y="140.77" x="53.404" fill="#afafaf"/>
+   <rect height="11.727" width="11.727" y="140.77" x="65.131" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="140.77" x="76.858" fill="#818181"/>
+   <rect height="11.727" width="11.727" y="140.77" x="88.584" fill="#afafaf"/>
+   <g fill="#ffffff">
+    <rect height="11.727" width="11.727" y="140.77" x="100.31"/>
+    <rect height="11.727" width="11.727" y="140.77" x="112.04"/>
+    <rect height="11.727" width="11.727" y="152.49" x="29.951"/>
+    <rect height="11.727" width="11.727" y="152.49" x="41.677"/>
+    <rect height="11.727" width="11.727" y="152.49" x="53.404"/>
+   </g>
+   <rect height="11.727" width="11.727" y="152.49" x="65.131" fill="#d5d5d5"/>
+   <rect height="11.727" width="11.727" y="152.49" x="76.858" fill="#d5d5d5"/>
+   <g fill="#ffffff">
+    <rect height="11.727" width="11.727" y="152.49" x="88.584"/>
+    <rect height="11.727" width="11.727" y="152.49" x="100.31"/>
+    <rect height="11.727" width="11.727" y="152.49" x="112.04"/>
+    <rect height="11.727" width="11.727" y="164.22" x="29.951"/>
+    <rect height="11.727" width="11.727" y="164.22" x="41.677"/>
+    <rect height="11.727" width="11.727" y="164.22" x="53.404"/>
+    <rect height="11.727" width="11.727" y="164.22" x="65.131"/>
+    <rect height="11.727" width="11.727" y="164.22" x="76.858"/>
+    <rect height="11.727" width="11.727" y="164.22" x="88.584"/>
+    <rect height="11.727" width="11.727" y="164.22" x="100.31"/>
+    <rect height="11.727" width="11.727" y="164.22" x="112.04"/>
+   </g>
+  </g>
+  <g stroke="#ff0000" stroke-width="1.8148" fill="none">
+   <path marker-end="url(#TriangleOutS)" d="m90.346 117.4 7.0032-7.0032"/>
+   <path marker-end="url(#marker10513)" d="m68.862 117.6-7.0032-7.0032"/>
+   <path marker-end="url(#marker9784)" d="m90.145 138.89 7.0032 7.0032"/>
+   <path marker-end="url(#marker9308)" d="m68.661 138.68-7.0032 7.0032"/>
+   <path marker-end="url(#marker10096)" d="m111.43 160.17 7.0032 7.0032"/>
+   <path marker-end="url(#TriangleOutS-3)" d="m111.43 96.322 7.0032-7.0032"/>
+   <path marker-end="url(#marker10513-5)" d="m47.58 96.322-7.0032-7.0032"/>
+   <path marker-end="url(#marker9308-6)" d="m47.58 160.17-7.0032 7.0032"/>
+   <path marker-end="url(#TriangleOutS-3-1)" d="m111.43 117.6 9.0615-3.9973"/>
+   <path marker-end="url(#marker12088)" d="m111.43 138.89 9.0615 3.9973"/>
+   <path marker-end="url(#marker12088-0)" d="m47.58 138.89-9.0615 3.9973"/>
+   <path marker-end="url(#marker12088-0-6)" d="m47.58 117.6-9.0615-3.9973"/>
+   <path marker-end="url(#TriangleOutS-3-1-7)" d="m68.862 96.322-3.997-9.062"/>
+   <path marker-end="url(#marker12088-2)" d="m90.145 96.322 3.9973-9.0615"/>
+   <path marker-end="url(#marker12088-0-2)" d="m90.145 160.17 3.9973 9.0615"/>
+   <path marker-end="url(#marker12088-0-6-1)" d="m68.862 160.17-3.9973 9.0615"/>
+   <path marker-end="url(#TriangleOutS-3-1-2)" d="m132.71 117.6 9.791-1.4916"/>
+   <path marker-end="url(#marker14331)" d="m132.71 138.89 9.791 1.4916"/>
+   <path marker-end="url(#TriangleOutS-3-1-2-9)" d="m26.298 117.6-9.791-1.4916"/>
+   <path marker-end="url(#marker14331-3)" d="m26.298 138.89-9.791 1.4916"/>
+   <path marker-end="url(#TriangleOutS-3-1-2-93)" d="m68.862 75.04-1.491-9.791"/>
+   <path marker-end="url(#marker14331-9)" d="m90.145 75.04 1.4916-9.791"/>
+   <path marker-end="url(#TriangleOutS-3-1-2-9-7)" d="m68.862 181.45-1.4916 9.791"/>
+   <path marker-end="url(#marker14331-3-4)" d="m90.145 181.45 1.4916 9.791"/>
+  </g>
+  <g fill-opacity=".98901" fill="#ff0000" transform="matrix(1.8148 0 0 1.8148 -59.981 -105.94)">
+   <circle cx="35.814" cy="87.995" r=".80181"/>
+   <circle cx="35.814" cy="170.08" r=".80181"/>
+   <circle cx="99.722" transform="rotate(90)" cy="-35.814" r=".80181"/>
+   <circle cx="111.45" transform="rotate(90)" cy="-35.814" r=".80181"/>
+   <circle cx="123.18" transform="rotate(90)" cy="-35.814" r=".80181"/>
+   <circle cx="134.9" transform="rotate(90)" cy="-35.814" r=".80181"/>
+   <circle cx="146.63" transform="rotate(90)" cy="-35.814" r=".80181"/>
+   <circle cx="158.36" transform="rotate(90)" cy="-35.814" r=".80181"/>
+   <circle cx="117.9" cy="87.995" r=".80181"/>
+   <circle cx="117.9" cy="170.08" r=".80181"/>
+   <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   <circle cy="87.995" cx="117.9" r=".80181"/>
+   <circle cy="170.08" cx="117.9" r=".80181"/>
+   <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+   <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+   <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+   <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+   <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+   <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+   <g transform="translate(-11.727 .0000076294)">
+    <circle cx="117.9" cy="87.995" r=".80181"/>
+    <circle cx="117.9" cy="170.08" r=".80181"/>
+    <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cy="87.995" cx="117.9" r=".80181"/>
+    <circle cy="170.08" cx="117.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+   </g>
+   <g transform="translate(-23.453 .0000076294)">
+    <circle cy="87.995" cx="117.9" r=".80181"/>
+    <circle cy="170.08" cx="117.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+    <circle cx="117.9" cy="87.995" r=".80181"/>
+    <circle cx="117.9" cy="170.08" r=".80181"/>
+    <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   </g>
+   <g transform="translate(-35.18 .0000076294)">
+    <circle cx="117.9" cy="87.995" r=".80181"/>
+    <circle cx="117.9" cy="170.08" r=".80181"/>
+    <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cy="87.995" cx="117.9" r=".80181"/>
+    <circle cy="170.08" cx="117.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+   </g>
+   <g transform="translate(-46.907 .0000076294)">
+    <circle cy="87.995" cx="117.9" r=".80181"/>
+    <circle cy="170.08" cx="117.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+    <circle cx="117.9" cy="87.995" r=".80181"/>
+    <circle cx="117.9" cy="170.08" r=".80181"/>
+    <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   </g>
+   <g transform="translate(-58.634 .0000076294)">
+    <circle cx="117.9" cy="87.995" r=".80181"/>
+    <circle cx="117.9" cy="170.08" r=".80181"/>
+    <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cy="87.995" cx="117.9" r=".80181"/>
+    <circle cy="170.08" cx="117.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+   </g>
+   <g transform="translate(-70.36 .0000076294)">
+    <circle cy="87.995" cx="117.9" r=".80181"/>
+    <circle cy="170.08" cx="117.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="99.722" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="111.45" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="123.18" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="134.9" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="146.63" r=".80181"/>
+    <circle transform="rotate(90)" cy="-117.9" cx="158.36" r=".80181"/>
+    <circle cx="117.9" cy="87.995" r=".80181"/>
+    <circle cx="117.9" cy="170.08" r=".80181"/>
+    <circle cx="99.722" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="111.45" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="123.18" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="134.9" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="146.63" transform="rotate(90)" cy="-117.9" r=".80181"/>
+    <circle cx="158.36" transform="rotate(90)" cy="-117.9" r=".80181"/>
+   </g>
+  </g>
+ </g>
+</svg>

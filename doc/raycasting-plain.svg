@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="220.84mm" width="164.94mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 164.9436 220.83629">
+ <title>Volume Ray Casting</title>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Volume Ray Casting</dc:title>
+    <dc:date>2017-11-16</dc:date>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Roland Rytz (draemmli)</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:rights>
+     <cc:Agent>
+      <dc:title>CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0 International)</dc:title>
+     </cc:Agent>
+    </dc:rights>
+    <dc:language>en</dc:language>
+    <dc:description>Diagram showing the sampling process of a single ray for volume ray casting</dc:description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(1.0674 -8.4212)">
+  <g transform="matrix(1.5939 0 0 1.5939 -69.178 -91.457)">
+   <g stroke-width=".3" stroke="#343434" stroke-linecap="square">
+    <g fill="#ff0b0b" fill-opacity=".0054945">
+     <rect y="91.419" width="7.4083" x="63.5" height="7.4083"/>
+     <rect y="91.419" width="7.4083" x="70.908" height="7.4083"/>
+     <rect y="91.419" width="7.4083" x="78.317" height="7.4083"/>
+    </g>
+    <rect fill-opacity=".071429" height="7.4083" width="7.4083" y="91.419" x="85.725" fill="#200bff"/>
+    <rect fill-opacity=".25275" height="7.4083" width="7.4083" y="91.419" x="93.133" fill="#310bff"/>
+    <rect fill-opacity=".25275" height="7.4083" width="7.4083" y="91.419" x="100.54" fill="#310bff"/>
+    <rect fill-opacity=".071429" height="7.4083" width="7.4083" y="91.419" x="107.95" fill="#200bff"/>
+    <g fill="#ff0b0b" fill-opacity=".0054945">
+     <rect y="91.419" width="7.4083" x="115.36" height="7.4083"/>
+     <rect y="98.827" width="7.4083" x="63.5" height="7.4083"/>
+     <rect y="98.827" width="7.4083" x="70.908" height="7.4083"/>
+     <rect y="98.827" width="7.4083" x="78.317" height="7.4083"/>
+    </g>
+    <rect fill-opacity=".25275" height="7.4083" width="7.4083" y="98.827" x="85.725" fill="#310bff"/>
+    <rect fill-opacity=".83516" height="7.4083" width="7.4083" y="98.827" x="93.133" fill="#100bff"/>
+    <rect fill-opacity=".83516" height="7.4083" width="7.4083" y="98.827" x="100.54" fill="#100bff"/>
+    <rect fill-opacity=".25275" height="7.4083" width="7.4083" y="98.827" x="107.95" fill="#310bff"/>
+    <g fill="#ff0b0b" fill-opacity=".0054945">
+     <rect y="98.827" width="7.4083" x="115.36" height="7.4083"/>
+     <rect y="106.24" width="7.4083" x="63.5" height="7.4083"/>
+     <rect y="106.24" width="7.4083" x="70.908" height="7.4083"/>
+     <rect y="106.24" width="7.4083" x="78.317" height="7.4083"/>
+    </g>
+    <rect fill-opacity=".071429" height="7.4083" width="7.4083" y="106.24" x="85.725" fill="#200bff"/>
+    <rect fill-opacity=".25275" height="7.4083" width="7.4083" y="106.24" x="93.133" fill="#310bff"/>
+    <rect fill-opacity=".25275" height="7.4083" width="7.4083" y="106.24" x="100.54" fill="#310bff"/>
+    <rect fill-opacity=".071429" height="7.4083" width="7.4083" y="106.24" x="107.95" fill="#200bff"/>
+    <g fill="#ff0b0b">
+     <rect fill-opacity=".0054945" height="7.4083" width="7.4083" y="106.24" x="115.36"/>
+     <rect fill-opacity=".0054945" height="7.4083" width="7.4083" y="113.64" x="63.5"/>
+     <rect fill-opacity=".11538" height="7.4083" width="7.4083" y="113.64" x="70.908"/>
+     <rect fill-opacity=".39011" height="7.4083" width="7.4083" y="113.64" x="78.317"/>
+     <rect fill-opacity=".11538" height="7.4083" width="7.4083" y="113.64" x="85.725"/>
+     <g fill-opacity=".0054945">
+      <rect y="113.64" width="7.4083" x="93.133" height="7.4083"/>
+      <rect y="113.64" width="7.4083" x="100.54" height="7.4083"/>
+      <rect y="113.64" width="7.4083" x="107.95" height="7.4083"/>
+      <rect y="113.64" width="7.4083" x="115.36" height="7.4083"/>
+      <rect y="121.05" width="7.4083" x="63.5" height="7.4083"/>
+     </g>
+     <rect fill-opacity=".39011" height="7.4083" width="7.4083" y="121.05" x="70.908"/>
+     <rect fill-opacity=".65385" height="7.4083" width="7.4083" y="121.05" x="78.317"/>
+     <rect fill-opacity=".39011" height="7.4083" width="7.4083" y="121.05" x="85.725"/>
+     <g fill-opacity=".0054945">
+      <rect y="121.05" width="7.4083" x="93.133" height="7.4083"/>
+      <rect y="121.05" width="7.4083" x="100.54" height="7.4083"/>
+      <rect y="121.05" width="7.4083" x="107.95" height="7.4083"/>
+      <rect y="121.05" width="7.4083" x="115.36" height="7.4083"/>
+      <rect y="128.46" width="7.4083" x="63.5" height="7.4083"/>
+     </g>
+     <rect fill-opacity=".11538" height="7.4083" width="7.4083" y="128.46" x="70.908"/>
+     <rect fill-opacity=".39011" height="7.4083" width="7.4083" y="128.46" x="78.317"/>
+     <rect fill-opacity=".11538" height="7.4083" width="7.4083" y="128.46" x="85.725"/>
+     <g fill-opacity=".0054945">
+      <rect y="128.46" width="7.4083" x="93.133" height="7.4083"/>
+      <rect y="128.46" width="7.4083" x="100.54" height="7.4083"/>
+      <rect y="128.46" width="7.4083" x="107.95" height="7.4083"/>
+      <rect y="128.46" width="7.4083" x="115.36" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="63.5" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="70.908" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="78.317" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="85.725" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="93.133" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="100.54" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="107.95" height="7.4083"/>
+      <rect y="135.87" width="7.4083" x="115.36" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="63.5" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="70.908" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="78.317" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="85.725" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="93.133" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="100.54" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="107.95" height="7.4083"/>
+      <rect y="84.01" width="7.4083" x="115.36" height="7.4083"/>
+     </g>
+    </g>
+   </g>
+   <g stroke-opacity="0" fill="none">
+    <path d="m67.204 127.6v23.35"/>
+    <path d="m74.613 121.97v28.98"/>
+    <path d="m82.021 116.34v34.61"/>
+    <path d="m89.429 110.71v40.24"/>
+    <path d="m96.838 105.09v45.86"/>
+    <path d="m104.25 99.46v51.49"/>
+    <path d="m111.65 93.833v57.117"/>
+    <path d="m119.06 88.206v62.744"/>
+   </g>
+   <path stroke="#000" stroke-width="1.365" d="m58.605 134.28 70.845-54.04" fill="none"/>
+   <g transform="translate(-1.7773 1.3096)">
+    <path stroke="#000" stroke-width=".546pt" d="m131.95 78.329-2.0993 5.0351-3.3116-4.3411z" fill-rule="evenodd"/>
+   </g>
+   <g stroke-width=".93039" stroke="#000" stroke-linecap="square">
+    <circle cy="127.6" cx="67.204" r="1.9647" fill="#fff"/>
+    <circle cy="121.97" cx="74.613" r="1.9647" fill="#ffabab"/>
+    <circle cy="116.33" cx="82.021" r="1.9647" fill="#ffabab"/>
+    <circle cy="110.7" cx="89.429" r="1.9647" fill="#efeeff"/>
+    <circle cy="105.07" cx="96.838" r="1.9647" fill="#453eff"/>
+    <circle cy="99.442" cx="104.25" r="1.9647" fill="#453eff"/>
+    <circle cy="93.811" cx="111.65" r="1.9647" fill="#efeeff"/>
+    <circle cy="88.18" cx="119.06" r="1.9647" fill="#fff"/>
+   </g>
+  </g>
+  <g transform="matrix(1.5939 0 0 1.5939 -62.114 -91.457)">
+   <g stroke-width=".3" stroke="#343434" stroke-linecap="square" transform="matrix(1.4817 0 0 1.4817 -46.133 -79.568)">
+    <rect fill-opacity=".0054945" height="7.4083" width="7.4083" y="171.6" x="94.038" fill="#ff0b0b"/>
+    <rect fill-opacity=".071429" height="7.4083" width="7.4083" y="172.36" x="93.251" fill="#200bff"/>
+    <rect fill-opacity=".83516" height="7.4083" width="7.4083" y="173.12" x="92.464" fill="#100bff"/>
+    <rect fill-opacity=".83516" height="7.4083" width="7.4083" y="173.89" x="91.677" fill="#100bff"/>
+    <rect fill-opacity=".071429" height="7.4083" width="7.4083" y="174.65" x="90.891" fill="#200bff"/>
+    <g fill="#ff0b0b">
+     <rect fill-opacity=".39011" height="7.4083" width="7.4083" y="175.41" x="90.104"/>
+     <rect fill-opacity=".39011" height="7.4083" width="7.4083" y="176.17" x="89.317"/>
+     <rect fill-opacity=".0054945" height="7.4083" width="7.4083" y="176.93" x="88.531"/>
+    </g>
+   </g>
+   <g transform="translate(-.24534 16.704)">
+    <g stroke="#000" transform="matrix(.71335 -.098008 .098008 .71335 12.242 37.929)">
+     <path stroke-width="1.365" d="m18.843 198.78 35.664-27.12" fill="none"/>
+     <g stroke-width=".93039" stroke-linecap="square">
+      <circle cy="194.83" cx="23.846" r="1.9647" fill="#fff"/>
+      <circle cy="192.26" cx="27.304" r="1.9647" fill="#ffabab"/>
+      <circle cy="189.69" cx="30.763" r="1.9647" fill="#ffabab"/>
+      <circle cy="187.13" cx="34.221" r="1.9647" fill="#efeeff"/>
+      <circle cy="184.56" cx="37.679" r="1.9647" fill="#453eff"/>
+      <circle cy="181.99" cx="41.138" r="1.9647" fill="#453eff"/>
+      <circle cy="179.42" cx="44.596" r="1.9647" fill="#efeeff"/>
+      <circle cy="176.85" cx="48.055" r="1.9647" fill="#fff"/>
+     </g>
+    </g>
+    <g transform="matrix(.70963 0 0 .70963 13.359 43.163)">
+     <path stroke="#000" stroke-width=".39315pt" d="m78.213 156.31-1.0098 3.796-2.7836-2.7764z" fill-rule="evenodd"/>
+    </g>
+   </g>
+   <rect height="10.977" width="10.977" stroke="#343434" stroke-linecap="square" y="178.65" x="124.31" stroke-width=".44452" fill="#ac0065"/>
+   <g fill-rule="evenodd" transform="matrix(1.47 0 0 2.105 -32.206 -201.59)" fill="#8c8c8c">
+    <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;font-variant-numeric:normal;text-orientation:mixed;shape-rendering:auto;font-variant-ligatures:normal;text-decoration-line:none;font-variant-position:normal;mix-blend-mode:normal;font-feature-settings:normal;shape-padding:0;font-variant-alternates:normal;text-indent:0;dominant-baseline:auto;font-variant-caps:normal;image-rendering:auto;white-space:normal;text-decoration-style:solid;solid-color:#000000;isolation:auto;text-transform:none" d="m68.941 182.87v0.75782h4.8477v-0.75782z"/>
+    <path d="m72.327 182.33 2.4869 0.91449-2.4869 0.91448c0.3973-0.53991 0.39501-1.2786 0-1.829z"/>
+   </g>
+   <g fill="#8c8c8c" transform="matrix(1.47 0 0 2.105 8.8598 -201.59)" fill-rule="evenodd">
+    <path style="color-rendering:auto;text-decoration-color:#000000;color:#000000;font-variant-numeric:normal;text-orientation:mixed;shape-rendering:auto;font-variant-ligatures:normal;text-decoration-line:none;font-variant-position:normal;mix-blend-mode:normal;font-feature-settings:normal;shape-padding:0;font-variant-alternates:normal;text-indent:0;dominant-baseline:auto;font-variant-caps:normal;image-rendering:auto;white-space:normal;text-decoration-style:solid;solid-color:#000000;isolation:auto;text-transform:none" d="m68.941 182.87v0.75782h4.8477v-0.75782z"/>
+    <path d="m72.327 182.33 2.4869 0.91449-2.4869 0.91448c0.3973-0.53991 0.39501-1.2786 0-1.829z"/>
+   </g>
+  </g>
+  <text style="word-spacing:0px;letter-spacing:0px;text-anchor:middle;text-align:center" xml:space="preserve" font-size="8.4345px" y="156.49675" x="81.342621" font-family="&apos;Liberation Sans&apos;" fill="#000000"><tspan y="156.49675" x="81.342621">Combining multiple samples</tspan><tspan y="167.03992" x="81.342621">into one output pixel</tspan></text>
+  <text style="word-spacing:0px;letter-spacing:0px;text-anchor:middle;text-align:center" xml:space="preserve" font-size="8.4345px" y="26.944134" x="81.22113" font-family="&apos;Liberation Sans&apos;" fill="#000000"><tspan y="26.944134" x="81.22113">Sampling voxels along ray</tspan></text>
+ </g>
+</svg>
