@@ -1,4 +1,4 @@
-var fragmentShader = `#version 300 es
+#version 300 es
 
 precision highp float;
 precision highp int;
@@ -145,105 +145,13 @@ void main(){
 	
 	for(int count = 0; count < sampleCount; count++){
 
-		//texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
+		texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
 
-		texCo = pos + incLength*increment;
-
-		/*if(texCo.x < aabb[0].x || texCo.x > aabb[1].x
-		 ||texCo.y < aabb[0].y || texCo.y > aabb[1].y
-		 ||texCo.z < aabb[0].z || texCo.z > aabb[1].z)
-		{
-			//value = vec4(0.0, 1.0, 0.0, 1.0);
-			break;
-		}*/
-		pos = texCo;
-		
 		px = texture(tex, texCo).r;
-		//px = length(texture(normals, texCo).xyz - 0.5);
 		
 		pxColor = texture(colorMap, vec2(px, 0.0));
-
-		//pxColor = length
 		
-
-		//if(abs(last-px) > 0.0){
-			//normal = normalize(texture(normals, texCo).xyz - 0.5);
-
-			normal = normalize(texCo.xyz - 0.5);
-			
-			//normal = (vec4(normal, 0.0) * inverseTransform).xyz;
-
-			/*if(length(normal) < 0.01){
-				value = vec4(1.0, 0.0, 0.0, 1.0);
-				break;
-			}*/
-			
-			//normal = normalize(normal);
-
-
-			/*vec3 reflect = normalize(reflect(normalize(increment), normal));
-			vec3 reflectColor = texture(skybox, reflect).rgb*pxColor.a;
-			pxColor.rgb = reflectColor;*/
-			//break;
-			
-			float eta = (1.0+last*refractionFactor)/(1.0+px*refractionFactor);
-			
-			//eta = 1.0;
-
-			//refractVector = refract(increment, normal, eta);
-
-			if(dot(normal, normalize(increment)) > 0.0){
-				normal = -normal;
-				eta = 1.0/eta;
-			}
-
-			incLength = incLength * eta;
-
-			vec3 refractVector = normalize(refract(normalize(increment), normal, eta));
-
-			if(length(refractVector) > 0.5){
-				increment = refractVector;
-			} else {
-				pxColor = vec4(1.0, 0.5, 0.0, 0.1);
-				//increment = normalize(reflect(normalize(increment), normal));
-			}
-		//}
-
-		last = px;
-
-		
-
-
-		
-		//float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
-
-		//vec3 R = -reflect(lightDirection, surfaceNormal);
-		//return pow(max(0.0, dot(viewDirection, R)), shininess);
-
-		//float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
-		//specular = pow(specular, 100.0) * specularIntensity;
-
-		//vec3 ambient = textureLod(skybox, -normal, 32.0).rgb;
-
-		//pxColor.rgb = ambient*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
-		//pxColor.rgb = ambient;
-
-		//normal = normalize(texture(normals, texCo).xyz - 0.5);
-
-		/*if((last-px) > 0.1){
-			vec3 reflect = -normalize(reflect(direction.xyz, normal));
-			float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
-			vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;
-			
-			pxColor.rgb = pxColor.rgb + reflectColor;
-		}*/
-
-		//pxColor.rgb = reflectColor;
-			
-		
-		//value = mix(value, pxColor, px);
-		//value = (1.0-value.a)*pxColor + value;
-		//value = mix(pxColor, zero, value.a) + value;
+		px = px*px;
 		
 		value = value + pxColor - pxColor*value.a;
 		
@@ -253,20 +161,7 @@ void main(){
 		}
 	}
 
-	background = texture(skybox, normalize(increment));
+	//background = texture(skybox, normalize(direction.xyz));
 	color = mix(background, value, value.a);
 	//color = value;
 }
-
-`;
-
-
-
-
-
-
-
-
-
-
-

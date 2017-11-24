@@ -26,20 +26,31 @@
 	<head>
 		<meta charset="utf-8"> 
 		<title>
-			WebGL 2 Raycasting
+			WebGL Volume Rendering
 		</title>
 		<link rel="stylesheet" type="text/css" media="all" href="./css/style.css">
 		<link rel="stylesheet" type="text/css" media="all" href="./css/boilerplate.css">
 
 		<meta name="viewport" content="width=device-width">
 		<meta name="mobile-web-app-capable" content="yes">
+
+		<script src="./js/lib/matrix.js" type="text/javascript" defer></script>
+		<script src="./js/lib/loadFile.js" type="text/javascript" defer></script>
+		<script src="./js/shaders/defaults.js" type="text/javascript" defer></script>
+		<script src="./js/raycasting.js" type="text/javascript" defer></script>
+		<script src="./js/controls.js" type="text/javascript" defer></script>
 		
 	</head>
 	<body>
 		<div id="controls">
+			<header>
 			<a id="title" href=".">
-				<h1>Volume Ray Tracing</h1>
+				<h1>Volume Rendering</h1>
 			</a>
+			<p id="subtitle">
+				Volume ray casting in WebGL 2.
+			</p>
+			</header>
 			<div class="setting">
 				<h2>Volume</h2>
 				<select id="volumeSelect">
@@ -73,6 +84,8 @@
 				</div>
 			<div class="setting">
 				<h2>Shader</h2>
+				<select id="shaderSelect">
+				</select>
 				<h3>Refraction factor</h3>
 				<label class="slider">
 					<input type="range" id="refractionFactor" min="0" max="2" step="0.01" value="1">
@@ -92,11 +105,5 @@
 			<canvas id="canvas"></canvas>
 		</div>
 		<img id="slice">
-
-		<script src="./js/matrix.js" type="text/javascript"></script>
-		<script src="./js/vertexShader.js" type="text/javascript"></script>
-		<script src="./js/fragmentShader.js" type="text/javascript"></script>
-		<script src="./js/raycasting.js" type="text/javascript"></script>
-		<script src="./js/controls.js" type="text/javascript"></script>
 	</body>
 </html>

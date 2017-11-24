@@ -46,6 +46,19 @@ var volumes = {
 	}
 };
 
+var shaders = {
+	 refraction: {
+		 name: "Refraction"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/refraction.frag"
+	}
+	,basic: {
+		 name: "Basic"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/basic.frag"
+	}
+}
+
 
 var Renderer = function(){
 
@@ -65,7 +78,13 @@ var Renderer = function(){
 	var shaderProgram;
 	var size;
 
+	var volumeTexture;
 	var colorTexture;
+	var normalsTexture;
+	var skyboxTexture;
+	
+	var zScale = 1;
+	
 	var depthSampleCountRef
 	var opacitySettingsRef;
 	var lightPositionRef;
@@ -81,6 +100,7 @@ var Renderer = function(){
 	updateOpacity();
 	changeVolume(volumes.vessels);
 	loadSkybox();
+	changeShader(shaders.refraction);
 
 	/*img.onload = processVolume;
 	img.src = "./images/sagittal.png";*/
@@ -205,8 +225,26 @@ var Renderer = function(){
 		};
 		skyboxImg.src = "./images/skybox/debug.png";
 	}
-
-	function initGl(){
+	
+	function changeShader(shader){
+		
+		loadFile(shader.vert, function(response){
+			
+			vertexShader = response;
+			
+			loadFile(shader.frag, function(response){
+				
+				fragmentShader = response;
+				compileShaders();
+				draw();
+				
+			});
+		});
+		
+	}
+	
+	function compileShaders(){
+		
 		// Create a vertex shader object
 		var vertShader = gl.createShader(gl.VERTEX_SHADER);
 
@@ -250,8 +288,8 @@ var Renderer = function(){
 		if(gl.getProgramInfoLog(shaderProgram)){
 			console.warn(gl.getProgramInfoLog(shaderProgram));
 		}
-
-
+		
+		
 		vertexBuffer = gl.createBuffer();
 
 		/*==========Defining and storing the geometry=======*/
@@ -269,10 +307,16 @@ var Renderer = function(){
 		
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-		gl.bindBuffer(gl.ARRAY_BUFFER, null);
+		//gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-
+		//gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+		
+		bindTextures();
+		updateAttribPointers();
+		
+	}
+	
+	function updateAttribPointers(){
 		// Get the attribute location
 		var coord = gl.getAttribLocation(shaderProgram, "coordinates");
 
@@ -282,6 +326,26 @@ var Renderer = function(){
 		// Enable the attribute
 		gl.enableVertexAttribArray(coord);
 
+		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
+		gl.uniform1f(zScaleRef, zScale);
+		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
+		gl.uniform1f(aspectRef, aspect);
+		
+		depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
+		gl.uniform1i(depthSampleCountRef, 512);
+
+		refractionFactorRef = gl.getUniformLocation(shaderProgram, "refractionFactor");
+		gl.uniform1f(refractionFactorRef, 1);
+		
+		opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
+		lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
+		
+		transformRef = gl.getUniformLocation(shaderProgram, "transform");
+		inverseTransformRef = gl.getUniformLocation(shaderProgram, "inverseTransform");
+	}
+	
+	function bindTextures(){
+		
 		// lookup the sampler locations.
 		var u_image0Location = gl.getUniformLocation(shaderProgram, "tex");
 		var u_image1Location = gl.getUniformLocation(shaderProgram, "colorMap");
@@ -292,10 +356,25 @@ var Renderer = function(){
 		gl.uniform1i(u_image1Location, 1);  // texture unit 1
 		gl.uniform1i(u_image2Location, 2);  // texture unit 2
 		gl.uniform1i(u_image3Location, 3);  // texture unit 3
-
-		var texture = gl.createTexture();
+		
 		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_3D, texture);
+		gl.bindTexture(gl.TEXTURE_3D, volumeTexture);
+		
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
+		
+		gl.activeTexture(gl.TEXTURE2);
+		gl.bindTexture(gl.TEXTURE_3D, normalsTexture);
+		
+		gl.activeTexture(gl.TEXTURE3);
+		gl.bindTexture(gl.TEXTURE_CUBE_MAP, skyboxTexture);
+	}
+	
+	function createTextures(){
+	
+		volumeTexture = gl.createTexture();
+		//gl.activeTexture(gl.TEXTURE0);
+		gl.bindTexture(gl.TEXTURE_3D, volumeTexture);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -316,7 +395,7 @@ var Renderer = function(){
 		);
 
 		colorTexture = gl.createTexture();
-		gl.activeTexture(gl.TEXTURE1);
+		//gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -324,8 +403,8 @@ var Renderer = function(){
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 
-		var normalsTexture = gl.createTexture();
-		gl.activeTexture(gl.TEXTURE2);
+		normalsTexture = gl.createTexture();
+		//gl.activeTexture(gl.TEXTURE2);
 		gl.bindTexture(gl.TEXTURE_3D, normalsTexture);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
 		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
@@ -348,7 +427,7 @@ var Renderer = function(){
 		);
 
 		skyboxTexture = gl.createTexture();
-		gl.activeTexture(gl.TEXTURE3);
+		//gl.activeTexture(gl.TEXTURE3);
 		gl.bindTexture(gl.TEXTURE_CUBE_MAP, skyboxTexture);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
@@ -361,22 +440,14 @@ var Renderer = function(){
 		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		
+	}
 
-		zScaleRef = gl.getUniformLocation(shaderProgram, "zScale");
-		aspectRef = gl.getUniformLocation(shaderProgram, "aspect");
-		gl.uniform1f(aspectRef, aspect);
+	function initGl(){
 		
-		depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
-		gl.uniform1i(depthSampleCountRef, 512);
-
-		refractionFactorRef = gl.getUniformLocation(shaderProgram, "refractionFactor");
-		gl.uniform1f(refractionFactorRef, 1);
+		createTextures();
+		compileShaders();
 		
-		opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
-		lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
-		
-		transformRef = gl.getUniformLocation(shaderProgram, "transform");
-		inverseTransformRef = gl.getUniformLocation(shaderProgram, "inverseTransform");
 	}
 
 	function changeVolume(volume){
@@ -438,6 +509,7 @@ var Renderer = function(){
 
 			updateVolumeTexture(textureData, imageWidth, imageHeight, slices);
 			updateNormalsTexture(normals, imageWidth, imageHeight, slices);
+			zScale = volume.zScale;
 			updateZScale(volume.zScale);
 
 			draw();
@@ -533,6 +605,7 @@ var Renderer = function(){
 		,changeSampleCount: changeSampleCount
 		,changeRefractionFactor: changeRefractionFactor
 		,changeVolume: changeVolume
+		,changeShader: changeShader
 		,updateOpacity: updateOpacity
 		,draw: draw
 	};

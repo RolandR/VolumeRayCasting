@@ -143,7 +143,7 @@ function initControls(){
 		moving = false;
 		panning = false;
 		moveStartX = 0;
-		moveStartY = 0;
+		moveStartY = 0;		
 		lastX = 0;
 		lastY = 0;
 		panX = 0;
@@ -170,6 +170,7 @@ function initControls(){
 	
 
 	initVolumeSelect();
+	initShaderSelect();
 	initShaderControls();
 	initOpacityControls();
 	initColorSelect();
@@ -188,6 +189,23 @@ function initControls(){
 		volumeSelect.addEventListener("change", function(e){
 			var selectedValue = this.options[this.options.selectedIndex].value;
 			renderer.changeVolume(volumes[selectedValue]);
+		});
+	}
+	
+	function initShaderSelect(){
+		var shaderSelect = document.getElementById("shaderSelect");
+
+		for(var i in shaders){
+			var option = document.createElement("option");
+			option.value = i;
+			option.innerHTML = shaders[i].name;
+			shaderSelect.appendChild(option);
+		}
+
+		
+		shaderSelect.addEventListener("change", function(e){
+			var selectedValue = this.options[this.options.selectedIndex].value;
+			renderer.changeShader(shaders[selectedValue]);
 		});
 	}
 

@@ -82,8 +82,13 @@ select{
 	color: #FFFFFF;
 	text-shadow: 1px 1px 0px #000000;
 	cursor: pointer;
-	padding: 3px;
 	line-height: 0px;
+	
+	font-family: dejavu, sans-serif;
+	height: 30px;
+	font-size: 17px;
+	font-weight: 200;
+	padding: 0px 3px;
 }
 
 select:hover{

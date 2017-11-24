@@ -155,11 +155,11 @@ function render(){
 					x = ~~(pos[0] + i*increment[0]);
 					y = ~~(pos[1] + i*increment[1]);
 					value = zVolume[x + y*imageSize];
-
+					
 					if(value < 50){
 						continue;
 					}
-
+					
 					a = squared[value];
 					v = cubed[value];
 					
@@ -171,24 +171,24 @@ function render(){
 					}
 					
 				}
-
+				
 				var index = imageZPos + s*4;
 				
 				cutImageData.data[index+0] = ~~(output*256);
 				cutImageData.data[index+1] = ~~(output*256);
 				cutImageData.data[index+2] = ~~(output*256);
 				cutImageData.data[index+3] = 255;
-
+				
 			}
-
+			
 		}
 		
 		cutContext.putImageData(cutImageData, 0, 0);
-
+		
 		frameCount++;
 		
 		requestAnimationFrame(draw);
-
+		
 	}
 
 	var samplesPerFrame = Math.round((zSize*rayLength*sampleCount)/2);

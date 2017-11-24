@@ -54,6 +54,11 @@ a#title:hover > h1{
 	color: #FFBB66;
 }
 
+#subtitle{
+	padding: 0px 0px;
+	margin-bottom: 7px;
+}
+
 h2{
 	font-weight: 300;
 	margin-bottom: 10px;
@@ -79,6 +84,7 @@ hr{
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
+	overflow-y: auto;
 }
 
 div.setting{
@@ -120,11 +126,7 @@ footer{
 }
 
 #volumeSelect{
-	font-family: dejavu, sans-serif;
-	height: 30px;
-	font-size: 17px;
-	font-weight: 200;
-	padding: 0px 3px;
+	
 }
 
 #opacityControls{

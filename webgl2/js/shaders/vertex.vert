@@ -1,4 +1,4 @@
-var vertexShader = `#version 300 es
+#version 300 es
  
 uniform float aspect;
 //uniform float zScale;
@@ -17,4 +17,3 @@ void main() {
 
 	gl_Position = vec4(coordinates, 1.0, 1.0);
 }
-`;
