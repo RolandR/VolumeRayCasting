@@ -7,7 +7,14 @@ var volumes = {
 		,name: "Handgelenk"
 		,columns: 4
 		,slices: 316
-		,zScale: 2
+		,zScale: 1
+	}
+	,handgelenk2: {
+		 src: "./images/handgelenk2.jpg"
+		,name: "Handgelenk 2"
+		,columns: 2
+		,slices: 160
+		,zScale: 1
 	}
 	,sagittal: {
 		 src: "./images/sagittal.png"
