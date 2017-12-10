@@ -2,7 +2,14 @@
 
 
 var volumes = {
-	sagittal: {
+	handgelenk: {
+		 src: "./images/handgelenk.jpg"
+		,name: "Handgelenk"
+		,columns: 4
+		,slices: 316
+		,zScale: 2
+	}
+	,sagittal: {
 		 src: "./images/sagittal.png"
 		,name: "Water"
 		,columns: 2
@@ -47,15 +54,20 @@ var volumes = {
 };
 
 var shaders = {
-	 refraction: {
-		 name: "Refraction"
-		,vert: "./js/shaders/vertex.vert"
-		,frag: "./js/shaders/refraction.frag"
-	}
-	,basic: {
+	basic: {
 		 name: "Basic"
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/basic.frag"
+	}
+	,shaded: {
+		 name: "Shaded"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/shaded.frag"
+	}
+	,refraction: {
+		 name: "Refraction"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/refraction.frag"
 	}
 }
 
@@ -98,9 +110,9 @@ var Renderer = function(){
 
 	changeColorTexture("./colorMappings/skyline.png");
 	updateOpacity();
-	changeVolume(volumes.vessels);
+	changeVolume(volumes.handgelenk);
 	loadSkybox();
-	changeShader(shaders.refraction);
+	changeShader(shaders.basic);
 
 	/*img.onload = processVolume;
 	img.src = "./images/sagittal.png";*/
@@ -223,7 +235,7 @@ var Renderer = function(){
 			draw();
 			//console.log(this);
 		};
-		skyboxImg.src = "./images/skybox/debug.png";
+		skyboxImg.src = "./images/skybox/bleak-outlook.png";
 	}
 	
 	function changeShader(shader){
