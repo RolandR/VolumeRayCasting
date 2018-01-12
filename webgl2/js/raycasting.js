@@ -2,40 +2,33 @@
 
 
 var volumes = {
-	handgelenk: {
-		 src: "./images/handgelenk.jpg"
-		,name: "Handgelenk"
-		,columns: 4
-		,slices: 316
-		,zScale: 1
-	}
-	,handgelenk2: {
-		 src: "./images/handgelenk2.jpg"
-		,name: "Handgelenk 2"
-		,columns: 2
-		,slices: 160
-		,zScale: 1
-	}
-	,sagittal: {
+	 sagittal: {
 		 src: "./images/sagittal.png"
-		,name: "Water"
+		,name: "Brain - Water"
 		,columns: 2
 		,slices: 176
 		,zScale: 0.7
 	}
 	,vessels: {
 		 src: "./images/vessels.png"
-		,name: "Vessels"
+		,name: "Brain - Vessels"
 		,columns: 1
 		,slices: 160
 		,zScale: 0.65
 	}
-	,sphereAntialiased: {
-		 src: "./images/sphere_antialiased.png"
-		,name: "Sphere (Anti-aliased)"
-		,columns: 16
-		,slices: 256
-		,zScale: 1
+	,handgelenk: {
+		 src: "./images/handgelenk.jpg"
+		,name: "Wrist"
+		,columns: 4
+		,slices: 316
+		,zScale: 1.5
+	}
+	,handgelenk2: {
+		 src: "./images/handgelenk2.jpg"
+		,name: "Wrist 2"
+		,columns: 2
+		,slices: 160
+		,zScale: 0.5
 	}
 	,broccoli: {
 		 src: "./images/broccoli.png"
@@ -43,6 +36,13 @@ var volumes = {
 		,columns: 1
 		,slices: 50
 		,zScale: 0.7
+	}
+	,sphereAntialiased: {
+		 src: "./images/sphere_antialiased.png"
+		,name: "Sphere (Anti-aliased)"
+		,columns: 16
+		,slices: 256
+		,zScale: 1
 	}
 	,cube: {
 		 src: "./images/cuuube.png"
@@ -66,16 +66,31 @@ var shaders = {
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/basic.frag"
 	}
+	,maxValue: {
+		 name: "Maximum Intensity"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/maxValue.frag"
+	}
 	,shaded: {
 		 name: "Shaded"
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/shaded.frag"
 	}
-	,refraction: {
+	,specular: {
+		 name: "Specular"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/specular.frag"
+	}
+	,realistic: {
+		 name: "Realistic"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/realistic.frag"
+	}
+	/*,refraction: {
 		 name: "Refraction"
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/refraction.frag"
-	}
+	}*/
 }
 
 
@@ -117,7 +132,7 @@ var Renderer = function(){
 
 	changeColorTexture("./colorMappings/skyline.png");
 	updateOpacity();
-	changeVolume(volumes.handgelenk);
+	changeVolume(volumes.sagittal);
 	loadSkybox();
 	changeShader(shaders.basic);
 
@@ -574,17 +589,12 @@ var Renderer = function(){
 			normals            // pixel
 		);
 	}
+	
+	var changed = true;
+	render();
 
-	/*function draw(){
-		//requestAnimationFrame(render);
-	}*/
-
-	//render();
-
-	function draw(){
-
-		//if(shaderProgram){
-			
+	function render(){
+		if(changed){
 			gl.uniformMatrix4fv(transformRef, false, transform);
 			gl.uniformMatrix4fv(inverseTransformRef, false, inverseTransform);
 			//gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
@@ -593,9 +603,17 @@ var Renderer = function(){
 			//gl.uniform3f(lightPositionRef, Math.sin(now), Math.cos(now), Math.sin(now*0.783));
 
 			gl.drawArrays(gl.TRIANGLES, 0, size);
-		//}
+			
+			changed = false;
+		}
+		requestAnimationFrame(render);
+	}
 
-		//requestAnimationFrame(render);
+	//render();
+
+	function draw(){
+
+		changed = true;
 	}
 
 	function changeSampleCount(count){

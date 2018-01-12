@@ -142,7 +142,10 @@ void main(){
 		//vec3 R = -reflect(lightDirection, surfaceNormal);
 		//return pow(max(0.0, dot(viewDirection, R)), shininess);
 
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;
+		float specular = max(dot(direction.xyz, reflect(lightVector, normal)), 0.0);
+		specular = pow(specular, 3.0);
+
+		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb + pxColor.a*specular*specularColor;
 			
 		
 		//value = mix(value, pxColor, px);

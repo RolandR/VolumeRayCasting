@@ -31,7 +31,7 @@ function initControls(){
 
 	var controlsContainer = document.getElementById("controls");
 
-	var zoom = 1/1.9;
+	var zoom = 1;
 
 	var startAngle = 0;
 	var startTime = Date.now();
@@ -64,7 +64,7 @@ function initControls(){
 			//angleX = ((Date.now()-startTime)/1000)*(2*Math.PI*turnsPerSecond);
 		//}
 		
-		angleX += panX*0.0025;
+		angleX -= panX*0.0025;
 		panX = 0;
 		var c = Math.cos(angleX);
 		var s = Math.sin(angleX);
@@ -171,7 +171,7 @@ function initControls(){
 
 	initVolumeSelect();
 	initShaderSelect();
-	initShaderControls();
+	//initShaderControls();
 	initOpacityControls();
 	initColorSelect();
 

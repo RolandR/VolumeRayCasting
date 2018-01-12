@@ -1,16 +1,20 @@
 #version 300 es
 
-precision lowp float;
-precision lowp int;
-precision lowp sampler3D;
+precision highp float;
+precision highp int;
+precision highp sampler3D;
 
 uniform sampler3D tex;
 uniform sampler3D normals;
 uniform sampler2D colorMap;
+uniform samplerCube skybox;
 
 uniform mat4 transform;
+uniform mat4 inverseTransform;
 uniform int depthSampleCount;
 uniform float zScale;
+
+uniform float refractionFactor;
 
 uniform vec3 lightPosition;
 
@@ -27,10 +31,16 @@ in vec2 texCoord;
 
 out vec4 color;
 
-vec3 ambientLight = vec3(0.34, 0.32, 0.32);
-vec3 directionalLight = vec3(0.5, 0.5, 0.5);
-vec3 lightVector = normalize(vec3(-1.0, -1.0, 1.0));
-vec3 specularColor = vec3(0.5, 0.5, 0.5);
+const vec3 ambientLight = vec3(0.34, 0.32, 0.32);
+//const vec3 ambientLight = vec3(0.0, 0.0, 0.0);
+const vec3 directionalLight = vec3(0.5, 0.5, 0.5);
+const vec3 lightVector = normalize(vec3(-1.0, 0.0, 0.0));
+const vec3 specularColor = vec3(0.5, 0.5, 0.5);
+
+const float specularIntensity = 0.2;
+const float shinyness = 5.0;
+const float scatterFactor = 2.0;
+const float reflectScattering = 1.0;
 
 vec3 aabb[2] = vec3[2](
 	vec3(0.0, 0.0, 0.0),
@@ -103,17 +113,25 @@ void main(){
 
 	vec4 value = vec4(0.0, 0.0, 0.0, 0.0);
 
+	//vec4 background = texture(skybox, direction.xyz);
+
 	if(tmin > tmax){
-		color = value;
-		discard;
+		/*color = value;
+		discard;*/
+
+		//color = background;
+		return;
 	}
 
 	vec3 start = origin.xyz + tmin*direction.xyz;
 	vec3 end = origin.xyz + tmax*direction.xyz;
 	
-	float length = distance(end, start);
-	int sampleCount = int(float(depthSampleCount)*length);
-	//vec3 increment = (end-start)/float(sampleCount);
+	float len = distance(end, start);
+	int sampleCount = int(float(depthSampleCount)*len);
+	vec3 increment = (end-start)/float(sampleCount);
+	float incLength = length(increment);
+	increment = normalize(increment);
+	vec3 pos = start;
 	//vec3 originOffset = mod((start-origin.xyz), increment);
 
 	float s = 0.0;
@@ -122,48 +140,25 @@ void main(){
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
 	vec3 normal = vec3(0.0, 0.0, 0.0);
 	vec4 zero = vec4(0.0);
+
+	float last = 0.0;
 	
 	for(int count = 0; count < sampleCount; count++){
 
 		texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
 
-		//texCo = start + increment*float(count);
-		px = texture(tex, texCo).r;
-
+		px = max(px, texture(tex, texCo).r);
 		
-		//px = length(texture(normals, texCo).xyz - 0.5);
-		//px = px * 1.5;
-		
-		pxColor = texture(colorMap, vec2(px, 0.0));
-		
-		normal = normalize(texture(normals, texCo).xyz - 0.5);
-		float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
-
-		//vec3 R = -reflect(lightDirection, surfaceNormal);
-		//return pow(max(0.0, dot(viewDirection, R)), shininess);
-
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;
-			
-		
-		//value = mix(value, pxColor, px);
-		//value = (1.0-value.a)*pxColor + value;
-		//value = mix(pxColor, zero, value.a) + value;
-		
-		value = value + pxColor - pxColor*value.a;
-		
-		if(value.a >= 0.95){
+		if(px >= 0.99){
 			break;
 		}
 	}
+
+	pxColor = texture(colorMap, vec2(px, 0.0));
+	
+	value = pxColor;
+
+	//background = texture(skybox, normalize(direction.xyz));
+	//color = mix(background, value, value.a);
 	color = value;
 }
-
-
-
-
-
-
-
-
-
-

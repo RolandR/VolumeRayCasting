@@ -113,13 +113,10 @@ void main(){
 
 	vec4 value = vec4(0.0, 0.0, 0.0, 0.0);
 
-	vec4 background = texture(skybox, direction.xyz);
+	//vec4 background = texture(skybox, direction.xyz);
 
 	if(tmin > tmax){
-		/*color = value;
-		discard;*/
-
-		color = background;
+		color = value;
 		return;
 	}
 
@@ -162,6 +159,6 @@ void main(){
 	}
 
 	//background = texture(skybox, normalize(direction.xyz));
-	color = mix(background, value, value.a);
-	//color = value;
+	//color = mix(background, value, value.a);
+	color = value;
 }
