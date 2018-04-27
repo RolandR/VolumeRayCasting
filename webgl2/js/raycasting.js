@@ -61,7 +61,12 @@ var volumes = {
 };
 
 var shaders = {
-	basic: {
+	 specular: {
+		 name: "Specular"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/specular.frag"
+	}
+	,basic: {
 		 name: "Basic"
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/basic.frag"
@@ -75,11 +80,6 @@ var shaders = {
 		 name: "Shaded"
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/shaded.frag"
-	}
-	,specular: {
-		 name: "Specular"
-		,vert: "./js/shaders/vertex.vert"
-		,frag: "./js/shaders/specular.frag"
 	}
 	,realistic: {
 		 name: "Realistic"
@@ -130,11 +130,11 @@ var Renderer = function(){
 
 	initGl();
 
-	changeColorTexture("./colorMappings/skyline.png");
+	changeColorTexture("./colorMappings/colors1.png");
 	updateOpacity();
 	changeVolume(volumes.sagittal);
 	loadSkybox();
-	changeShader(shaders.basic);
+	changeShader(shaders.specular);
 
 	/*img.onload = processVolume;
 	img.src = "./images/sagittal.png";*/

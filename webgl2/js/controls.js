@@ -6,8 +6,8 @@ var highNode = 3/256;*/
 
 var minLevel = 0;
 var maxLevel = 1;
-var lowNode = 0;
-var highNode = 0.2;
+var lowNode = 0.5;
+var highNode = 0.9;
 
 var autorotate = true;
 
@@ -31,7 +31,7 @@ function initControls(){
 
 	var controlsContainer = document.getElementById("controls");
 
-	var zoom = 1;
+	var zoom = 0.8;
 
 	var startAngle = 0;
 	var startTime = Date.now();
@@ -113,7 +113,7 @@ function initControls(){
 				panX += deltaX - lastX;
 				panY += deltaY - lastY;
 			} else if(moving){
-				translateX += (deltaX - lastX)*0.003;
+				translateX -= (deltaX - lastX)*0.003;
 				translateY -= (deltaY - lastY)*0.003;
 			}
 			lastX = deltaX;
