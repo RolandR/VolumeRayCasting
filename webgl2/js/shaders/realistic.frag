@@ -140,8 +140,12 @@ void main(){
 		//pxColor.rgb = ambient;
 		//normal = normalize(texture(normals, texCo).xyz - 0.5);
 		vec3 reflect = -normalize(reflect(direction.xyz, normal));
-		float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
-		vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;
+		//float angle = 1.0-clamp(pow(dot(direction.xyz, normal), 0.05), 0.0, 10.0);
+		float angle = 1.0-pow(dot(direction.xyz, normal), 2.0);
+		//vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*angle*pxColor.a*shinyness;
+		vec3 reflectColor = textureLod(skybox, reflect, reflectScattering).rgb*pxColor.a*1.0*angle;
+
+		//vec3 reflectColor = vec3(0.0, angle, 0.0);
 		
 		pxColor.rgb = pxColor.rgb + reflectColor;
 		//pxColor.rgb = reflectColor;
