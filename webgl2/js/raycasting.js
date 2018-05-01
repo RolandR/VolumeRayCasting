@@ -86,6 +86,11 @@ var shaders = {
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/realistic.frag"
 	}
+	,noTransferImage: {
+		 name: "No Transfer Image"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/noTransferImage.frag"
+	}
 	/*,refraction: {
 		 name: "Refraction"
 		,vert: "./js/shaders/vertex.vert"
