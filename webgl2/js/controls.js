@@ -31,6 +31,8 @@ function initControls(){
 
 	var controlsContainer = document.getElementById("controls");
 
+	var downloadButton = document.getElementById("download");
+
 	var zoom = 0.8;
 
 	var startAngle = 0;
@@ -374,7 +376,7 @@ function initControls(){
 			}
 
 			// turn off hovering if cursor left opacity canvas
-			if(hovering && !e.path.includes(opCanvas)){
+			if(hovering && e.target != opCanvas){
 				opCanvas.className = "";
 				hovering = false;
 				render();
@@ -410,9 +412,17 @@ function initControls(){
 		
 	}
 
-	/*document.getElementById("autorotate").addEventListener("change", function(e){
-		autorotate = this.checked;
-	});*/
+	downloadButton.addEventListener("click", function(e){
+		canvas.toBlob(
+			function(blob){
+				var a = document.createElement("a");
+				a.download = "volume.png";
+				a.href = URL.createObjectURL(blob);
+				a.click();
+			},
+			"image/png"
+		);
+	});
 
 }
 

@@ -8,7 +8,8 @@ function loadFile(url, callback){
 			callback(xmlhttp.responseText, xmlhttp.status, url);
 		}
 	};
-	
+
+	xmlhttp.overrideMimeType("text/plain");
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 	

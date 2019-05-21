@@ -76,7 +76,9 @@ label.slider > input{
 
 /***********************/
 
-select{
+select,
+button
+{
 	background: linear-gradient(to bottom, #555555, #444444);
 	border: 1px #000000 outset;
 	color: #FFFFFF;
@@ -91,7 +93,9 @@ select{
 	padding: 0px 3px;
 }
 
-select:hover{
+select:hover,
+button:hover
+{
 	background: linear-gradient(to bottom, #666666, #555555);
 }
 

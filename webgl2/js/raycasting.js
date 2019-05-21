@@ -113,7 +113,7 @@ var Renderer = function(){
 	canvas.height = container.clientHeight;
 	var aspect = canvas.width / canvas.height;
 	
-	var gl = canvas.getContext("webgl2");
+	var gl = canvas.getContext("webgl2", {preserveDrawingBuffer: true});
 	var shaderProgram;
 	var size;
 
@@ -214,6 +214,7 @@ var Renderer = function(){
 	function loadSkybox(){
 
 		var skyboxImg = document.createElement("img");
+		
 		skyboxImg.onload = function(){
 			
 			var img = this;
@@ -588,6 +589,7 @@ var Renderer = function(){
 
 	function render(){
 		if(changed){
+			gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 			gl.uniformMatrix4fv(transformRef, false, transform);
 			gl.uniformMatrix4fv(inverseTransformRef, false, inverseTransform);
 			//gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
