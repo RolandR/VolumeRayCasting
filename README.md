@@ -52,3 +52,13 @@ Before implementing this project in WebGL, I wrote a [volume renderer in pure CP
 ![Volume rendering on the CPU](doc/cpu-3d.png)
 
 With some tweaking, I managed to get it running at 60fps on my old ThinkPad.
+
+## Previous work
+
+This project is the successor of earlier experiments with volume rendering by drawing point clouds:  
+[GitHub](https://github.com/RolandR/brainrender), [Web](https://draemm.li/various/brainrender/)
+
+## Disclaimer
+
+This is an experimental project developed by someone who has no real experience or training in medical imaging.  
+**It is not suited for clinical use.**
