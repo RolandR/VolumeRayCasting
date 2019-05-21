@@ -58,13 +58,13 @@ var volumes = {
 		,slices: 128
 		,zScale: 1
 	}
-	,pouet: {
+	/*,pouet: {
 		 src: "./images/pouet.png"
 		,name: "Pouët"
 		,columns: 2
 		,slices: 176
 		,zScale: 0.7
-	}
+	}*/
 };
 
 var shaders = {
