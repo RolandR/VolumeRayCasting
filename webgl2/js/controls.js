@@ -20,9 +20,14 @@ var transform = [
 
 var inverseTransform = matrix4Inverse(transform);
 
-var renderer = new Renderer();
+var renderer;
 
-initControls();
+window.addEventListener("load", function(){
+	
+	renderer = new Renderer();
+	initControls();
+	
+});
 
 function initControls(){
 

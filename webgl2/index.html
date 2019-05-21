@@ -33,88 +33,93 @@
 
 		<meta name="viewport" content="width=device-width">
 		<meta name="mobile-web-app-capable" content="yes">
-
-		<script src="./js/lib/matrix.js" type="text/javascript" defer></script>
-		<script src="./js/lib/loadFile.js" type="text/javascript" defer></script>
-		<script src="./js/shaders/defaults.js" type="text/javascript" defer></script>
-		<script src="./js/raycasting.js" type="text/javascript" defer></script>
-		<script src="./js/controls.js" type="text/javascript" defer></script>
+		
+		<script src="./js/lib/matrix.js" type="text/javascript" ></script>
+		<script src="./js/lib/loadFile.js" type="text/javascript" ></script>
+		<script src="./js/shaders/defaults.js" type="text/javascript" ></script>
+		<script src="./js/raycasting.js" type="text/javascript" ></script>
+		<script src="./js/controls.js" type="text/javascript" ></script>
 		
 	</head>
 	<body>
-		<div id="controls">
-			<header>
-			<a id="title" href=".">
-				<h1>Volume Rendering</h1>
-			</a>
-			<p id="subtitle">
-				Volume ray casting in WebGL 2.
-			</p>
-			</header>
-			<div class="setting">
-				<h2>Volume</h2>
-				<select id="volumeSelect">
-				</select>
-			</div>
-			<div class="setting">
-				<h2>Colors</h2>
-				<ul class="homebrewSelect" id="colorSelect">
-					<li id="incandescent" value="incandescent"></li>
-					<li id="colors1" value="colors1" class="active"></li>
-					<li id="rainbow" value="rainbow"></li>
-					<li id="rainbow-inverted" value="rainbow-inverted"></li>
-					<li id="rainbows" value="rainbows"></li>
-					<li id="blackwhite" value="blackwhite"></li>
-					<li id="whiteblack" value="whiteblack"></li>
-					<li id="blackwhite-compact" value="blackwhite-compact"></li>
-					<li id="horizon" value="horizon"></li>
-					<li id="skyline" value="skyline"></li>
-					<li id="blue" value="blue"></li>
-					<li id="natural" value="natural"></li>
-					<li id="white" value="white"></li>
-				</ul>
-			</div>
-			<div class="setting">
-				<h2>Opacity</h2>
-				<canvas id="opacityControls"></canvas>
+		<main>
+			<div id="controls">
+				<header>
+				<a id="title" href=".">
+					<h1>Volume Rendering</h1>
+				</a>
+				<p id="subtitle">
+					Volume ray casting in WebGL 2.
+				</p>
+				</header>
+				<div class="setting">
+					<h2>Volume</h2>
+					<select id="volumeSelect">
+					</select>
 				</div>
-			<div class="setting">
-				<h2>Samples</h2>
-				<input type="number" id="sampleCount" min="1" value="512">
+				<div class="setting">
+					<h2>Colors</h2>
+					<ul class="homebrewSelect" id="colorSelect">
+						<li id="incandescent" value="incandescent"></li>
+						<li id="colors1" value="colors1" class="active"></li>
+						<li id="rainbow" value="rainbow"></li>
+						<li id="rainbow-inverted" value="rainbow-inverted"></li>
+						<li id="rainbows" value="rainbows"></li>
+						<li id="blackwhite" value="blackwhite"></li>
+						<li id="whiteblack" value="whiteblack"></li>
+						<li id="blackwhite-compact" value="blackwhite-compact"></li>
+						<li id="horizon" value="horizon"></li>
+						<li id="skyline" value="skyline"></li>
+						<li id="blue" value="blue"></li>
+						<li id="natural" value="natural"></li>
+						<li id="white" value="white"></li>
+					</ul>
 				</div>
-			<div class="setting">
-				<h2>Shader</h2>
-				<select id="shaderSelect">
-				</select>
-				<h3>Brightness</h3>
-				<label class="slider">
-					<input type="range" id="brightness" min="0" max="5" step="0.01" value="1">
-					<span id="brightnessOutput">1.00</span>
-				</label>
+				<div class="setting">
+					<h2>Opacity</h2>
+					<canvas id="opacityControls"></canvas>
+					</div>
+				<div class="setting">
+					<h2>Samples</h2>
+					<input type="number" id="sampleCount" min="1" value="512">
+					</div>
+				<div class="setting">
+					<h2>Shader</h2>
+					<select id="shaderSelect">
+					</select>
+					<h3>Brightness</h3>
+					<label class="slider">
+						<input type="range" id="brightness" min="0" max="5" step="0.01" value="1">
+						<span id="brightnessOutput">1.00</span>
+					</label>
+				</div>
+				<!--h2>Controls</h2>
+				<label><input type="checkbox" id="autorotate" checked>Rotate automatically</label-->
+				<div id="spacer"></div>
+				<footer>
+					<p>By <a rel="author" target="_blank" href="http://draemm.li">Roland Rytz</a></p>
+					<p>Source under the <a target="_blank" rel="license" href="../LICENSE">AGPL v3</a> on <a target="_blank" href="https://github.com/RolandR/VolumeRayCasting">GitHub</a></p>
+				</footer>
 			</div>
-			<!--h2>Controls</h2>
-			<label><input type="checkbox" id="autorotate" checked>Rotate automatically</label-->
-			<div id="spacer"></div>
-			<footer>
-				<p>By <a rel="author" target="_blank" href="http://draemm.li">Roland Rytz</a></p>
-				<p>Source under the <a target="_blank" rel="license" href="../LICENSE">AGPL v3</a> on <a target="_blank" href="https://github.com/RolandR/VolumeRayCasting">GitHub</a></p>
-			</footer>
-		</div>
-		<button id="download" title="Download image">
-			<img src="./css/icons/download.svg" alt="Download">
-			<span>Download image</span>
-		</button>
+			<div id="container">
+				<div id="loadingStatus">
+					<div id="loadingBarContainer">
+						<div id="loadingBar"></div>
+					</div>
+					<div id="loadingContent">
+					</div>
+				</div>
+				<button id="download" title="Download image">
+					<img src="./css/icons/download.svg" alt="Download">
+					<span>Download image</span>
+				</button>
+				<canvas id="canvas"></canvas>
+			</div>
+		</main>
+		
 		<canvas id="texture"></canvas>
-		<div id="container">
-			<div id="loadingStatus">
-				<div id="loadingBarContainer">
-					<div id="loadingBar"></div>
-				</div>
-				<div id="loadingContent">
-				</div>
-			</div>
-			<canvas id="canvas"></canvas>
-		</div>
+		
 		<img id="slice">
+		
 	</body>
 </html>

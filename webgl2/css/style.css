@@ -20,9 +20,31 @@ html, body{
 body{
 	background-color: #000000;
 	overflow-y: hidden;
-	display: flex;
 	font-family: dejavu, sans-serif;
 	color: #CCCCCC;
+}
+
+main{
+	height: 100%;
+	display: flex;
+}
+
+@media (max-width: 700px) {
+	main{
+		flex-direction: column;
+	}
+	
+	div#controls{
+		width: 100%;
+		height: 50%;
+		order: 2;
+		flex-shrink: 0;
+	}
+	
+	#container{
+		order: 1;
+		height: 50%;
+	}
 }
 
 a{
@@ -141,7 +163,7 @@ hr{
 
 #controls{
 	background-color: #333333;
-	width: 20%;
+	width: 320px;
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
@@ -168,7 +190,7 @@ footer{
 
 #container{
 	text-align: center;
-	flex-grow: 1;
+	flex: 1;
 	position: relative;
 }
 
