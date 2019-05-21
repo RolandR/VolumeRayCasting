@@ -418,7 +418,7 @@ function initControls(){
 				var a = document.createElement("a");
 				a.download = "volume.png";
 				a.href = URL.createObjectURL(blob);
-				a.click();
+				a.dispatchEvent(new MouseEvent(`click`, {bubbles: true, cancelable: true, view: window}));
 			},
 			"image/png"
 		);
