@@ -173,7 +173,7 @@ function initControls(){
 
 	initVolumeSelect();
 	initShaderSelect();
-	//initShaderControls();
+	initShaderControls();
 	initOpacityControls();
 	initColorSelect();
 
@@ -212,13 +212,13 @@ function initControls(){
 	}
 
 	function initShaderControls(){
-		var refractionFactorSlider = document.getElementById("refractionFactor");
-		var refractionFactorOutput = document.getElementById("refractionFactorOutput");
+		var brightnessSlider = document.getElementById("brightness");
+		var brightnessOutput = document.getElementById("brightnessOutput");
 		
-		refractionFactorSlider.addEventListener("input", function(e){
+		brightnessSlider.addEventListener("input", function(e){
 			var value = Math.pow(this.value, 2);
-			renderer.changeRefractionFactor(value);
-			refractionFactorOutput.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+			renderer.changeBrightness(value);
+			brightnessOutput.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 		});
 	}
 

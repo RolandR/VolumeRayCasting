@@ -12,6 +12,8 @@ uniform mat4 transform;
 uniform int depthSampleCount;
 uniform float zScale;
 
+uniform float brightness;
+
 uniform vec3 lightPosition;
 
 //uniform vec4 opacitySettings;
@@ -150,7 +152,7 @@ void main(){
 			break;
 		}
 	}
-	color = value;
+	color = value*brightness;
 }
 
 

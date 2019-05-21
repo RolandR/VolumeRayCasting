@@ -367,8 +367,8 @@ var Renderer = function(){
 		depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
 		gl.uniform1i(depthSampleCountRef, 512);
 
-		refractionFactorRef = gl.getUniformLocation(shaderProgram, "refractionFactor");
-		gl.uniform1f(refractionFactorRef, 1);
+		brightnessRef = gl.getUniformLocation(shaderProgram, "brightness");
+		gl.uniform1f(brightnessRef, 1);
 		
 		opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
 		lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
@@ -621,8 +621,8 @@ var Renderer = function(){
 		draw();
 	}
 
-	function changeRefractionFactor(factor){
-		gl.uniform1f(refractionFactorRef, factor);
+	function changeBrightness(factor){
+		gl.uniform1f(brightnessRef, factor);
 		draw();
 	}
 
@@ -640,7 +640,7 @@ var Renderer = function(){
 	return {
 		 changeColorTexture: changeColorTexture
 		,changeSampleCount: changeSampleCount
-		,changeRefractionFactor: changeRefractionFactor
+		,changeBrightness: changeBrightness
 		,changeVolume: changeVolume
 		,changeShader: changeShader
 		,updateOpacity: updateOpacity
