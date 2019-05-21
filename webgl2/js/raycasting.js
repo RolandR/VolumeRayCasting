@@ -86,6 +86,11 @@ var shaders = {
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/realistic.frag"
 	}
+	,edges: {
+		 name: "Edges"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/edges.frag"
+	}
 	/*,noTransferImage: {
 		 name: "No Transfer Image"
 		,vert: "./js/shaders/vertex.vert"
