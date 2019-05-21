@@ -14,7 +14,7 @@ uniform mat4 inverseTransform;
 uniform int depthSampleCount;
 uniform float zScale;
 
-uniform float refractionFactor;
+uniform float brightness;
 
 uniform vec3 lightPosition;
 
@@ -160,5 +160,5 @@ void main(){
 
 	//background = texture(skybox, normalize(direction.xyz));
 	//color = mix(background, value, value.a);
-	color = value;
+	color = value*brightness;
 }

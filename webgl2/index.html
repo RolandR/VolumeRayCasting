@@ -86,11 +86,11 @@
 				<h2>Shader</h2>
 				<select id="shaderSelect">
 				</select>
-				<!--h3>Refraction factor</h3>
+				<h3>Brightness</h3>
 				<label class="slider">
-					<input type="range" id="refractionFactor" min="0" max="2" step="0.01" value="1">
-					<span id="refractionFactorOutput">1.00</span>
-				</label-->
+					<input type="range" id="brightness" min="0" max="5" step="0.01" value="1">
+					<span id="brightnessOutput">1.00</span>
+				</label>
 			</div>
 			<!--h2>Controls</h2>
 			<label><input type="checkbox" id="autorotate" checked>Rotate automatically</label-->
@@ -100,8 +100,19 @@
 				<p>Source under the <a target="_blank" rel="license" href="../LICENSE">AGPL v3</a> on <a target="_blank" href="https://github.com/RolandR/VolumeRayCasting">GitHub</a></p>
 			</footer>
 		</div>
+		<button id="download" title="Download image">
+			<img src="./css/icons/download.svg" alt="Download">
+			<span>Download image</span>
+		</button>
 		<canvas id="texture"></canvas>
 		<div id="container">
+			<div id="loadingStatus">
+				<div id="loadingBarContainer">
+					<div id="loadingBar"></div>
+				</div>
+				<div id="loadingContent">
+				</div>
+			</div>
 			<canvas id="canvas"></canvas>
 		</div>
 		<img id="slice">

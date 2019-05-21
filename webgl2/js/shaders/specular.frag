@@ -14,6 +14,8 @@ uniform float zScale;
 
 uniform vec3 lightPosition;
 
+uniform float brightness;
+
 //uniform vec4 opacitySettings;
 // x: minLevel
 // y: maxLevel
@@ -158,7 +160,7 @@ void main(){
 			break;
 		}
 	}
-	color = value;
+	color = value*brightness;
 }
 
 

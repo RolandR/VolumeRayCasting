@@ -78,6 +78,67 @@ hr{
 	margin: 5px 0px;
 }
 
+#download{
+	position: absolute;
+	z-index: 100000;
+	bottom: 10px;
+	right: 10px;
+	cursor: pointer;
+	height: 30px;
+	padding: 0px 10px 0px 5px;
+	font-size: 16px;
+}
+
+#download > img{
+	height: 100%;
+	padding: 5px;
+	object-fit: contain;
+	filter: drop-shadow(1px 2px 0px #000);
+}
+
+#download > *{
+	vertical-align: middle;
+}
+
+#loadingStatus{
+	position: absolute;
+	width: 400px;
+	text-align: left;
+	padding: 30px;
+	height: 230px;
+	left: 50%;
+	margin-left: -200px;
+	top: 30%;
+	background-color: #333333;
+	border: 1px #111111 solid;
+	opacity: 1;
+	transition: opacity;
+	transition-duration: 500ms;
+	transition-timing-function: ease-in;
+}
+
+#loadingStatus.fading{
+	opacity: 0;
+}
+
+#loadingBarContainer{
+	height: 15px;
+	background-color: #292929;
+	border: 1px #111111 solid;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+#loadingBar{
+	width: 0%;
+	height: 100%;
+	background-color: #FFAA00;
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.4));
+	transition: width;
+	transition-duration: 250ms;
+	transition-timing-function: linear;
+}
+
 #controls{
 	background-color: #333333;
 	width: 20%;
@@ -108,11 +169,12 @@ footer{
 #container{
 	text-align: center;
 	flex-grow: 1;
+	position: relative;
 }
 
 #canvas{
 	background-color: #000000;
-
+	
 	height: 100%;
 	width: 100%;
 }
@@ -132,6 +194,10 @@ footer{
 #opacityControls{
 	background-color: #292929;
 	border: 1px #111111 solid;
+}
+
+#opacityControls.pointer{
+	cursor: pointer;
 }
 
 input[type="checkbox"]{

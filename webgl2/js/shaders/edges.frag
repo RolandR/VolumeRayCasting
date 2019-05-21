@@ -12,9 +12,9 @@ uniform mat4 transform;
 uniform int depthSampleCount;
 uniform float zScale;
 
-uniform vec3 lightPosition;
-
 uniform float brightness;
+
+uniform vec3 lightPosition;
 
 //uniform vec4 opacitySettings;
 // x: minLevel
@@ -113,12 +113,13 @@ void main(){
 	vec3 start = origin.xyz + tmin*direction.xyz;
 	vec3 end = origin.xyz + tmax*direction.xyz;
 	
-	float length = distance(end, start);
-	int sampleCount = int(float(depthSampleCount)*length);
+	float len = distance(end, start);
+	int sampleCount = int(float(depthSampleCount)*len);
 	//vec3 increment = (end-start)/float(sampleCount);
 	//vec3 originOffset = mod((start-origin.xyz), increment);
 
 	float s = 0.0;
+	float alpha = 0.0;
 	float px = 0.0;
 	vec4 pxColor = vec4(0.0, 0.0, 0.0, 0.0);
 	vec3 texCo = vec3(0.0, 0.0, 0.0);
@@ -127,31 +128,25 @@ void main(){
 	
 	for(int count = 0; count < sampleCount; count++){
 
-		texCo = mix(start, end, float(count)/float(sampleCount));// - originOffset;
-
-		//texCo = start + increment*float(count);
-		px = texture(tex, texCo).r;
-
+		texCo = mix(start, end, float(count)/float(sampleCount));
 		
-		//px = length(texture(normals, texCo).xyz - 0.5);
-		//px = px * 1.5;
+		px = texture(tex, texCo).r;
 		
 		pxColor = texture(colorMap, vec2(px, 0.0));
-		
-		normal = normalize(texture(normals, texCo).xyz - 0.5);
-		float directional = clamp(dot(normal, lightVector), 0.0, 1.0);
 
-		//vec3 R = -reflect(lightDirection, surfaceNormal);
-		//return pow(max(0.0, dot(viewDirection, R)), shininess);
+		alpha = clamp(length(texture(normals, texCo).xyz - 0.5), 0.0, 1.0);
 
-		pxColor.rgb = ambientLight*pxColor.rgb + directionalLight*directional*pxColor.rgb;
-			
+		alpha = alpha * alpha;
+
+		pxColor = pxColor * alpha;
+
+		pxColor.a = texture(colorMap, vec2(alpha, 0.0)).a;
 		
-		//value = mix(value, pxColor, px);
+		
 		//value = (1.0-value.a)*pxColor + value;
 		//value = mix(pxColor, zero, value.a) + value;
 		
-		value = value + pxColor - pxColor*value.a;
+		value = value + (pxColor - pxColor*value.a);
 		
 		if(value.a >= 0.95){
 			break;

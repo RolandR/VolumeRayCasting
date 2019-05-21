@@ -6,8 +6,8 @@ var highNode = 3/256;*/
 
 var minLevel = 0;
 var maxLevel = 1;
-var lowNode = 0.5;
-var highNode = 0.9;
+var lowNode = 0.7;
+var highNode = 0.95;
 
 var autorotate = true;
 
@@ -30,6 +30,8 @@ function initControls(){
 	var canvas = document.getElementById("canvas");
 
 	var controlsContainer = document.getElementById("controls");
+
+	var downloadButton = document.getElementById("download");
 
 	var zoom = 0.8;
 
@@ -171,7 +173,7 @@ function initControls(){
 
 	initVolumeSelect();
 	initShaderSelect();
-	//initShaderControls();
+	initShaderControls();
 	initOpacityControls();
 	initColorSelect();
 
@@ -210,13 +212,13 @@ function initControls(){
 	}
 
 	function initShaderControls(){
-		var refractionFactorSlider = document.getElementById("refractionFactor");
-		var refractionFactorOutput = document.getElementById("refractionFactorOutput");
+		var brightnessSlider = document.getElementById("brightness");
+		var brightnessOutput = document.getElementById("brightnessOutput");
 		
-		refractionFactorSlider.addEventListener("input", function(e){
+		brightnessSlider.addEventListener("input", function(e){
 			var value = Math.pow(this.value, 2);
-			renderer.changeRefractionFactor(value);
-			refractionFactorOutput.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+			renderer.changeBrightness(value);
+			brightnessOutput.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 		});
 	}
 
@@ -225,8 +227,8 @@ function initControls(){
 		var opCanvas = document.getElementById("opacityControls");
 		var opContext = opCanvas.getContext("2d");
 
-		var height = 50;
-		var padding = 5;
+		var height = 70;
+		var padding = 10;
 		opCanvas.width = controlsContainer.clientWidth - 22;
 		opCanvas.height = height+padding*2;
 
@@ -242,22 +244,55 @@ function initControls(){
 		function render(){
 
 			renderer.updateOpacity();
+
+			lowNodeX = ~~(width*lowNode)+padding;
+			highNodeX = ~~(width*highNode)+padding;
+			minLevelY = ~~(height-(minLevel*height))+padding;
+			maxLevelY = ~~(height-(maxLevel*height))+padding;
 			
 			opContext.clearRect(0, 0, opCanvas.width, opCanvas.height);
+
+			// draw guide lines
+			var linesCount = 10;
+			
+			opContext.strokeStyle = "rgba(255, 255, 255, 0.2)";
+			opContext.lineWidth = 0.5;
+			opContext.beginPath();
+			
+			for(var i = 0; i < linesCount; i++){
+				var y = 1-Math.pow(i/(linesCount-1), 2);
+				var y = padding + (height)*y;
+				y = ~~y+0.5;
+				opContext.moveTo(padding, y);
+				opContext.lineTo(width+padding, y);
+			}
+
+			opContext.stroke();
 			
 			opContext.strokeStyle = "#AAAAAA";
-			opContext.fillStyle = "#FFAA00";
 			opContext.lineWidth = 2;
 			opContext.beginPath();
 			opContext.moveTo(padding, minLevelY);
 			opContext.lineTo(lowNodeX, minLevelY);
 			opContext.lineTo(highNodeX, maxLevelY);
-			opContext.lineTo(~~(opCanvas.width)+padding, maxLevelY);
+			opContext.lineTo(width+padding, maxLevelY);
 			opContext.stroke();
+
+			if(hovering && nodeHovered == 0 || dragging && nodeDragged == 0){
+				opContext.fillStyle = "#FFFF55";
+			} else {
+				opContext.fillStyle = "#FFAA00";
+			}
 
 			opContext.beginPath();
 			opContext.arc(lowNodeX, minLevelY, 5, 0, 2*Math.PI);
 			opContext.fill();
+
+			if(hovering && nodeHovered == 1 || dragging && nodeDragged == 1){
+				opContext.fillStyle = "#FFFF55";
+			} else {
+				opContext.fillStyle = "#FFAA00";
+			}
 
 			opContext.beginPath();
 			opContext.arc(highNodeX, maxLevelY, 5, 0, 2*Math.PI);
@@ -266,22 +301,52 @@ function initControls(){
 		}
 
 		var dragging = false;
+		var hovering = false;
 		var nodeDragged = 0;
+		var nodeHovered = 0;
 		var dragStart = [0, 0];
 		var startPos = [0, 0];
 
+		// distance where clicks and hovering near control nodes are registered
+		var hoverRadius = 15;
+
 		opCanvas.addEventListener("mousedown", function(e){
 			//console.log(e);
-			if(Math.sqrt(Math.pow(e.offsetX-lowNodeX, 2)+Math.pow(e.offsetY-minLevelY, 2)) <= 5){
+			if(Math.sqrt(Math.pow(e.offsetX-lowNodeX, 2)+Math.pow(e.offsetY-minLevelY, 2)) <= hoverRadius){
 				dragging = true;
 				nodeDragged = 0;
 				dragStart = [e.screenX, e.screenY];
 				startPos = [lowNodeX, minLevelY];
-			} else if(Math.sqrt(Math.pow(e.offsetX-highNodeX, 2)+Math.pow(e.offsetY-maxLevelY, 2)) <= 5){
+			} else if(Math.sqrt(Math.pow(e.offsetX-highNodeX, 2)+Math.pow(e.offsetY-maxLevelY, 2)) <= hoverRadius){
 				dragging = true;
 				nodeDragged = 1;
 				dragStart = [e.screenX, e.screenY];
 				startPos = [highNodeX, maxLevelY];
+			}
+		});
+
+		// figure out if cursor is near opacity control node, for highlighting
+		opCanvas.addEventListener("mousemove", function(e){
+			if(Math.sqrt(Math.pow(e.offsetX-lowNodeX, 2)+Math.pow(e.offsetY-minLevelY, 2)) <= hoverRadius){
+				if(!hovering){
+					opCanvas.className = "pointer";
+					nodeHovered = 0;
+					hovering = true;
+					render();
+				}
+			} else if(Math.sqrt(Math.pow(e.offsetX-highNodeX, 2)+Math.pow(e.offsetY-maxLevelY, 2)) <= hoverRadius){
+				if(!hovering){
+					opCanvas.className = "pointer";
+					nodeHovered = 1;
+					hovering = true;
+					render();
+				}
+			} else {
+				if(hovering){
+					opCanvas.className = "";
+					hovering = false;
+					render();
+				}
 			}
 		});
 
@@ -296,24 +361,31 @@ function initControls(){
 					minLevelY = Math.max(padding, Math.min(height+padding, startPos[1]-diffY));
 
 					lowNode = (lowNodeX-padding)/width;
+					lowNode = Math.min(lowNode, highNode);
 					minLevel = 1-(minLevelY-padding)/height;
 				} else {
 					highNodeX = Math.max(padding, Math.min(width+padding, startPos[0]-diffX));
 					maxLevelY = Math.max(padding, Math.min(height+padding, startPos[1]-diffY));
 
 					highNode = (highNodeX-padding)/width;
+					highNode = Math.max(highNode, lowNode);
 					maxLevel = 1-(maxLevelY-padding)/height;
 				}
 				
 				render();
-				//requestAnimationFrame(renderer.draw);
+			}
 
-				//console.log(lowNode, highNode, minLevel, maxLevel);
+			// turn off hovering if cursor left opacity canvas
+			if(hovering && e.target != opCanvas){
+				opCanvas.className = "";
+				hovering = false;
+				render();
 			}
 		});
 
 		document.addEventListener("mouseup", function(e){
 			dragging = false;
+			render();
 		});
 		
 
@@ -333,7 +405,6 @@ function initControls(){
 					selectContainer.children[i].className = "";
 				}
 				e.target.className = "active";
-				//console.log(e.target.id);
 				renderer.changeColorTexture("./colorMappings/"+e.target.id+".png");
 			}
 			requestAnimationFrame(renderer.draw);
@@ -341,9 +412,17 @@ function initControls(){
 		
 	}
 
-	/*document.getElementById("autorotate").addEventListener("change", function(e){
-		autorotate = this.checked;
-	});*/
+	downloadButton.addEventListener("click", function(e){
+		canvas.toBlob(
+			function(blob){
+				var a = document.createElement("a");
+				a.download = "volume.png";
+				a.href = URL.createObjectURL(blob);
+				a.click();
+			},
+			"image/png"
+		);
+	});
 
 }
 

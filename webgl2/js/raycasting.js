@@ -93,6 +93,11 @@ var shaders = {
 		,vert: "./js/shaders/vertex.vert"
 		,frag: "./js/shaders/realistic.frag"
 	}
+	,edges: {
+		 name: "Edges"
+		,vert: "./js/shaders/vertex.vert"
+		,frag: "./js/shaders/edges.frag"
+	}
 	/*,noTransferImage: {
 		 name: "No Transfer Image"
 		,vert: "./js/shaders/vertex.vert"
@@ -107,9 +112,13 @@ var shaders = {
 
 
 var Renderer = function(){
-
+	
 	var img = document.getElementById("slice");
 	var colorMap = document.createElement("img");
+
+	var loadingStatus = document.getElementById("loadingStatus");
+	var loadingContent = document.getElementById("loadingContent");
+	var loadingBar = document.getElementById("loadingBar");
 	
 	/*colorMap.onload = updateLoadedImages;
 	colorMap.src = "./colorMappings/skyline.png";*/
@@ -120,7 +129,7 @@ var Renderer = function(){
 	canvas.height = container.clientHeight;
 	var aspect = canvas.width / canvas.height;
 	
-	var gl = canvas.getContext("webgl2");
+	var gl = canvas.getContext("webgl2", {preserveDrawingBuffer: true});
 	var shaderProgram;
 	var size;
 
@@ -148,34 +157,22 @@ var Renderer = function(){
 	loadSkybox();
 	changeShader(shaders.specular);
 
-	/*img.onload = processVolume;
-	img.src = "./images/sagittal.png";*/
-
-	/*var imagesLoaded = 0;
-	var imagesToLoad = 2;
-
-	function updateLoadedImages(){
-		imagesLoaded++;
-		if(imagesLoaded == imagesToLoad){
-			render();
-		}
-	}*/
-
 	function updateOpacity(){
 
-		//var opacities = new Uint8Array(256);
+		var min = Math.pow(minLevel, 2);
+		var max = Math.pow(maxLevel, 2);
 
 		for(var i = 0; i < opacities.length; i++){
 			var px = i/opacities.length;
-			px = px*px;
+			//px = px*px;
 			
 			if(px <= lowNode){
-				opacities[i] = minLevel*255;
+				opacities[i] = min*255;
 			} else if(px > highNode){
-				opacities[i] = maxLevel*255;
+				opacities[i] = max*255;
 			} else {
 				var ratio = (px-lowNode)/(highNode-lowNode);
-				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*255;
+				opacities[i] = (min*(1-ratio) + max*ratio)*255;
 			}
 		}
 
@@ -233,6 +230,7 @@ var Renderer = function(){
 	function loadSkybox(){
 
 		var skyboxImg = document.createElement("img");
+		
 		skyboxImg.onload = function(){
 			
 			var img = this;
@@ -380,8 +378,8 @@ var Renderer = function(){
 		depthSampleCountRef = gl.getUniformLocation(shaderProgram, "depthSampleCount");
 		gl.uniform1i(depthSampleCountRef, 512);
 
-		refractionFactorRef = gl.getUniformLocation(shaderProgram, "refractionFactor");
-		gl.uniform1f(refractionFactorRef, 1);
+		brightnessRef = gl.getUniformLocation(shaderProgram, "brightness");
+		gl.uniform1f(brightnessRef, 1);
 		
 		opacitySettingsRef = gl.getUniformLocation(shaderProgram, "opacitySettings");
 		lightPositionRef = gl.getUniformLocation(shaderProgram, "lightPosition");
@@ -497,17 +495,58 @@ var Renderer = function(){
 	}
 
 	function changeVolume(volume){
+
+		loadingStatus.className = "";
+		loadingBar.style.width = "0%";
+		loadingStatus.style.display = "block";
+		loadingContent.innerHTML = "Loading image ";
+
+		var imagePercentage = document.createElement("span");
+		imagePercentage.innerHTML = "0";
+
+		loadingContent.appendChild(imagePercentage);
+
+		var textureData;
+		var imageColumns;
+		var slices;
+		var imageHeight;
+		var normals;
+
 		var img = document.createElement("img");
-		img.onload = function(e){
-			var imageColumns = volume.columns;
-			var imageWidth = img.width/imageColumns;
-			var slices = volume.slices;
-			var imageHeight = img.height/(slices/imageColumns);
+		
+		var xmlHTTP = new XMLHttpRequest();
+        xmlHTTP.open("GET", volume.src, true);
+        xmlHTTP.responseType = "arraybuffer";
+        xmlHTTP.onload = function(e) {
+            var blob = new Blob([this.response]);
+            img.src = window.URL.createObjectURL(blob);
+
+            loadingContent.innerHTML += "<br>Processing image...";
+            loadingBar.style.width = "50%";
+			setTimeout(processImage, 100);
+        };
+        xmlHTTP.onprogress = function(e) {
+            //thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
+           imagePercentage.innerHTML = "("+parseInt((e.loaded / e.total) * 100)+"%)";
+           loadingBar.style.width = parseInt((e.loaded / e.total) * 50)+"%";
+           
+        };
+        /*xmlHTTP.onloadstart = function() {
+            thisImg.completedPercentage = 0;
+        };*/
+        xmlHTTP.send();
+
+		function processImage(){
+			
+			imageColumns = volume.columns;
+			imageWidth = img.width/imageColumns;
+			slices = volume.slices;
+			imageHeight = img.height/(slices/imageColumns);
 
 			var textureCanvas = document.createElement("canvas");
 			var textureContext = textureCanvas.getContext("2d");
 
-			var textureData = new Uint8Array(imageWidth * imageHeight * slices);
+			textureData = new Uint8Array(imageWidth * imageHeight * slices);
 
 			for(var c = 0; c < imageColumns; c++){
 				textureCanvas.width = imageWidth;
@@ -520,7 +559,16 @@ var Renderer = function(){
 				}
 			}
 
-			var normals = new Uint8ClampedArray(textureData.length*3);
+			loadingBar.style.width = "70%";
+			loadingContent.innerHTML += "<br>Calculating normal vectors...";
+			
+			setTimeout(calculateNormals, 100);
+
+		}
+
+		function calculateNormals(){
+
+			normals = new Uint8ClampedArray(textureData.length*3);
 
 			var xn = 0;
 			var yn = 0;
@@ -553,14 +601,29 @@ var Renderer = function(){
 
 			normals = new Uint8Array(normals);
 
+			loadingBar.style.width = "90%";
+			loadingContent.innerHTML += "<br>Generating textures...";
+			setTimeout(generateTextures, 100);
+
+		}
+
+		function generateTextures(){
+
 			updateVolumeTexture(textureData, imageWidth, imageHeight, slices);
 			updateNormalsTexture(normals, imageWidth, imageHeight, slices);
 			zScale = volume.zScale;
 			updateZScale(volume.zScale);
 
+			loadingBar.style.width = "100%";
+			loadingContent.innerHTML += "<br>Ready!";
+			loadingStatus.className = "fading";
+
+			setTimeout(function(){
+				loadingStatus.style.display = "none";
+			}, 500);
+
 			draw();
 		}
-		img.src = volume.src;
 	}
 
 	function updateZScale(zScale){
@@ -607,6 +670,7 @@ var Renderer = function(){
 
 	function render(){
 		if(changed){
+			gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 			gl.uniformMatrix4fv(transformRef, false, transform);
 			gl.uniformMatrix4fv(inverseTransformRef, false, inverseTransform);
 			//gl.uniform4f(opacitySettingsRef, Math.pow(minLevel, 2), Math.pow(maxLevel, 2), lowNode, highNode);
@@ -633,8 +697,8 @@ var Renderer = function(){
 		draw();
 	}
 
-	function changeRefractionFactor(factor){
-		gl.uniform1f(refractionFactorRef, factor);
+	function changeBrightness(factor){
+		gl.uniform1f(brightnessRef, factor);
 		draw();
 	}
 
@@ -652,7 +716,7 @@ var Renderer = function(){
 	return {
 		 changeColorTexture: changeColorTexture
 		,changeSampleCount: changeSampleCount
-		,changeRefractionFactor: changeRefractionFactor
+		,changeBrightness: changeBrightness
 		,changeVolume: changeVolume
 		,changeShader: changeShader
 		,updateOpacity: updateOpacity
