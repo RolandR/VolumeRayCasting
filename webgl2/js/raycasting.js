@@ -439,7 +439,7 @@ var Renderer = function(){
 		);
 
 		colorTexture = gl.createTexture();
-		//gl.activeTexture(gl.TEXTURE1);
+		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, colorTexture);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -448,7 +448,7 @@ var Renderer = function(){
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 
 		normalsTexture = gl.createTexture();
-		//gl.activeTexture(gl.TEXTURE2);
+		gl.activeTexture(gl.TEXTURE2);
 		gl.bindTexture(gl.TEXTURE_3D, normalsTexture);
 		gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_BASE_LEVEL, 0);
 		//gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAX_LEVEL, Math.log2(texSize));
@@ -471,7 +471,7 @@ var Renderer = function(){
 		);
 
 		skyboxTexture = gl.createTexture();
-		//gl.activeTexture(gl.TEXTURE3);
+		gl.activeTexture(gl.TEXTURE3);
 		gl.bindTexture(gl.TEXTURE_CUBE_MAP, skyboxTexture);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
 		gl.texImage2D(gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, Uint8Array.from([0, 0, 0, 0]), 0);
