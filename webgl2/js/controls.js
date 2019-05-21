@@ -6,8 +6,8 @@ var highNode = 3/256;*/
 
 var minLevel = 0;
 var maxLevel = 1;
-var lowNode = 0.5;
-var highNode = 0.9;
+var lowNode = 0.7;
+var highNode = 0.95;
 
 var autorotate = true;
 
