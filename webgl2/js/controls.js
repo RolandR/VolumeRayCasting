@@ -234,7 +234,7 @@ function initControls(){
 
 		var height = 70;
 		var padding = 10;
-		opCanvas.width = controlsContainer.clientWidth - 22;
+		opCanvas.width = controlsContainer.clientWidth - 2*padding -2; // 2 for border, i guess
 		opCanvas.height = height+padding*2;
 
 		var width = opCanvas.width-2*padding;
@@ -243,11 +243,25 @@ function initControls(){
 		var highNodeX = ~~(width*highNode)+padding;
 		var minLevelY = ~~(height-(minLevel*height))+padding;
 		var maxLevelY = ~~(height-(maxLevel*height))+padding;
+		
+		window.addEventListener("resize", function(){
+			opCanvas.width = controlsContainer.clientWidth - 2*padding -2; // 2 for border, i guess
+			opCanvas.height = height+padding*2;
+
+			width = opCanvas.width-2*padding;
+
+			lowNodeX = ~~(width*lowNode)+padding;
+			highNodeX = ~~(width*highNode)+padding;
+			minLevelY = ~~(height-(minLevel*height))+padding;
+			maxLevelY = ~~(height-(maxLevel*height))+padding;
+			
+			render();
+		});
 
 		render();
 
 		function render(){
-
+			
 			renderer.updateOpacity();
 
 			lowNodeX = ~~(width*lowNode)+padding;
