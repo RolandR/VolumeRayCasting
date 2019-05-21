@@ -519,11 +519,14 @@ var Renderer = function(){
         xmlHTTP.responseType = "arraybuffer";
         xmlHTTP.onload = function(e) {
             var blob = new Blob([this.response]);
-            img.src = window.URL.createObjectURL(blob);
-
-            loadingContent.innerHTML += "<br>Processing image...";
+            img.onload = function(){
+				setTimeout(processImage, 100);
+			}
+			loadingContent.innerHTML += "<br>Processing image...";
             loadingBar.style.width = "50%";
-			setTimeout(processImage, 100);
+            
+            img.src = window.URL.createObjectURL(blob);
+			
         };
         xmlHTTP.onprogress = function(e) {
             //thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
@@ -531,9 +534,6 @@ var Renderer = function(){
            loadingBar.style.width = parseInt((e.loaded / e.total) * 50)+"%";
            
         };
-        /*xmlHTTP.onloadstart = function() {
-            thisImg.completedPercentage = 0;
-        };*/
         xmlHTTP.send();
 
 		function processImage(){
@@ -552,6 +552,7 @@ var Renderer = function(){
 				textureCanvas.width = imageWidth;
 				textureCanvas.height = img.height;
 				textureContext.drawImage(img, -c*imageWidth, 0);
+				
 				var imageData = textureContext.getImageData(0, 0, textureCanvas.width, textureCanvas.height).data;
 				
 				for(var i = 0; i < textureData.length/imageColumns; i++){
