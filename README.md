@@ -61,4 +61,4 @@ This project is the successor of earlier experiments with volume rendering by dr
 ## Disclaimer
 
 This is an experimental project developed by someone who has no real experience or training in medical imaging.  
-**It is not suited for clinical use.**
+**It is not intended or suitable for clinical use.**
