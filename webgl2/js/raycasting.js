@@ -105,9 +105,13 @@ var shaders = {
 
 
 var Renderer = function(){
-
+	
 	var img = document.getElementById("slice");
 	var colorMap = document.createElement("img");
+
+	var loadingStatus = document.getElementById("loadingStatus");
+	var loadingContent = document.getElementById("loadingContent");
+	var loadingBar = document.getElementById("loadingBar");
 	
 	/*colorMap.onload = updateLoadedImages;
 	colorMap.src = "./colorMappings/skyline.png";*/
@@ -484,17 +488,58 @@ var Renderer = function(){
 	}
 
 	function changeVolume(volume){
+
+		loadingStatus.className = "";
+		loadingBar.style.width = "0%";
+		loadingStatus.style.display = "block";
+		loadingContent.innerHTML = "Loading image ";
+
+		var imagePercentage = document.createElement("span");
+		imagePercentage.innerHTML = "0";
+
+		loadingContent.appendChild(imagePercentage);
+
+		var textureData;
+		var imageColumns;
+		var slices;
+		var imageHeight;
+		var normals;
+
 		var img = document.createElement("img");
-		img.onload = function(e){
-			var imageColumns = volume.columns;
-			var imageWidth = img.width/imageColumns;
-			var slices = volume.slices;
-			var imageHeight = img.height/(slices/imageColumns);
+		
+		var xmlHTTP = new XMLHttpRequest();
+        xmlHTTP.open("GET", volume.src, true);
+        xmlHTTP.responseType = "arraybuffer";
+        xmlHTTP.onload = function(e) {
+            var blob = new Blob([this.response]);
+            img.src = window.URL.createObjectURL(blob);
+
+            loadingContent.innerHTML += "<br>Processing image...";
+            loadingBar.style.width = "50%";
+			setTimeout(processImage, 100);
+        };
+        xmlHTTP.onprogress = function(e) {
+            //thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
+           imagePercentage.innerHTML = "("+parseInt((e.loaded / e.total) * 100)+"%)";
+           loadingBar.style.width = parseInt((e.loaded / e.total) * 50)+"%";
+           
+        };
+        /*xmlHTTP.onloadstart = function() {
+            thisImg.completedPercentage = 0;
+        };*/
+        xmlHTTP.send();
+
+		function processImage(){
+			
+			imageColumns = volume.columns;
+			imageWidth = img.width/imageColumns;
+			slices = volume.slices;
+			imageHeight = img.height/(slices/imageColumns);
 
 			var textureCanvas = document.createElement("canvas");
 			var textureContext = textureCanvas.getContext("2d");
 
-			var textureData = new Uint8Array(imageWidth * imageHeight * slices);
+			textureData = new Uint8Array(imageWidth * imageHeight * slices);
 
 			for(var c = 0; c < imageColumns; c++){
 				textureCanvas.width = imageWidth;
@@ -507,7 +552,16 @@ var Renderer = function(){
 				}
 			}
 
-			var normals = new Uint8ClampedArray(textureData.length*3);
+			loadingBar.style.width = "70%";
+			loadingContent.innerHTML += "<br>Calculating normal vectors...";
+			
+			setTimeout(calculateNormals, 100);
+
+		}
+
+		function calculateNormals(){
+
+			normals = new Uint8ClampedArray(textureData.length*3);
 
 			var xn = 0;
 			var yn = 0;
@@ -540,14 +594,29 @@ var Renderer = function(){
 
 			normals = new Uint8Array(normals);
 
+			loadingBar.style.width = "90%";
+			loadingContent.innerHTML += "<br>Generating textures...";
+			setTimeout(generateTextures, 100);
+
+		}
+
+		function generateTextures(){
+
 			updateVolumeTexture(textureData, imageWidth, imageHeight, slices);
 			updateNormalsTexture(normals, imageWidth, imageHeight, slices);
 			zScale = volume.zScale;
 			updateZScale(volume.zScale);
 
+			loadingBar.style.width = "100%";
+			loadingContent.innerHTML += "<br>Ready!";
+			loadingStatus.className = "fading";
+
+			setTimeout(function(){
+				loadingStatus.style.display = "none";
+			}, 500);
+
 			draw();
 		}
-		img.src = volume.src;
 	}
 
 	function updateZScale(zScale){
