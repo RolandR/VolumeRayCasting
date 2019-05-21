@@ -134,6 +134,10 @@ footer{
 	border: 1px #111111 solid;
 }
 
+#opacityControls.pointer{
+	cursor: pointer;
+}
+
 input[type="checkbox"]{
 	margin-right: 7px;
 }

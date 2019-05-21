@@ -141,34 +141,22 @@ var Renderer = function(){
 	loadSkybox();
 	changeShader(shaders.specular);
 
-	/*img.onload = processVolume;
-	img.src = "./images/sagittal.png";*/
-
-	/*var imagesLoaded = 0;
-	var imagesToLoad = 2;
-
-	function updateLoadedImages(){
-		imagesLoaded++;
-		if(imagesLoaded == imagesToLoad){
-			render();
-		}
-	}*/
-
 	function updateOpacity(){
 
-		//var opacities = new Uint8Array(256);
+		var min = Math.pow(minLevel, 2);
+		var max = Math.pow(maxLevel, 2);
 
 		for(var i = 0; i < opacities.length; i++){
 			var px = i/opacities.length;
-			px = px*px;
+			//px = px*px;
 			
 			if(px <= lowNode){
-				opacities[i] = minLevel*255;
+				opacities[i] = min*255;
 			} else if(px > highNode){
-				opacities[i] = maxLevel*255;
+				opacities[i] = max*255;
 			} else {
 				var ratio = (px-lowNode)/(highNode-lowNode);
-				opacities[i] = (minLevel*(1-ratio) + maxLevel*ratio)*255;
+				opacities[i] = (min*(1-ratio) + max*ratio)*255;
 			}
 		}
 
