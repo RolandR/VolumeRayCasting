@@ -279,6 +279,18 @@ input[type="number"]::-webkit-inner-spin-button {
 	background-image: url(../colorMappings/incandescent.png);
 }
 
+#colorSelect > li[value="viridis"]{
+	background-image: url(../colorMappings/viridis.png);
+}
+
+#colorSelect > li[value="plasma"]{
+	background-image: url(../colorMappings/plasma.png);
+}
+
+#colorSelect > li[value="inferno"]{
+	background-image: url(../colorMappings/inferno.png);
+}
+
 #colorSelect > li[value="colors1"]{
 	background-image: url(../colorMappings/colors1.png);
 }

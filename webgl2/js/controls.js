@@ -429,6 +429,13 @@ function initControls(){
 			requestAnimationFrame(renderer.draw);
 		});
 		
+		selectContainer.addEventListener("mousemove", function(e){
+			if(opened){
+				renderer.changeColorTexture("./colorMappings/"+e.target.id+".png");
+			}
+			requestAnimationFrame(renderer.draw);
+		});
+		
 	}
 
 	downloadButton.addEventListener("click", function(e){
