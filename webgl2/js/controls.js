@@ -9,6 +9,9 @@ var maxLevel = 1;
 var lowNode = 0.7;
 var highNode = 0.95;
 
+var colorRangeMin = 0.4;
+var colorRangeMax = 0.9;
+
 var autorotate = true;
 
 var transform = [
@@ -179,6 +182,7 @@ function initControls(){
 	initVolumeSelect();
 	initShaderSelect();
 	initShaderControls();
+	initColorRangeControls();
 	initOpacityControls();
 	initColorSelect();
 
@@ -225,6 +229,50 @@ function initControls(){
 			renderer.changeBrightness(value);
 			brightnessOutput.innerHTML = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 		});
+	}
+	
+	function initColorRangeControls(){
+		var rangeContainer = document.getElementById("colorRangeContainer");
+		var rangeElement = document.getElementById("colorRange");
+		var minRange = document.getElementById("colorRangeMin");
+		var maxRange = document.getElementById("colorRangeMax");
+		var colorRangeLeftFill = document.getElementById("colorRangeLeftFill");
+		var colorRangeRightFill = document.getElementById("colorRangeRightFill");
+		
+		minRange.value = colorRangeMin;
+		maxRange.value = colorRangeMax;
+		
+		update();
+		
+		minRange.addEventListener("input", function(e){
+			colorRangeMin = 1*minRange.value;
+			if(colorRangeMin > colorRangeMax){
+				colorRangeMax = colorRangeMin;
+				maxRange.value = colorRangeMax;
+			}
+			update();
+		});
+		
+		maxRange.addEventListener("input", function(e){
+			colorRangeMax = 1*maxRange.value;
+			if(colorRangeMin > colorRangeMax){
+				colorRangeMin = colorRangeMax;
+				minRange.value = colorRangeMin;
+			}
+			update();
+		});
+		
+		function update(){
+			rangeElement.style.left = (colorRangeMin*100)+"%";
+			rangeElement.style.right = ((1-colorRangeMax)*100)+"%";
+			var center = (colorRangeMin+colorRangeMax)/2;
+			console.log(colorRangeMin, colorRangeMax, center);
+			colorRangeRightFill.style.left = (center*100)+"%";
+			colorRangeLeftFill.style.right = ((1-center)*100)+"%";
+			
+			renderer.updateColorRange();
+		}
+		
 	}
 
 	function initOpacityControls(){

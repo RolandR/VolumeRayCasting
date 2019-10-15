@@ -222,6 +222,51 @@ footer{
 	cursor: pointer;
 }
 
+#colorRangeContainer{
+	position: relative;
+	height: 30px;
+}
+
+#colorRange{
+	position: absolute;
+	left: 0%;
+	right: 100%;
+	background-image: url(../colorMappings/viridis.png);
+	background-size: 100%;
+	height: 100%;
+	z-index: 10000;
+}
+
+#colorRangeLeftFill,
+#colorRangeRightFill{
+	position: absolute;
+	height: 100%;
+	background-image: url(../colorMappings/viridis.png);
+	background-size: 10000px;
+}
+
+#colorRangeLeftFill{
+	background-position: left;
+	left: 0%;
+}
+
+#colorRangeRightFill{
+	background-position: right;
+	right: 0%;
+}
+
+#colorRangeControls > input{
+	width: 100%;
+}
+
+#colorRangeMin{
+	
+}
+
+#colorRangeMax{
+	
+}
+
 input[type="checkbox"]{
 	margin-right: 7px;
 }

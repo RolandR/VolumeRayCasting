@@ -178,16 +178,36 @@ var Renderer = function(){
 
 		updateTransferTexture();
 	}
+	
+	function updateColorRange(){
+	
+		updateTransferTexture();
+
+	}
 
 	function updateTransferTexture(){
 		
 		var transferData = new Uint8Array(4*256);
 		
+		var colorRange = colorRangeMax - colorRangeMin;
+		
 		for(var i = 0; i < 256; i++){
 
-			var r = colorTransfer[i*3+0]/256;
-			var g = colorTransfer[i*3+1]/256;
-			var b = colorTransfer[i*3+2]/256;
+			var colorI = 0;
+			
+			if(i > colorRangeMax*255){
+				colorI = 255;
+			} else if (i > colorRangeMin*255){
+				colorI = ((i/255)-colorRangeMin)*(1/colorRange)*255;
+			}
+			
+			colorI = Math.round(colorI);
+			
+			console.log(i, colorI);
+			
+			var r = colorTransfer[colorI*3+0]/256;
+			var g = colorTransfer[colorI*3+1]/256;
+			var b = colorTransfer[colorI*3+2]/256;
 			var a = opacities[i]/256;
 
 			r = r*r*a;
@@ -718,6 +738,7 @@ var Renderer = function(){
 		,changeBrightness: changeBrightness
 		,changeVolume: changeVolume
 		,changeShader: changeShader
+		,updateColorRange: updateColorRange
 		,updateOpacity: updateOpacity
 		,draw: draw
 	};
